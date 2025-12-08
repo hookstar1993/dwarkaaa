@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jay Dwarkadhish - Sacred Pilgrimage Booking Portal</title>
+    <meta name="description" content="Join our sacred pilgrimage to Dwarka during auspicious Poonam days. Book your spiritual journey with Jay Dwarkadhish.">
+    <meta name="keywords" content="Dwarka pilgrimage, Poonam journey, spiritual travel, temple booking, Gujarat tourism">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Teko:wght@400;600;700&family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="styles.css">
+    
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%23FF7B54' d='M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5'/></svg>">
+</head>
+<body class="flex flex-col min-h-screen theme-text-primary transition-colors duration-500">
+    
+    <div id="loading-screen" class="fixed inset-0 z-50 flex items-center justify-center" style="background: linear-gradient(120deg, var(--bg-gradient-start), var(--bg-gradient-end));">
+        <div class="text-center">
+            <div class="loading-spinner mb-4"></div>
+            <h2 class="text-2xl font-bold theme-accent-color">Jay Dwarkadhish</h2>
+            <p class="theme-text-secondary mt-2">Loading your spiritual journey...</p>
+        </div>
+    </div>
+
+    <div id="welcome-popup" class="welcome-popup-container">
+        <div class="welcome-content glass-card">
+            <div class="text-center">
+                <h2 class="text-4xl sm:text-5xl font-bold theme-accent-color page-title">Jay Dwarkadhish 🙏</h2>
+                <p id="slogan-text" class="theme-text-secondary mt-2 text-xl font-bold min-h-[3rem] flex items-center justify-center">
+                    Welcome to the sacred journey!
+                </p>
+                <div class="mt-4">
+                    <div class="loading-dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="site-wrapper" class="opacity-0 transition-opacity duration-500">
+        
+        <header class="glass-card fixed top-4 left-4 right-4 z-40 transition-all duration-300">
+            <nav class="container mx-auto px-4 sm:px-6 py-3 flex justify-between items-center">
+                <div class="flex items-center text-xl sm:text-2xl font-bold tracking-wider theme-text-primary">
+                    <div class="logo-icon mr-3">
+                        <i class="fas fa-temple-hindu theme-accent-color"></i>
+                    </div>
+                    <span class="brand-name">Jay Dwarkadhish</span>
+                </div>
+                
+                <div class="flex items-center space-x-2">
+                    <div class="hidden md:flex items-center space-x-6">
+                        <a href="#" id="home-link" class="nav-link">Home</a>
+                        <a href="#" id="timing-link" class="nav-link">Timing</a>
+                        <a href="#" id="about-link" class="nav-link">About Us</a>
+                        <a href="#" id="contact-link" class="nav-link">Contact</a>
+                        <a href="#" id="pay-link" class="pay-button">
+                            <i class="fas fa-credit-card mr-2"></i>
+                            Pay Here
+                        </a>
+                    </div>
+                    
+                    <button id="theme-toggle" title="Toggle Theme" class="theme-toggle-btn">
+                        <svg id="sun-icon" class="theme-icon" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                        <svg id="moon-icon" class="theme-icon hidden" viewBox="0 0 24 24">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </button>
+                    
+                    <button class="md:hidden mobile-menu-btn" id="mobile-menu-button">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </nav>
+            
+            <div id="mobile-menu" class="hidden md:hidden px-6 pb-4 glass-card rounded-b-2xl -mt-2">
+                <a href="#" id="mobile-home-link" class="mobile-nav-link">Home</a>
+                 <a href="#" id="mobile-timing-link" class="mobile-nav-link">Timing</a>
+                <a href="#" id="mobile-about-link" class="mobile-nav-link">About Us</a>
+                <a href="#" id="mobile-contact-link" class="mobile-nav-link">Contact</a>
+                <a href="#" id="mobile-pay-link" class="pay-button mobile-pay-btn">
+                    <i class="fas fa-credit-card mr-2"></i>
+                    Pay Here
+                </a>
+            </div>
+        </header>
+
+        <main id="content-area" class="container mx-auto px-4 sm:px-6 pt-24 md:pt-28 pb-12 flex-grow">
+            <div id="main-view">
+                
+                <section class="hero-section text-center mb-12">
+                    <div class="hero-content">
+                        <h1 class="hero-title">
+                            <span class="hero-icon">🌕</span>
+                            Our Spiritual Journey to Dwarka Begins!
+                        </h1>
+                        <p class="hero-subtitle">
+                            Join our sacred pilgrimage on these special Poonam days! 
+                            Stay updated with all travel and booking details below.
+                        </p>
+                    </div>
+                </section>
+
+                <section id="countdown-container" class="mb-12 sm:mb-16">
+                    </section>
+
+                <section class="search-filter-section w-full max-w-4xl mx-auto mb-12">
+                    <div class="glass-card overflow-hidden p-6">
+                        <h3 class="text-xl font-bold theme-text-primary mb-4 text-center">
+                            <i class="fas fa-search mr-2"></i>
+                            Find Your Journey
+                        </h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                            <div class="filter-group">
+                                <label for="year-filter" class="filter-label">
+                                    <i class="fas fa-calendar mr-2"></i>
+                                    Select Year
+                                </label>
+                                <select id="year-filter" class="filter-select">
+                                    </select>
+                            </div>
+                            
+                            <div class="filter-group">
+                                <label for="date-month-filter" class="filter-label">
+                                    <i class="fas fa-calendar-day mr-2"></i>
+                                    Select Date & Month
+                                </label>
+                                <select id="date-month-filter" class="filter-select" disabled>
+                                    </select>
+                            </div>
+                            
+                            <div class="filter-group">
+                                <label for="status-filter" class="filter-label">
+                                    <i class="fas fa-filter mr-2"></i>
+                                    Filter by Status
+                                </label>
+                                <select id="status-filter" class="filter-select">
+                                    <option value="">All Status</option>
+                                    <option value="confirmed">Confirmed</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="not-booked">Not Booked</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="search-box">
+                            <div class="relative">
+                                <i class="fas fa-search search-icon"></i>
+                                <input type="text" id="search-input" placeholder="Search by name, train, hotel..." class="search-input">
+                                <button id="clear-search" class="clear-search-btn">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="poonam-dates-container" class="space-y-8">
+                    </section>
+                
+                <div id="no-results" class="hidden text-center py-12">
+                    <div class="no-results-icon mb-4">
+                        <i class="fas fa-search text-6xl theme-text-secondary"></i>
+                    </div>
+                    <h3 class="text-xl font-bold theme-text-primary mb-2">No Results Found</h3>
+                    <p class="theme-text-secondary">Try adjusting your search criteria or filters.</p>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <div class="container mx-auto px-4 py-8">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                    <div class="footer-section">
+                        <h3 class="footer-title">Jay Dwarkadhish</h3>
+                        <p class="footer-text">
+                            Your trusted partner for sacred pilgrimages to Dwarka. 
+                            Experience the divine journey with us.
+                        </p>
+                    </div>
+                    
+                    <div class="footer-section">
+                        <h3 class="footer-title">Quick Links</h3>
+                        <div class="footer-links">
+                            <a href="#" class="footer-link">Home</a>
+                            <a href="#" class="footer-link">Mandir Timing</a>
+                            <a href="#" class="footer-link">About Us</a>
+                            <a href="#" class="footer-link">Contact</a>
+                        </div>
+                    </div>
+                    
+                    <div class="footer-section">
+                        <h3 class="footer-title">Contact Info</h3>
+                        <div class="contact-info">
+                            <p class="contact-item">
+                                <i class="fas fa-user mr-2"></i>
+                                Hardeep Savani
+                            </p>
+                            <p class="contact-item">
+                                <i class="fas fa-map-marker-alt mr-2"></i>
+                                Surat, Gujarat
+                            </p>
+                            <p class="contact-item">
+                                <i class="fas fa-phone mr-2"></i>
+                                <a href="tel:+919824594156" class="contact-link">+91 98245 94156</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="footer-bottom">
+                    <div class="social-links">
+                        <a href="https://wa.me/919824594156" target="_blank" class="social-link whatsapp">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                        <a href="https://instagram.com/hookstar.fx" target="_blank" class="social-link instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="social-link facebook">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                    </div>
+                    <p class="copyright">© 2025 Jay Dwarkadhish. All Rights Reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <div id="ticketModal" class="modal-backdrop hidden">
+        <div class="modal-content-ticket glass-card p-2 sm:p-4 relative flex flex-col">
+            <button id="closeModalBtn" class="modal-close-btn">
+                <i class="fas fa-times"></i>
+            </button>
+            <iframe id="ticketViewerIframe" class="modal-iframe flex-grow rounded-t-lg" src="" title="Ticket Viewer"></iframe>
+            <div class="modal-footer">
+                <a id="downloadBtn" href="#" download class="download-btn">
+                    <i class="fas fa-download mr-2"></i>
+                    Download PDF
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div id="about-modal" class="modal-backdrop hidden">
+        <div class="modal-content glass-card p-6 sm:p-8 relative flex flex-col">
+            <button id="close-about-modal" class="modal-close-btn">
+                <i class="fas fa-times"></i>
+            </button>
+            <h2 class="modal-title">About Us</h2>
+            <div class="modal-body">
+                <div class="about-content">
+                    <div class="about-hero">
+                        <div class="about-icon">
+                            <i class="fas fa-temple-hindu"></i>
+                        </div>
+                        <h3 class="about-subtitle">Welcome to Jay Dwarkadhish's Sacred Pilgrimage</h3>
+                    </div>
+                    
+                    <p class="about-text">
+                        At Jay Dwarkadhish, we bring together a community of seekers who embark on a spiritual journey 
+                        to Dwarka during auspicious Poonam (full-moon) occasions. Rooted in devotion and fellowship, 
+                        our mission is to facilitate this sacred pilgrimage with warmth, ease, and purpose.
+                    </p>
+                    
+                    <div class="features-section">
+                        <h4 class="features-title">What We Offer:</h4>
+                        <div class="features-grid">
+                            <div class="feature-item">
+                                <i class="fas fa-route feature-icon"></i>
+                                <div>
+                                    <h5 class="feature-title">Curated Yatra Travel</h5>
+                                    <p class="feature-desc">Comprehensive bookings and logistics aligned with special Poonam days</p>
+                                </div>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-users feature-icon"></i>
+                                <div>
+                                    <h5 class="feature-title">Community Focus</h5>
+                                    <p class="feature-desc">A heartfelt space for devotees to connect and share experiences</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="organizer-section">
+                        <h4 class="organizer-title">About the Organizer</h4>
+                        <div class="organizer-card">
+                            <div class="organizer-info">
+                                <h5 class="organizer-name">Hardeep Savani</h5>
+                                <p class="organizer-location">Surat, Gujarat</p>
+                                <p class="organizer-desc">
+                                    With a deep reverence for our spiritual heritage and a passion for community, 
+                                    Hardeep is committed to guiding everyone on a blessed and memorable pilgrimage.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="contact-modal" class="modal-backdrop hidden">
+        <div class="modal-content glass-card p-6 sm:p-8 relative flex flex-col">
+            <button id="close-contact-modal" class="modal-close-btn">
+                <i class="fas fa-times"></i>
+            </button>
+            <h2 class="modal-title">Contact & Suggestions</h2>
+            <div class="modal-body">
+                <div class="contact-header">
+                    <div class="contact-person">
+                        <h3 class="contact-name">Hardeep Savani</h3>
+                        <p class="contact-location">Surat, Gujarat</p>
+                    </div>
+                    <div class="contact-buttons">
+                        <a href="https://wa.me/919824594156" target="_blank" class="contact-btn whatsapp">
+                            <i class="fab fa-whatsapp"></i>
+                            WhatsApp
+                        </a>
+                        <a href="https://instagram.com/hookstar.fx" target="_blank" class="contact-btn instagram">
+                            <i class="fab fa-instagram"></i>
+                            Instagram
+                        </a>
+                    </div>
+                </div>
+                
+                <form id="contact-form" action="https://formspree.io/f/xovlkbqr" method="POST" class="contact-form">
+                    <div class="form-group">
+                        <label for="contact-name" class="form-label">Your Name</label>
+                        <input type="text" name="name" id="contact-name" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact-email" class="form-label">Your Email</label>
+                        <input type="email" name="email" id="contact-email" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact-message" class="form-label">Your Message</label>
+                        <textarea name="message" id="contact-message" rows="4" class="form-textarea" required></textarea>
+                    </div>
+                    <button type="submit" class="form-submit-btn">
+                        <i class="fas fa-paper-plane mr-2"></i>
+                        Send Message
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="payment-modal" class="modal-backdrop hidden">
+        <div class="modal-content glass-card p-6 sm:p-8 relative flex flex-col max-h-[90vh] overflow-y-auto">
+            <button id="close-payment-modal" class="modal-close-btn">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="payment-header">
+                <h1 class="payment-title">Make a Secure Payment</h1>
+                <p class="payment-subtitle">Choose your preferred payment method</p>
+            </div>
+            
+            <div class="payment-methods">
+                <div class="payment-section">
+                    <h3 class="payment-section-title">
+                        <i class="fas fa-mobile-alt mr-2"></i>
+                        Pay via Mobile Apps
+                    </h3>
+                    <div class="payment-grid">
+                        <a href="upi://pay?pa=9824594156@okbizaxis&pn=Your%20Name&cu=INR" class="payment-app-btn google-pay">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Google_Pay_Logo.svg/2560px-Google_Pay_Logo.svg.png" alt="Google Pay">
+                            <span>Google Pay</span>
+                        </a>
+                        <a href="phonepe://pay?pa=9824594156@okbizaxis&pn=Your%20Name&cu=INR" class="payment-app-btn phonepe">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/7/71/PhonePe_Logo.svg" alt="PhonePe">
+                            <span>PhonePe</span>
+                        </a>
+                        <a href="bhim://upi/pay?pa=9824594156@okbizaxis&pn=Your%20Name&cu=INR" class="payment-app-btn bhim">
+                            <img src="bhim-app-icon.png" alt="BHIM UPI">
+                            <span>BHIM</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="payment-divider">
+                    <span>OR</span>
+                </div>
+                
+                <div class="payment-section">
+                    <h3 class="payment-section-title">
+                        <i class="fas fa-qrcode mr-2"></i>
+                        Scan QR Code
+                    </h3>
+                    <div class="qr-container">
+                        <img src="https://hookstar1993.github.io/paymehook/qr-9824594156@okbizaxis.png" alt="QR Code for Payment" class="qr-code">
+                    </div>
+                </div>
+                
+                <div class="payment-section">
+                    <h3 class="payment-section-title">
+                        <i class="fas fa-university mr-2"></i>
+                        Bank Transfer Details
+                    </h3>
+                    <div class="bank-details">
+                        <div class="bank-item">
+                            <span class="bank-label">Account Name:</span>
+                            <div class="bank-value">
+                                <span id="accName">SAVANI HARDEEP M.</span>
+                                <button onclick="copyToClipboard('accName', this)" class="copy-btn">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="bank-item">
+                            <span class="bank-label">Bank Name:</span>
+                            <div class="bank-value">
+                                <span id="bankName">STATE BANK OF INDIA</span>
+                                <button onclick="copyToClipboard('bankName', this)" class="copy-btn">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="bank-item">
+                            <span class="bank-label">Account No:</span>
+                            <div class="bank-value">
+                                <span id="accNum">40003791171</span>
+                                <button onclick="copyToClipboard('accNum', this)" class="copy-btn">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="bank-item">
+                            <span class="bank-label">IFSC Code:</span>
+                            <div class="bank-value">
+                                <span id="ifscCode">SBIN0060236</span>
+                                <button onclick="copyToClipboard('ifscCode', this)" class="copy-btn">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="payment-section">
+                    <h3 class="payment-section-title">
+                        <i class="fab fa-whatsapp mr-2"></i>
+                        Confirm Payment
+                    </h3>
+                    <p class="payment-confirm-text">After payment, send us the screenshot for confirmation</p>
+                    <a href="https://wa.me/919824594156?text=Hello!%20I%20have%20completed%20the%20payment.%20Here%20is%20the%20screenshot." target="_blank" class="whatsapp-confirm-btn">
+                        <i class="fab fa-whatsapp"></i>
+                        Send Screenshot on WhatsApp
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="timing-modal" class="modal-backdrop hidden">
+        <div class="modal-content glass-card p-6 sm:p-8 relative flex flex-col">
+            <button id="close-timing-modal" class="modal-close-btn">
+                <i class="fas fa-times"></i>
+            </button>
+            <h2 class="modal-title">Dwarkadhish Temple Timings</h2>
+            <div class="modal-body">
+                <div class="timing-tabs">
+                    <button class="timing-tab active" data-tab="mandir">
+                        <i class="fas fa-temple-hindu mr-2"></i>
+                        Mandir Timing
+                    </button>
+                    <button class="timing-tab" data-tab="dhwaja">
+                        <i class="fas fa-flag mr-2"></i>
+                        Dhwaja Timing
+                    </button>
+                </div>
+                
+                <div class="timing-tab-content">
+                    <div id="mandir-tab" class="timing-tab-panel active">
+                        <div id="timing-schedule" class="timing-schedule">
+                            </div>
+                    </div>
+                    
+                    <div id="dhwaja-tab" class="timing-tab-panel">
+                        <div id="dhwaja-schedule" class="timing-schedule">
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="success-modal" class="modal-backdrop hidden">
+        <div class="modal-content glass-card p-6 sm:p-8 relative flex flex-col rounded-2xl text-center">
+            <div class="success-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h2 class="success-title">Message Sent!</h2>
+            <p class="success-text">Thank you for reaching out. We will get back to you shortly.</p>
+        </div>
+    </div>
+
+    <div id="toast-notification" class="toast-notification">
+        </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
