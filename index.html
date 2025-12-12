@@ -577,6 +577,38 @@
             }
         }
 
+        // New helper for direct text copying
+        window.copyText = function(text) {
+            if (!text) return;
+            
+            // Create a temporary textarea element
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            
+            // Ensure it's not visible but part of the DOM
+            textArea.style.position = "fixed";
+            textArea.style.left = "-9999px";
+            textArea.style.top = "0";
+            document.body.appendChild(textArea);
+            
+            textArea.focus();
+            textArea.select();
+            
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    showToast(`Copied: ${text}`);
+                } else {
+                    showToast('Failed to copy', 'error');
+                }
+            } catch (err) {
+                console.error('Fallback: Oops, unable to copy', err);
+                showToast('Failed to copy', 'error');
+            }
+            
+            document.body.removeChild(textArea);
+        };
+
         function showWelcomePopup() {
             if (!welcomePopup) return;
 
@@ -802,17 +834,38 @@
             const startDay = getWeekdayName(travel.start_date);
             const endDay = getWeekdayName(travel.end_date);
 
-            // PNR Link Logic
-            const pnrLink = travel.booking_no_pnr && travel.booking_no_pnr.length > 5 
-                ? `https://www.confirmtkt.com/pnr-status/${travel.booking_no_pnr}` 
-                : '#';
-            
-            const pnrElement = travel.booking_no_pnr && travel.booking_no_pnr.length > 5
-                ? `<a href="${pnrLink}" target="_blank" class="font-mono font-bold theme-text-primary flex items-center justify-end gap-1.5 text-sm sm:text-base hover:text-blue-500 transition-colors" title="Check PNR Status on ConfirmTkt">
-                     <i class="fas fa-ticket-alt theme-text-secondary"></i><span>${travel.booking_no_pnr}</span><i class="fas fa-external-link-alt text-[10px] opacity-70"></i>
-                   </a>`
-                : `<p class="font-mono font-bold theme-text-primary flex items-center justify-end gap-1.5 text-sm sm:text-base"><i class="fas fa-ticket-alt theme-text-secondary"></i><span>${travel.booking_no_pnr || '-'}</span></p>`;
-
+            // PNR Handling Logic
+            let pnrDisplayHtml = '';
+            if (travel.booking_no_pnr) {
+                // Split by / or , to handle multiple PNRs
+                const parts = travel.booking_no_pnr.toString().split(/[\/,]+/).map(s => s.trim());
+                
+                const pnrItems = parts.map(part => {
+                    // Check if strictly 10 digit number
+                    if (/^\d{10}$/.test(part)) {
+                        const link = `https://www.confirmtkt.com/pnr-status/${part}`;
+                        return `
+                            <div class="flex items-center justify-end gap-2">
+                                <a href="${link}" target="_blank" class="font-mono font-bold theme-text-primary hover:text-blue-500 transition-colors flex items-center gap-1" title="Check PNR Status">
+                                    <i class="fas fa-ticket-alt theme-text-secondary text-xs"></i> 
+                                    <span>${part}</span>
+                                    <i class="fas fa-external-link-alt text-[10px] opacity-70"></i>
+                                </a>
+                                <button onclick="copyText('${part}')" class="text-gray-400 hover:text-green-500 transition-colors p-1" title="Copy PNR">
+                                    <i class="far fa-copy text-xs"></i>
+                                </button>
+                            </div>
+                        `;
+                    } else {
+                        // Not a valid 10-digit PNR, just show text
+                        return `<div class="font-mono font-bold theme-text-primary text-sm sm:text-base text-right">${part}</div>`;
+                    }
+                });
+                
+                pnrDisplayHtml = pnrItems.join(''); // Stack them if multiple
+            } else {
+                pnrDisplayHtml = `<span class="theme-text-secondary">-</span>`;
+            }
 
             return `
                 <div class="glass-card overflow-hidden ticket-card card-item">
@@ -856,9 +909,9 @@
                                     <p class="text-sm theme-text-secondary">Train</p>
                                     <p class="font-semibold theme-text-primary">${travel.name} (${travel.train_no})</p>
                                 </div>
-                                <div class="pnr-container text-right">
-                                    <p class="text-sm theme-text-secondary">PNR</p>
-                                    ${pnrElement}
+                                <div class="pnr-container text-right flex flex-col items-end">
+                                    <p class="text-sm theme-text-secondary mb-1">PNR</p>
+                                    ${pnrDisplayHtml}
                                 </div>
                             </div>
                             <div class="flex flex-col sm:flex-row items-center justify-between text-center my-8 space-y-4 sm:space-y-0">
@@ -1006,10 +1059,33 @@
 
         window.copyToClipboard = function(elementId, button) {
             const textToCopy = document.getElementById(elementId).innerText;
-            navigator.clipboard.writeText(textToCopy).then(() => {
-                showToast('Copied to clipboard!');
-                updateButtonState(button);
-            }).catch(err => console.error('Failed to copy', err));
+            
+            // Create a temporary textarea element
+            const textArea = document.createElement("textarea");
+            textArea.value = textToCopy;
+            
+            // Ensure it's not visible but part of the DOM
+            textArea.style.position = "fixed";
+            textArea.style.left = "-9999px";
+            textArea.style.top = "0";
+            document.body.appendChild(textArea);
+            
+            textArea.focus();
+            textArea.select();
+            
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    showToast('Copied to clipboard!');
+                    updateButtonState(button);
+                } else {
+                    console.error('Fallback: Oops, unable to copy');
+                }
+            } catch (err) {
+                console.error('Fallback: Oops, unable to copy', err);
+            }
+            
+            document.body.removeChild(textArea);
         };
 
         const populateTimings = () => {
