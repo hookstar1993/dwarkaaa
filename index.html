@@ -834,14 +834,11 @@
             const startDay = getWeekdayName(travel.start_date);
             const endDay = getWeekdayName(travel.end_date);
 
-            // PNR Handling Logic
+            // --- PNR Handling Logic (From previous step) ---
             let pnrDisplayHtml = '';
             if (travel.booking_no_pnr) {
-                // Split by / or , to handle multiple PNRs
                 const parts = travel.booking_no_pnr.toString().split(/[\/,]+/).map(s => s.trim());
-                
                 const pnrItems = parts.map(part => {
-                    // Check if strictly 10 digit number
                     if (/^\d{10}$/.test(part)) {
                         const link = `https://www.confirmtkt.com/pnr-status/${part}`;
                         return `
@@ -857,27 +854,30 @@
                             </div>
                         `;
                     } else {
-                        // Not a valid 10-digit PNR, just show text
                         return `<div class="font-mono font-bold theme-text-primary text-sm sm:text-base text-right">${part}</div>`;
                     }
                 });
-                
-                pnrDisplayHtml = pnrItems.join(''); // Stack them if multiple
+                pnrDisplayHtml = pnrItems.join('');
             } else {
                 pnrDisplayHtml = `<span class="theme-text-secondary">-</span>`;
             }
+
+            // --- NEW: Live Train Status Link Logic ---
+            // Extract number from string if needed, or use train_no directly
+            const trainNumber = travel.train_no; 
+            const liveStatusLink = `https://www.confirmtkt.com/train-running-status/${trainNumber}`;
 
             return `
                 <div class="glass-card overflow-hidden ticket-card card-item">
                     <div class="status-header p-4 text-center relative ${statusColors.header} collapsible-trigger cursor-pointer">
                         
-                        <!-- Status Badge: Left Side (Vertically Centered) -->
+                        <!-- Status Badge -->
                         <div class="absolute top-1/2 -translate-y-1/2 left-4 sm:left-6 bg-white text-blue-800 text-xs sm:text-sm font-semibold px-2 sm:px-3 py-1 sm:py-1.5 rounded-full flex items-center shadow-sm z-20 ${statusColors.chip}">
                             <span class="status-icon w-4 h-4 mr-2"><svg fill="currentColor" viewBox="0 0 20 20">${statusColors.icon}</svg></span>
                             <span class="status-text">${statusColors.chipText || travel.status.charAt(0).toUpperCase() + travel.status.slice(1)}</span>
                         </div>
 
-                        <!-- Content Container (Centered) -->
+                        <!-- Content Container -->
                         <div class="flex flex-col items-center justify-center w-full px-8 sm:px-0">
                             <!-- Title -->
                             <h2 class="text-lg sm:text-xl font-bold text-white uppercase flex items-center justify-center gap-2 mb-1">
@@ -907,7 +907,12 @@
                             <div class="flex justify-between items-start -mt-2 mb-4">
                                 <div>
                                     <p class="text-sm theme-text-secondary">Train</p>
-                                    <p class="font-semibold theme-text-primary">${travel.name} (${travel.train_no})</p>
+                                    <!-- UPDATED LINK HERE -->
+                                    <a href="${liveStatusLink}" target="_blank" class="font-semibold theme-text-primary hover:text-blue-600 transition-colors flex items-center gap-1 group">
+                                        ${travel.name} (${travel.train_no})
+                                        <i class="fas fa-satellite-dish text-xs text-green-500 animate-pulse" title="Live Status"></i>
+                                        <span class="text-xs text-blue-500 opacity-0 group-hover:opacity-100 transition-opacity">Check Status</span>
+                                    </a>
                                 </div>
                                 <div class="pnr-container text-right flex flex-col items-end">
                                     <p class="text-sm theme-text-secondary mb-1">PNR</p>
