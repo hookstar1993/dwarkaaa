@@ -485,9 +485,10 @@
 
     <!-- Mandir Timing Modal -->
     <div id="timing-modal" class="modal-backdrop hidden">
-        <div class="modal-content glass-card p-6 sm:p-8 relative flex flex-col">
+        <!-- Updated max-width to 900px to fit side-by-side columns comfortably -->
+        <div class="modal-content glass-card p-6 sm:p-8 relative flex flex-col" style="max-width: 900px;">
             <button id="close-timing-modal" class="absolute top-4 right-4 theme-text-secondary hover:theme-text-primary transition-colors text-3xl">&times;</button>
-            <h2 class="text-3xl font-bold theme-accent-color page-title mb-4">Dwarkadhish Mandir Timings</h2>
+            <h2 class="text-3xl font-bold theme-accent-color page-title mb-4 text-center">Dwarkadhish Mandir & Dhwaja Timings</h2>
             <div id="timing-schedule" class="theme-text-secondary overflow-y-auto pr-4 space-y-2">
                 <!-- Timings will be injected here by JavaScript -->
             </div>
@@ -1151,44 +1152,93 @@
             const scheduleContainer = document.getElementById('timing-schedule');
             const now = new Date();
             const currentTime = now.getHours() + now.getMinutes() / 60;
-            let html = '';
-
-            const timings = [
+            
+            const mandirTimings = [
                 { time: "6:30 AM", event: "Mangla Aarti", type: "open", start: 6.5, end: 8.0 },
                 { time: "8:00 AM - 9:00 AM", event: "Mangla Darshan", type: "open", start: 8.0, end: 9.0 },
-                { time: "9:00 AM - 9:30 AM", event: "Abhishek Pooja (Darshan Closed)", type: "closed", start: 9.0, end: 9.5 },
+                { time: "9:00 AM - 9:30 AM", event: "Abhishek Pooja (Closed)", type: "closed", start: 9.0, end: 9.5 },
                 { time: "9:30 AM - 10:15 AM", event: "Shringar Darshan", type: "open", start: 9.5, end: 10.25 },
-                { time: "10:15 AM - 10:30 AM", event: "Shringar Bhog (Darshan Closed)", type: "closed", start: 10.25, end: 10.5 },
+                { time: "10:15 AM - 10:30 AM", event: "Shringar Bhog (Closed)", type: "closed", start: 10.25, end: 10.5 },
                 { time: "10:30 AM - 10:45 AM", event: "Shringar Aarti", type: "open", start: 10.5, end: 10.75 },
-                { time: "11:05 AM - 11:20 AM", event: "Gwal Bhog (Darshan Closed)", type: "closed", start: 11.08, end: 11.33 },
+                { time: "11:05 AM - 11:20 AM", event: "Gwal Bhog (Closed)", type: "closed", start: 11.08, end: 11.33 },
                 { time: "11:20 AM - 12:00 PM", event: "Darshan Open", type: "open", start: 11.33, end: 12.0 },
-                { time: "12:00 PM - 12:20 PM", event: "Rajbhog (Darshan Closed)", type: "closed", start: 12.0, end: 12.33 },
+                { time: "12:00 PM - 12:20 PM", event: "Rajbhog (Closed)", type: "closed", start: 12.0, end: 12.33 },
                 { time: "12:20 PM - 1:00 PM", event: "Darshan Open", type: "open", start: 12.33, end: 13.0 },
                 { time: "1:00 PM - 5:00 PM", event: "Anosar (Mandir Closed)", type: "closed", start: 13.0, end: 17.0 },
                 { time: "5:00 PM - 5:30 PM", event: "Uthapan Darshan", type: "open", start: 17.0, end: 17.5 },
-                { time: "5:45 PM - 6:00 PM", event: "Uthapan Bhog (Darshan Closed)", type: "closed", start: 17.75, end: 18.0 },
+                { time: "5:45 PM - 6:00 PM", event: "Uthapan Bhog (Closed)", type: "closed", start: 17.75, end: 18.0 },
                 { time: "6:15 PM - 6:45 PM", event: "Darshan Open", type: "open", start: 18.25, end: 18.75 },
-                { time: "7:00 PM - 7:25 PM", event: "Sandhya Bhog (Darshan Closed)", type: "closed", start: 19.0, end: 19.42 },
+                { time: "7:00 PM - 7:25 PM", event: "Sandhya Bhog (Closed)", type: "closed", start: 19.0, end: 19.42 },
                 { time: "7:25 PM - 7:45 PM", event: "Sandhya Aarti", type: "open", start: 19.42, end: 19.75 },
-                { time: "8:00 PM - 8:10 PM", event: "Shayan Bhog (Darshan Closed)", type: "closed", start: 20.0, end: 20.17 },
+                { time: "8:00 PM - 8:10 PM", event: "Shayan Bhog (Closed)", type: "closed", start: 20.0, end: 20.17 },
                 { time: "8:10 PM - 8:35 PM", event: "Shayan Darshan", type: "open", start: 20.17, end: 20.58 },
                 { time: "8:35 PM", event: "Shayan Aarti", type: "open", start: 20.58, end: 21.0 },
                 { time: "9:00 PM", event: "Mandir Closed", type: "closed", start: 21.0, end: 24.0 }
             ];
 
-            timings.forEach(item => {
-                const isCurrent = currentTime >= item.start && currentTime < item.end;
-                const colorClass = item.type === 'open' ? 'text-green-400' : 'text-red-400';
-                const currentClass = isCurrent ? 'current-timing' : '';
+            const dhwajaTimings = [
+                { event: "First Dhwaja Arohan", time: "7:00 AM - 8:30 AM" },
+                { event: "Second Dhwaja Arohan", time: "8:39 AM - 10:30 AM" },
+                { event: "Third Dhwaja Arohan", time: "10:30 AM - 12:30 PM" },
+                { event: "Fourth Dhwaja Arohan", time: "5:30 PM" }
+            ];
 
-                html += `
-                    <div class="flex justify-between items-center p-3 rounded-lg ${currentClass} transition-all duration-300">
-                        <span class="font-semibold theme-text-primary">${item.event}</span>
-                        <span class="${colorClass} font-bold">${item.time}</span>
+            let mandirHtml = '';
+            mandirTimings.forEach(item => {
+                const isCurrent = currentTime >= item.start && currentTime < item.end;
+                const colorClass = item.type === 'open' ? 'text-green-500' : 'text-red-400';
+                const currentClass = isCurrent ? 'current-timing ring-2 ring-offset-1 ring-orange-400' : '';
+
+                mandirHtml += `
+                    <div class="flex justify-between items-center p-2 rounded-lg ${currentClass} hover:bg-black/5 dark:hover:bg-white/5 transition-colors text-sm mb-1">
+                        <span class="font-medium theme-text-primary">${item.event}</span>
+                        <span class="${colorClass} font-bold text-right ml-2 whitespace-nowrap">${item.time}</span>
                     </div>
                 `;
             });
-            scheduleContainer.innerHTML = html;
+
+            let dhwajaHtml = '';
+            dhwajaTimings.forEach(item => {
+                dhwajaHtml += `
+                    <div class="flex justify-between items-center p-3 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 transition-colors text-sm mb-2 shadow-sm" style="background:var(--input-bg)">
+                        <span class="font-medium theme-text-primary flex items-center gap-2">
+                            <i class="fas fa-flag theme-accent-color text-xs"></i> ${item.event}
+                        </span>
+                        <span class="theme-accent-color font-bold text-right ml-2 whitespace-nowrap">${item.time}</span>
+                    </div>
+                `;
+            });
+
+            scheduleContainer.innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                    <!-- Mandir Darshan Column -->
+                    <div>
+                        <div class="sticky top-0 bg-white/10 backdrop-blur-md z-10 py-2 mb-2 border-b border-gray-500/20">
+                            <h3 class="text-xl font-bold theme-text-primary text-center flex items-center justify-center gap-2">
+                                <i class="fas fa-gopuram theme-accent-color"></i> Darshan Timing
+                            </h3>
+                        </div>
+                        <div class="space-y-1">
+                            ${mandirHtml}
+                        </div>
+                    </div>
+
+                    <!-- Dhwaja Arohan Column -->
+                    <div>
+                        <div class="sticky top-0 bg-white/10 backdrop-blur-md z-10 py-2 mb-2 border-b border-gray-500/20">
+                            <h3 class="text-xl font-bold theme-text-primary text-center flex items-center justify-center gap-2">
+                                <i class="fas fa-flag theme-accent-color"></i> Dhwaja Timing
+                            </h3>
+                        </div>
+                        <div class="space-y-1">
+                            ${dhwajaHtml}
+                            <div class="mt-4 p-3 rounded-lg bg-orange-100/10 border border-orange-500/30 text-xs theme-text-secondary text-center">
+                                <p><i class="fas fa-info-circle mr-1"></i> Note: Dhwaja timings are subject to change during festivals.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
         };
 
         function parseCSV(csvText) {
