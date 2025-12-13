@@ -1177,10 +1177,10 @@
             ];
 
             const dhwajaTimings = [
-                { event: "First Dhwaja Arohan", time: "7:00 AM - 8:30 AM" },
-                { event: "Second Dhwaja Arohan", time: "8:39 AM - 10:30 AM" },
-                { event: "Third Dhwaja Arohan", time: "10:30 AM - 12:30 PM" },
-                { event: "Fourth Dhwaja Arohan", time: "5:30 PM" }
+                { event: "First Dhwaja Arohan", time: "7:00 AM - 8:30 AM", start: 7.0, end: 8.5 },
+                { event: "Second Dhwaja Arohan", time: "8:39 AM - 10:30 AM", start: 8.65, end: 10.5 },
+                { event: "Third Dhwaja Arohan", time: "10:30 AM - 12:30 PM", start: 10.5, end: 12.5 },
+                { event: "Fourth Dhwaja Arohan", time: "5:30 PM", start: 17.0, end: 18.5 } // Highlighting window for evening
             ];
 
             let mandirHtml = '';
@@ -1199,12 +1199,17 @@
 
             let dhwajaHtml = '';
             dhwajaTimings.forEach(item => {
+                // Check if current time falls within this Dhwaja slot
+                const isCurrent = currentTime >= item.start && currentTime < item.end;
+                const activeClass = isCurrent ? 'current-timing ring-2 ring-offset-1 ring-orange-400' : '';
+                const timeColor = isCurrent ? 'text-green-500' : 'theme-accent-color';
+
                 dhwajaHtml += `
-                    <div class="flex justify-between items-center p-3 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 transition-colors text-sm mb-2 shadow-sm" style="background:var(--input-bg)">
+                    <div class="flex justify-between items-center p-3 rounded-lg ${activeClass} hover:bg-black/5 dark:hover:bg-white/5 transition-colors text-sm mb-2 shadow-sm" style="background:var(--input-bg)">
                         <span class="font-medium theme-text-primary flex items-center gap-2">
                             <i class="fas fa-flag theme-accent-color text-xs"></i> ${item.event}
                         </span>
-                        <span class="theme-accent-color font-bold text-right ml-2 whitespace-nowrap">${item.time}</span>
+                        <span class="${timeColor} font-bold text-right ml-2 whitespace-nowrap">${item.time}</span>
                     </div>
                 `;
             });
