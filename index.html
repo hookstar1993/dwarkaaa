@@ -265,6 +265,14 @@
             transform: rotate(180deg);
         }
 
+        /* Places Modal Styles */
+        .place-card {
+            transition: all 0.3s ease;
+        }
+        .place-card:hover {
+            transform: translateY(-3px);
+        }
+
         @media (max-width: 640px) {
             .countdown-item {
                 width: 70px; height: 70px;
@@ -299,6 +307,10 @@
                 <div class="flex items-center space-x-2">
                     <div class="hidden md:flex items-center space-x-6">
                         <a href="#" id="home-link" class="theme-text-secondary hover:theme-text-primary font-medium transition-colors duration-300">Home</a>
+                        <!-- NEW NEARBY PLACES LINK -->
+                        <a href="#" id="places-link" class="theme-text-secondary hover:theme-text-primary font-medium transition-colors duration-300 flex items-center gap-1">
+                            <i class="fas fa-map-location-dot text-sm"></i> Nearby Places
+                        </a>
                         <a href="#" id="timing-link" class="theme-text-secondary hover:theme-text-primary font-medium transition-colors duration-300">Mandir Timing</a>
                         <a href="#" id="about-link" class="theme-text-secondary hover:theme-text-primary font-medium transition-colors duration-300">About Us</a>
                         <a href="#" id="contact-link" class="theme-text-secondary hover:theme-text-primary font-medium transition-colors duration-300">Contact</a>
@@ -316,6 +328,7 @@
             </nav>
             <div id="mobile-menu" class="hidden md:hidden px-6 pb-4 glass-card rounded-b-2xl -mt-2">
                  <a href="#" id="mobile-home-link" class="block py-2 text-center theme-text-secondary hover:theme-text-primary">Home</a>
+                 <a href="#" id="mobile-places-link" class="block py-2 text-center theme-text-secondary hover:theme-text-primary">Nearby Places</a>
                  <a href="#" id="mobile-timing-link" class="block py-2 text-center theme-text-secondary hover:theme-text-primary">Mandir Timing</a>
                  <a href="#" id="mobile-about-link" class="block py-2 text-center theme-text-secondary hover:theme-text-primary">About Us</a>
                  <a href="#" id="mobile-contact-link" class="block py-2 text-center theme-text-secondary hover:theme-text-primary">Contact</a>
@@ -381,6 +394,21 @@
         </div>
     </div>
 
+    <!-- Nearby Places Modal -->
+    <div id="places-modal" class="modal-backdrop hidden">
+        <div class="modal-content glass-card p-6 relative flex flex-col h-[90vh]">
+            <button id="close-places-modal" class="absolute top-4 right-4 theme-text-secondary hover:theme-text-primary transition-colors text-3xl z-50">&times;</button>
+            <h2 class="text-3xl font-bold theme-accent-color page-title mb-6 text-center">Nearby Places to Visit</h2>
+            
+            <div id="places-container" class="overflow-y-auto pr-2 space-y-4">
+                <!-- Places will be loaded here -->
+                <div class="text-center p-8">
+                    <p class="theme-text-secondary">Loading places...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- About Us Modal -->
     <div id="about-modal" class="modal-backdrop hidden">
         <div class="modal-content glass-card p-6 sm:p-8 relative flex flex-col">
@@ -399,10 +427,10 @@
 
                 <h3 class="text-2xl font-bold theme-accent-color mt-6">New Features & Updates</h3>
                 <ul class="list-disc list-inside space-y-2">
+                    <li><span class="font-semibold theme-text-primary">Nearby Places Guide:</span> Explore famous places around Dwarka with distance, timings, and map links.</li>
                     <li><span class="font-semibold theme-text-primary">Live Train Status:</span> Click on the Train Name to see live running status instantly.</li>
                     <li><span class="font-semibold theme-text-primary">Smart PNR:</span> Click on PNR Number to check status or use the copy button.</li>
                     <li><span class="font-semibold theme-text-primary">Location Map:</span> Added "View on Google Maps" link for Hotels & Dharamshalas.</li>
-                    <li><span class="font-semibold theme-text-primary">Better Interface:</span> Added Day names (e.g., Monday) and distinct colors for Travel vs Stay cards.</li>
                 </ul>
             </div>
         </div>
@@ -509,9 +537,129 @@
     <script>
         // --- PASTE YOUR GOOGLE SHEET CSV LINK HERE ---
         const googleSheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSqINNmQ6CtGixfyo5goqhTKfVwIMGjQi_5MIc4FtTx053jXO2QftjgUt26XLQXE8Ld7kt7VEPK4TJO/pub?output=csv';
+        // --- REPLACE THIS WITH YOUR SHEET 2 CSV LINK ---
+        const googleSheetUrlPlaces = 'https://docs.google.com/spreadsheets/d/e/YOUR_SHEET_2_ID/pub?gid=YOUR_GID&output=csv'; 
 
         // --- GLOBAL VARIABLES ---
         let groupedData = {};
+        let placesData = [
+            {
+                place_name: "Shri Samudra Narayan Mandir",
+                distance: "0.5 km",
+                auto_fare: "Walking Distance / ₹30",
+                timings: "6:00 AM - 8:00 PM",
+                map_link: "https://maps.app.goo.gl/qgEyPLjzRE2SNZ588",
+                address: "Gomti Ghat, Dwarka",
+                description: "A beautiful temple dedicated to Samudra Dev (Sea God) located at the confluence of Gomti river and the sea.",
+                image_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Samudra_Narayan_Temple%2C_Dwarka.jpg/640px-Samudra_Narayan_Temple%2C_Dwarka.jpg" // Added Wikimedia link
+            },
+            {
+                place_name: "Shri Laxminarayan Panchanad Tirth",
+                distance: "0.5 km",
+                auto_fare: "Walking Distance / ₹30",
+                timings: "6:00 AM - 8:00 PM",
+                map_link: "https://maps.app.goo.gl/GoaZZvvb2etMqCv77",
+                address: "Gomti Ghat, Dwarka",
+                description: "An ancient temple complex with shrines for Laxminarayan and other deities near Gomti Ghat.",
+                image_url: "" // Add image link here
+            },
+            {
+                place_name: "Bhadkeshwar Mahadev Mandir",
+                distance: "1 km",
+                auto_fare: "₹50 - ₹100",
+                timings: "Open all day",
+                map_link: "https://maps.app.goo.gl/fMXMhXtg4bVP6QWZ6",
+                address: "Near Geeta Mandir, Dwarka",
+                description: "A beautiful Shiva temple on a hillock in the sea, best visited during sunset.",
+                image_url: "https://lh5.googleusercontent.com/p/AF1QipM-sS_y... (Example placeholder)" // Add specific image link
+            },
+            {
+                place_name: "Dwarka Beach",
+                distance: "1 km",
+                auto_fare: "₹50 / Walking",
+                timings: "Open All Day",
+                map_link: "https://maps.app.goo.gl/ER6nerA2Vy4KnxU78",
+                address: "Near Lighthouse, Dwarka",
+                description: "A peaceful beach perfect for evening walks and enjoying the sea breeze near the city.",
+                image_url: "" // Add image link here
+            },
+            {
+                place_name: "Rukmini Devi Mandir",
+                distance: "2 km",
+                auto_fare: "₹100 - ₹150",
+                timings: "6:00 AM - 12:00 PM, 5:00 PM - 9:00 PM",
+                map_link: "https://maps.app.goo.gl/KuLpifHa69izgFJa9",
+                address: "Rukmini Devi Temple, Dwarka",
+                description: "Dedicated to Rukmini, Lord Krishna's chief queen. Known for its rich carvings.",
+                image_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Rukmini_Devi_Temple%2C_Dwarka.jpg/640px-Rukmini_Devi_Temple%2C_Dwarka.jpg" // Added Wikimedia link
+            },
+            {
+                place_name: "Dwarka Light House",
+                distance: "2 km",
+                auto_fare: "₹50 - ₹100",
+                timings: "4:00 PM - 6:00 PM",
+                map_link: "https://maps.app.goo.gl/VHXm2BuMHnY4eZdN8",
+                address: "Near Bhadkeshwar, Dwarka",
+                description: "A historic lighthouse offering panoramic views of the Arabian Sea and Dwarka city.",
+                image_url: "" // Add image link here
+            },
+            {
+                place_name: "Aai Shree Mogaldham Bhimrana",
+                distance: "7 km",
+                auto_fare: "₹200 - ₹300",
+                timings: "6:00 AM - 9:00 PM",
+                map_link: "https://maps.app.goo.gl/bXtTMwMk19yGNEfq6",
+                address: "Bhimrana, Dwarka",
+                description: "A revered temple dedicated to Maa Mogal, located a short drive from the main city.",
+                image_url: "" // Add image link here
+            },
+            {
+                place_name: "Shivrajpur Beach",
+                distance: "12 km",
+                auto_fare: "₹400 - ₹500",
+                timings: "8:00 AM - 7:00 PM",
+                map_link: "https://maps.app.goo.gl/PCenDXDfC9QhvqAN7",
+                address: "Shivrajpur, Gujarat",
+                description: "Blue Flag certified pristine beach with white sand and clear water.",
+                image_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Shivrajpur_Beach.jpg/640px-Shivrajpur_Beach.jpg" // Wikimedia placeholder (might vary)
+            },
+            {
+                place_name: "Nageshwar Jyotirling",
+                distance: "16 km",
+                auto_fare: "₹400 - ₹500 (Return)",
+                timings: "6:00 AM - 12:30 PM, 5:00 PM - 9:30 PM",
+                map_link: "https://maps.app.goo.gl/xbQcvMzDo2saKZHz8",
+                address: "Daarukavanam, Gujarat 361335",
+                description: "One of the 12 Jyotirlingas of Lord Shiva. A giant statue of Lord Shiva is a major attraction.",
+                image_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Nageshwar_Jyotirlinga_Temple_Dwarka.jpg/640px-Nageshwar_Jyotirlinga_Temple_Dwarka.jpg" // Added Wikimedia link
+            },
+            {
+                place_name: "Gopi Talav",
+                distance: "20 km",
+                auto_fare: "Part of Nageshwar trip usually",
+                timings: "6:00 AM - 6:00 PM",
+                map_link: "https://maps.app.goo.gl/xggHDjCrRURNmz5s8",
+                address: "Gopi Talav, Dwarka",
+                description: "A sacred pond associated with the Gopis of Vrindavan.",
+                image_url: "" // Add image link here
+            },
+            {
+                place_name: "Bet Dwarka",
+                distance: "30 km + Ferry",
+                auto_fare: "₹800 - ₹1000 (Taxi Return)",
+                timings: "Ferry runs 6:00 AM to 7:00 PM",
+                map_link: "https://maps.app.goo.gl/mLiwWCAyp1B3ewVu5",
+                address: "Bet Dwarka Island",
+                description: "The original residence of Lord Krishna. Reached by a ferry ride from Okha.",
+                image_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Dwarkadhish_Temple_Dwarka.jpg/640px-Dwarkadhish_Temple_Dwarka.jpg" // Placeholder
+            }
+        ];
+        
+        // --- Dummy Data for Places (Will be replaced by sheet data if provided) ---
+        const dummyPlacesData = [
+            // ... (keeping this just in case, but placesData is initialized above)
+        ];
+
         const poonamDates = [
             { year: 2025, month: 'August', day: 9 }, { year: 2025, month: 'September', day: 7 },
             { year: 2025, month: 'October', day: 7 }, { year: 2025, month: 'November', day: 5 },
@@ -542,6 +690,8 @@
         const contactModal = document.getElementById('contact-modal');
         const paymentModal = document.getElementById('payment-modal');
         const timingModal = document.getElementById('timing-modal');
+        const placesModal = document.getElementById('places-modal');
+        const placesContainer = document.getElementById('places-container');
         const contactForm = document.getElementById('contact-form');
         const successModal = document.getElementById('success-modal');
         const yearFilter = document.getElementById('year-filter');
@@ -566,24 +716,17 @@
         function getWeekdayName(dateStr) {
             if (!dateStr) return '';
             try {
-                // Handle DD/MM/YYYY or DD-MM-YYYY formats commonly used in India
                 const parts = dateStr.split(/[\/\-]/);
                 let dateObj;
                 if (parts.length === 3 && parts[2].length === 4) {
-                    // Assuming DD-MM-YYYY or DD/MM/YYYY
                     dateObj = new Date(parts[2], parts[1] - 1, parts[0]);
                 } else {
-                    // Fallback to standard parser
                     dateObj = new Date(dateStr);
                 }
-
                 if (isNaN(dateObj.getTime())) return '';
-
                 const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
                 return days[dateObj.getDay()];
-            } catch (e) {
-                return '';
-            }
+            } catch (e) { return ''; }
         }
 
         // New helper for direct text copying
@@ -620,19 +763,15 @@
 
         function showWelcomePopup() {
             if (!welcomePopup) return;
-
             welcomePopup.style.display = 'flex';
             setTimeout(() => {
                 welcomePopup.classList.add('welcome-popup-visible');
                 welcomePopup.querySelector('.welcome-content').classList.add('welcome-content-visible');
             }, 10);
-
             setTimeout(() => {
                 welcomePopup.classList.remove('welcome-popup-visible');
                 welcomePopup.querySelector('.welcome-content').classList.remove('welcome-content-visible');
-                setTimeout(() => {
-                    welcomePopup.style.display = 'none';
-                }, 500);
+                setTimeout(() => { welcomePopup.style.display = 'none'; }, 500);
             }, 2000);
         }
 
@@ -645,29 +784,132 @@
                 option.textContent = year;
                 yearFilter.appendChild(option);
             });
-
             dateMonthFilter.innerHTML = '<option value="">-- First, Choose a Year --</option>';
             dateMonthFilter.disabled = true;
             datesContainer.innerHTML = `<p class="text-center theme-text-secondary p-10">Please select a year and date to see booking details.</p>`;
         }
 
+        function startCountdown() {
+            const now = new Date();
+            let nextPoonamDate = null;
+
+            for (const date of poonamDates) {
+                const monthIndex = new Date(Date.parse(date.month +" 1, 2012")).getMonth();
+                const poonamDateTime = new Date(date.year, monthIndex, date.day);
+                if (poonamDateTime > now) {
+                    nextPoonamDate = poonamDateTime;
+                    break;
+                }
+            }
+
+            if (!nextPoonamDate) {
+                countdownContainer.innerHTML = `<h2 class="text-2xl text-center theme-accent-color">All scheduled journeys for this period are complete.</h2>`;
+                return;
+            }
+
+            const nextPoonamMonthYear = `${nextPoonamDate.toLocaleString('default', { month: 'long' })} ${nextPoonamDate.getFullYear()}`;
+            countdownContainer.innerHTML = `
+                <div class="text-center">
+                    <h2 class="text-3xl sm:text-4xl font-semibold theme-accent-color page-title">Next Journey Countdown: ${nextPoonamMonthYear}</h2>
+                    <div id="countdown-timer" class="flex flex-wrap justify-center gap-2 sm:gap-4 lg:gap-8 mt-4">
+                        <div class="countdown-item"><span id="days" class="text-4xl sm:text-6xl">00</span><p class="text-xs sm:text-sm">Days</p></div>
+                        <div class="countdown-item"><span id="hours" class="text-4xl sm:text-6xl">00</span><p class="text-xs sm:text-sm">Hours</p></div>
+                        <div class="countdown-item"><span id="minutes" class="text-4xl sm:text-6xl">00</span><p class="text-xs sm:text-sm">Minutes</p></div>
+                        <div class="countdown-item"><span id="seconds" class="text-4xl sm:text-6xl">00</span><p class="text-xs sm:text-sm">Seconds</p></div>
+                    </div>
+                </div>
+            `;
+
+            const daysEl = document.getElementById('days');
+            const hoursEl = document.getElementById('hours');
+            const minutesEl = document.getElementById('minutes');
+            const secondsEl = document.getElementById('seconds');
+
+            const timerInterval = setInterval(() => {
+                const now = new Date().getTime();
+                const distance = nextPoonamDate - now;
+
+                if (distance < 0) {
+                    clearInterval(timerInterval);
+                    startCountdown();
+                    return;
+                }
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                daysEl.textContent = String(days).padStart(2, '0');
+                hoursEl.textContent = String(hours).padStart(2, '0');
+                minutesEl.textContent = String(minutes).padStart(2, '0');
+                secondsEl.textContent = String(seconds).padStart(2, '0');
+
+            }, 1000);
+        }
+
+        const attachModalListeners = () => {
+            document.querySelectorAll('.view-ticket-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    const ticketUrl = button.dataset.ticketUrl;
+                    if (ticketUrl && ticketUrl.trim() !== '#' && ticketUrl !== 'undefined') {
+                        iframe.src = ticketUrl;
+                        downloadBtn.href = ticketUrl;
+                        const fileName = ticketUrl.substring(ticketUrl.lastIndexOf('/') + 1);
+                        downloadBtn.setAttribute('download', fileName);
+                        modal.classList.remove('hidden');
+                    } else {
+                        showToast('Document not available right now.', 'error');
+                    }
+                });
+            });
+        };
+
+        const closeModal = () => {
+            if(modal) modal.classList.add('hidden');
+            if(iframe) iframe.src = '';
+        };
+
+        const showToast = (message, type = 'success') => {
+            const toast = document.getElementById('toast-notification');
+            toast.textContent = message;
+            toast.style.background = type === 'error' ? 'var(--accent-color)' : '#28a745';
+            toast.style.color = 'white';
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        };
+
+        const updateButtonState = (button) => {
+            const originalHTML = button.innerHTML;
+            button.disabled = true;
+            button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 theme-text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>`;
+
+            setTimeout(() => {
+                button.innerHTML = originalHTML;
+                button.disabled = false;
+            }, 2000);
+        };
+
+        window.copyToClipboard = function(elementId, button) {
+            const textToCopy = document.getElementById(elementId).innerText;
+            window.copyText(textToCopy);
+            updateButtonState(button);
+        };
+
         function attachCollapsibleListeners() {
             const triggers = document.querySelectorAll('.collapsible-trigger');
-
             triggers.forEach(trigger => {
                 trigger.addEventListener('click', function() {
                     const content = this.nextElementSibling;
                     const isActive = this.classList.contains('active');
-
-                    // Close all other cards first
                     triggers.forEach(otherTrigger => {
                         if (otherTrigger !== this) {
                             otherTrigger.classList.remove('active');
                             otherTrigger.nextElementSibling.style.maxHeight = null;
                         }
                     });
-
-                    // Toggle the clicked card
                     if (isActive) {
                         this.classList.remove('active');
                         content.style.maxHeight = null;
@@ -679,46 +921,29 @@
             });
         }
 
-
         function renderCards(year, dateMonth) {
             const bookings = groupedData[year]?.[dateMonth];
             if (!bookings) {
                 datesContainer.innerHTML = `<p class="text-center theme-text-secondary p-10">No bookings found for this date.</p>`;
                 return;
             }
-
             let detailsHtml = '';
-            // Track if we found an expense link across any of the bookings for this date
             let foundExpenseLink = null;
-
             bookings.forEach(item => {
-                if (item.type === 'stay') {
-                         detailsHtml += createStayCard(item);
-                } else if (item.type === 'travel') {
-                         detailsHtml += createTravelCard(item);
-                }
+                if (item.type === 'stay') detailsHtml += createStayCard(item);
+                else if (item.type === 'travel') detailsHtml += createTravelCard(item);
                 
-                // Check for expense link in this row
                 if (item.expenses_pdf_link && item.expenses_pdf_link.trim() !== '' && item.expenses_pdf_link.trim() !== '#') {
                     foundExpenseLink = item.expenses_pdf_link;
                 }
             });
-
-            // --- Add Expenses Section ---
             detailsHtml += createExpenseCard(foundExpenseLink);
-
             datesContainer.innerHTML = detailsHtml;
-
-            // --- NEW ANIMATION LOGIC ---
+            
             const cards = datesContainer.querySelectorAll('.card-item');
             cards.forEach((card, index) => {
-                // Use a timeout to apply the 'visible' class, creating a staggered animation
-                setTimeout(() => {
-                    card.classList.add('visible');
-                }, 100 * index); // 100ms delay between each card
+                setTimeout(() => { card.classList.add('visible'); }, 100 * index);
             });
-            // --- END OF NEW LOGIC ---
-
             attachModalListeners();
             attachCollapsibleListeners();
         }
@@ -728,7 +953,6 @@
             const buttonClass = hasLink 
                 ? 'bg-purple-600/90 hover:bg-purple-700/90 text-white shadow-lg hover:shadow-purple-500/30' 
                 : 'bg-gray-400/50 text-gray-200 cursor-not-allowed';
-            
             const buttonText = hasLink ? 'View Expense Report' : 'No Expenses Available Right Now';
             const buttonIcon = hasLink ? '<i class="fas fa-file-pdf mr-2"></i>' : '<i class="fas fa-ban mr-2"></i>';
             const clickAttr = hasLink ? `data-ticket-url="${link}"` : 'disabled';
@@ -772,50 +996,36 @@
                         </div>
                     </div>`;
             });
-
-            // Use the 'stay' specific colors from cardColors
             const statusColors = cardColors.stay[stay.status] || cardColors.stay['no-stay'];
             const checkInDay = getWeekdayName(stay.check_in_date);
             const checkOutDay = getWeekdayName(stay.check_out_date);
-            
-            // Construct Google Maps Query
-            // We append 'Dwarka' to the search to ensure better accuracy since this is a Dwarka trip site
             const mapQuery = encodeURIComponent(stay.name + " Dwarka");
             const mapUrl = `https://www.google.com/maps/search/?api=1&query=${mapQuery}`;
 
             return `
                 <div class="glass-card overflow-hidden ticket-card card-item">
-                    <div class="p-4 text-center relative ${statusColors.header} collapsible-trigger cursor-pointer">
-                        
-                        <!-- Status Badge: Left Side (Vertically Centered) -->
+                    <div class="p-4 text-center relative ${statusColors.header} collapsible-trigger cursor-pointer flex flex-col justify-center items-center">
+                        <div class="w-full flex justify-center items-center gap-2 mb-1">
+                            <h2 class="text-lg sm:text-xl font-bold text-white uppercase flex items-center justify-center gap-2">
+                                <i class="fas fa-bed"></i>
+                                <span>Stay Information</span>
+                            </h2>
+                        </div>
+                        <div class="flex items-center justify-center gap-3 text-white w-full">
+                            <div class="flex flex-col items-end">
+                                <span class="text-sm font-bold leading-tight">${stay.check_in_date}</span>
+                                <span class="text-[10px] uppercase opacity-90 leading-tight">${checkInDay} • ${stay.check_in_time}</span>
+                            </div>
+                            <i class="fas fa-arrow-right text-xs opacity-75"></i>
+                            <div class="flex flex-col items-start">
+                                <span class="text-sm font-bold leading-tight">${stay.check_out_date}</span>
+                                <span class="text-[10px] uppercase opacity-90 leading-tight">${checkOutDay} • ${stay.check_out_time}</span>
+                            </div>
+                        </div>
                         <div class="absolute top-1/2 -translate-y-1/2 left-4 sm:left-6 bg-white text-blue-800 text-xs sm:text-sm font-semibold px-2 sm:px-3 py-1 sm:py-1.5 rounded-full flex items-center shadow-sm z-20 ${statusColors.chip || ''}">
                             <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">${statusColors.icon}</svg>
                             <span>${stay.status.charAt(0).toUpperCase() + stay.status.slice(1)}</span>
                         </div>
-
-                        <!-- Content Container (Centered) -->
-                        <div class="flex flex-col items-center justify-center w-full px-8 sm:px-0">
-                             <!-- Title -->
-                             <h2 class="text-lg sm:text-xl font-bold text-white uppercase flex items-center justify-center gap-2 mb-1">
-                                <i class="fas fa-bed"></i>
-                                <span>Stay Information</span>
-                            </h2>
-                            
-                            <!-- Time/Date Row -->
-                            <div class="flex items-center justify-center gap-3 text-white w-full">
-                                <div class="flex flex-col items-end">
-                                    <span class="text-sm font-bold leading-tight">${stay.check_in_date}</span>
-                                    <span class="text-[10px] uppercase opacity-90 leading-tight">${checkInDay} • ${stay.check_in_time}</span>
-                                </div>
-                                <i class="fas fa-arrow-right text-xs opacity-75"></i>
-                                <div class="flex flex-col items-start">
-                                    <span class="text-sm font-bold leading-tight">${stay.check_out_date}</span>
-                                    <span class="text-[10px] uppercase opacity-90 leading-tight">${checkOutDay} • ${stay.check_out_time}</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Chevron -->
                         <i class="fas fa-chevron-down chevron-icon absolute top-1/2 -translate-y-1/2 right-4 sm:right-6 text-white z-10"></i>
                     </div>
                     <div class="collapsible-content">
@@ -883,13 +1093,9 @@
             } else if (travel.status === 'not-booked') {
                  passengerHtml = `<div class="text-center"><p class="theme-text-secondary">You have not booked a ticket for this journey.</p></div>`;
             }
-
-            // Use the 'travel' specific colors from cardColors
             const statusColors = cardColors.travel[travel.status] || cardColors.travel['not-booked'];
             const startDay = getWeekdayName(travel.start_date);
             const endDay = getWeekdayName(travel.end_date);
-
-            // --- PNR Handling Logic (From previous step) ---
             let pnrDisplayHtml = '';
             if (travel.booking_no_pnr) {
                 const parts = travel.booking_no_pnr.toString().split(/[\/,]+/).map(s => s.trim());
@@ -916,45 +1122,33 @@
             } else {
                 pnrDisplayHtml = `<span class="theme-text-secondary">-</span>`;
             }
-
-            // --- NEW: Live Train Status Link Logic ---
-            // Extract number from string if needed, or use train_no directly
             const trainNumber = travel.train_no; 
             const liveStatusLink = `https://www.confirmtkt.com/train-running-status/${trainNumber}`;
 
             return `
                 <div class="glass-card overflow-hidden ticket-card card-item">
-                    <div class="status-header p-4 text-center relative ${statusColors.header} collapsible-trigger cursor-pointer">
-                        
-                        <!-- Status Badge -->
+                    <div class="status-header p-4 text-center relative ${statusColors.header} collapsible-trigger cursor-pointer flex flex-col justify-center items-center">
+                        <div class="w-full flex justify-center items-center gap-2 mb-1">
+                            <h2 class="text-lg sm:text-xl font-bold text-white uppercase flex items-center justify-center gap-2">
+                                <i class="fas fa-train-subway"></i>
+                                <span>${travel.departure_city} to ${travel.arrival_city}</span>
+                            </h2>
+                        </div>
+                        <div class="flex items-center justify-center gap-3 text-white w-full">
+                            <div class="flex flex-col items-end">
+                                <span class="text-sm font-bold leading-tight">${travel.start_date}</span>
+                                <span class="text-[10px] uppercase opacity-90 leading-tight">${startDay} • ${travel.start_time}</span>
+                            </div>
+                            <i class="fas fa-arrow-right text-xs opacity-75"></i>
+                            <div class="flex flex-col items-start">
+                                <span class="text-sm font-bold leading-tight">${travel.end_date}</span>
+                                <span class="text-[10px] uppercase opacity-90 leading-tight">${endDay} • ${travel.end_time}</span>
+                            </div>
+                        </div>
                         <div class="absolute top-1/2 -translate-y-1/2 left-4 sm:left-6 bg-white text-blue-800 text-xs sm:text-sm font-semibold px-2 sm:px-3 py-1 sm:py-1.5 rounded-full flex items-center shadow-sm z-20 ${statusColors.chip}">
                             <span class="status-icon w-4 h-4 mr-2"><svg fill="currentColor" viewBox="0 0 20 20">${statusColors.icon}</svg></span>
                             <span class="status-text">${statusColors.chipText || travel.status.charAt(0).toUpperCase() + travel.status.slice(1)}</span>
                         </div>
-
-                        <!-- Content Container -->
-                        <div class="flex flex-col items-center justify-center w-full px-8 sm:px-0">
-                            <!-- Title -->
-                            <h2 class="text-lg sm:text-xl font-bold text-white uppercase flex items-center justify-center gap-2 mb-1">
-                                <i class="fas fa-train-subway"></i>
-                                <span>${travel.departure_city} to ${travel.arrival_city}</span>
-                            </h2>
-                            
-                            <!-- Time/Date Row -->
-                            <div class="flex items-center justify-center gap-3 text-white w-full">
-                                <div class="flex flex-col items-end">
-                                    <span class="text-sm font-bold leading-tight">${travel.start_date}</span>
-                                    <span class="text-[10px] uppercase opacity-90 leading-tight">${startDay} • ${travel.start_time}</span>
-                                </div>
-                                <i class="fas fa-arrow-right text-xs opacity-75"></i>
-                                <div class="flex flex-col items-start">
-                                    <span class="text-sm font-bold leading-tight">${travel.end_date}</span>
-                                    <span class="text-[10px] uppercase opacity-90 leading-tight">${endDay} • ${travel.end_time}</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Chevron -->
                         <i class="fas fa-chevron-down chevron-icon absolute top-1/2 -translate-y-1/2 right-4 sm:right-6 text-white z-10"></i>
                     </div>
                     <div class="collapsible-content">
@@ -962,7 +1156,6 @@
                             <div class="flex justify-between items-start -mt-2 mb-4">
                                 <div>
                                     <p class="text-sm theme-text-secondary">Train</p>
-                                    <!-- UPDATED LINK HERE -->
                                     <a href="${liveStatusLink}" target="_blank" class="font-semibold theme-text-primary hover:text-blue-600 transition-colors flex items-center gap-1 group">
                                         ${travel.name} (${travel.train_no})
                                         <i class="fas fa-satellite-dish text-xs text-green-500 animate-pulse" title="Live Status"></i>
@@ -1011,143 +1204,159 @@
                 </div>`;
         }
 
-        function startCountdown() {
-            const now = new Date();
-            let nextPoonamDate = null;
-
-            for (const date of poonamDates) {
-                const monthIndex = new Date(Date.parse(date.month +" 1, 2012")).getMonth();
-                const poonamDateTime = new Date(date.year, monthIndex, date.day);
-                if (poonamDateTime > now) {
-                    nextPoonamDate = poonamDateTime;
-                    break;
-                }
-            }
-
-            if (!nextPoonamDate) {
-                countdownContainer.innerHTML = `<h2 class="text-2xl text-center theme-accent-color">All scheduled journeys for this period are complete.</h2>`;
+        // --- NEW: Render Nearby Places Function ---
+        function renderPlaces() {
+            const dataToRender = placesData.length > 0 ? placesData : dummyPlacesData;
+            
+            if (dataToRender.length === 0) {
+                placesContainer.innerHTML = `<p class="text-center theme-text-secondary">No places information available at the moment.</p>`;
                 return;
             }
 
-            const nextPoonamMonthYear = `${nextPoonamDate.toLocaleString('default', { month: 'long' })} ${nextPoonamDate.getFullYear()}`;
-            countdownContainer.innerHTML = `
-                <div class="text-center">
-                    <h2 class="text-3xl sm:text-4xl font-semibold theme-accent-color page-title">Next Journey Countdown: ${nextPoonamMonthYear}</h2>
-                    <div id="countdown-timer" class="flex flex-wrap justify-center gap-2 sm:gap-4 lg:gap-8 mt-4">
-                        <div class="countdown-item"><span id="days" class="text-4xl sm:text-6xl">00</span><p class="text-xs sm:text-sm">Days</p></div>
-                        <div class="countdown-item"><span id="hours" class="text-4xl sm:text-6xl">00</span><p class="text-xs sm:text-sm">Hours</p></div>
-                        <div class="countdown-item"><span id="minutes" class="text-4xl sm:text-6xl">00</span><p class="text-xs sm:text-sm">Minutes</p></div>
-                        <div class="countdown-item"><span id="seconds" class="text-4xl sm:text-6xl">00</span><p class="text-xs sm:text-sm">Seconds</p></div>
+            let html = '<div class="grid grid-cols-1 md:grid-cols-2 gap-6">';
+            
+            dataToRender.forEach(place => {
+                // Using a fallback image if none provided
+                const imgUrl = place.image_url && place.image_url.trim() !== '' 
+                    ? place.image_url 
+                    : 'https://placehold.co/600x400/orange/white?text=' + encodeURIComponent(place.place_name);
+
+                html += `
+                    <div class="place-card rounded-xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 flex flex-col h-full">
+                        <div class="h-48 overflow-hidden relative group">
+                            <img src="${imgUrl}" alt="${place.place_name}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                            <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/80 to-transparent p-4">
+                                <h3 class="text-xl font-bold text-white">${place.place_name}</h3>
+                                <p class="text-yellow-300 text-xs font-semibold"><i class="fas fa-road mr-1"></i> ${place.distance} from Mandir</p>
+                            </div>
+                        </div>
+                        <div class="p-4 flex-grow flex flex-col justify-between">
+                            <div class="space-y-2 mb-4">
+                                ${place.description ? `<p class="text-sm theme-text-secondary line-clamp-2 mb-3">${place.description}</p>` : ''}
+                                
+                                <div class="flex items-start text-sm theme-text-secondary">
+                                    <i class="fas fa-clock mt-1 mr-2 w-4 text-center theme-accent-color"></i>
+                                    <span>${place.timings}</span>
+                                </div>
+                                
+                                <div class="flex items-start text-sm theme-text-secondary">
+                                    <i class="fas fa-taxi mt-1 mr-2 w-4 text-center theme-accent-color"></i>
+                                    <span>${place.auto_fare}</span>
+                                </div>
+                                
+                                <div class="flex items-start text-sm theme-text-secondary">
+                                    <i class="fas fa-map-marker-alt mt-1 mr-2 w-4 text-center theme-accent-color"></i>
+                                    <span class="line-clamp-1">${place.address}</span>
+                                </div>
+                            </div>
+                            
+                            <a href="${place.map_link}" target="_blank" class="w-full bg-blue-100 hover:bg-blue-200 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 dark:hover:bg-blue-800/50 py-2 rounded-lg text-center font-semibold text-sm transition-colors flex items-center justify-center gap-2">
+                                <i class="fas fa-location-arrow"></i> Navigate
+                            </a>
+                        </div>
                     </div>
-                </div>
-            `;
-
-            const daysEl = document.getElementById('days');
-            const hoursEl = document.getElementById('hours');
-            const minutesEl = document.getElementById('minutes');
-            const secondsEl = document.getElementById('seconds');
-
-            const timerInterval = setInterval(() => {
-                const now = new Date().getTime();
-                const distance = nextPoonamDate - now;
-
-                if (distance < 0) {
-                    clearInterval(timerInterval);
-                    startCountdown();
-                    return;
-                }
-
-                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-                daysEl.textContent = String(days).padStart(2, '0');
-                hoursEl.textContent = String(hours).padStart(2, '0');
-                minutesEl.textContent = String(minutes).padStart(2, '0');
-                secondsEl.textContent = String(seconds).padStart(2, '0');
-
-            }, 1000);
+                `;
+            });
+            
+            html += '</div>';
+            placesContainer.innerHTML = html;
         }
 
-        const attachModalListeners = () => {
-            document.querySelectorAll('.view-ticket-btn').forEach(button => {
-                button.addEventListener('click', () => {
-                    const ticketUrl = button.dataset.ticketUrl;
-                    if (ticketUrl && ticketUrl.trim() !== '#') {
-                        iframe.src = ticketUrl;
-                        downloadBtn.href = ticketUrl;
-
-                        // --- NEW LOGIC TO SET FILENAME ---
-                        const fileName = ticketUrl.substring(ticketUrl.lastIndexOf('/') + 1);
-                        downloadBtn.setAttribute('download', fileName);
-
-                        modal.classList.remove('hidden');
-                    } else {
-                        showToast('Tickets not available right now, check back later.', 'error');
-                    }
-                });
-            });
-        };
-
-        const closeModal = () => {
-            if(modal) modal.classList.add('hidden');
-            if(iframe) iframe.src = '';
-        };
-
-        const showToast = (message, type = 'success') => {
-            const toast = document.getElementById('toast-notification');
-            toast.textContent = message;
-            toast.style.background = type === 'error' ? 'var(--accent-color)' : '#28a745';
-            toast.style.color = 'white';
-            toast.classList.add('show');
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
-        };
-
-        const updateButtonState = (button) => {
-            const originalHTML = button.innerHTML;
-            button.disabled = true;
-            button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 theme-text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>`;
-
-            setTimeout(() => {
-                button.innerHTML = originalHTML;
-                button.disabled = false;
-            }, 2000);
-        };
-
-        window.copyToClipboard = function(elementId, button) {
-            const textToCopy = document.getElementById(elementId).innerText;
-            
-            // Create a temporary textarea element
-            const textArea = document.createElement("textarea");
-            textArea.value = textToCopy;
-            
-            // Ensure it's not visible but part of the DOM
-            textArea.style.position = "fixed";
-            textArea.style.left = "-9999px";
-            textArea.style.top = "0";
-            document.body.appendChild(textArea);
-            
-            textArea.focus();
-            textArea.select();
-            
-            try {
-                const successful = document.execCommand('copy');
-                if (successful) {
-                    showToast('Copied to clipboard!');
-                    updateButtonState(button);
-                } else {
-                    console.error('Fallback: Oops, unable to copy');
-                }
-            } catch (err) {
-                console.error('Fallback: Oops, unable to copy', err);
+        // --- NEW: Fetch Places Data Function ---
+        async function fetchPlacesData() {
+            if (googleSheetUrlPlaces.includes('YOUR_SHEET_2_ID')) {
+                // If user hasn't put the link yet, use dummy data
+                console.log("Using dummy data for places");
+                renderPlaces();
+                return;
             }
-            
-            document.body.removeChild(textArea);
-        };
 
+            try {
+                const response = await fetch(`${googleSheetUrlPlaces}&_=${new Date().getTime()}`);
+                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+                const csvText = await response.text();
+                placesData = parseCSV(csvText);
+                renderPlaces();
+            } catch (error) {
+                console.error('Error fetching places data:', error);
+                // Fallback to dummy data on error
+                renderPlaces();
+            }
+        }
+
+        // --- Function to parse CSV ---
+        function parseCSV(csvText) {
+            const lines = csvText.split(/\r?\n/).filter(line => line.trim());
+            if (lines.length < 2) return [];
+            // REPLACE SPACES WITH UNDERSCORE TO HANDLE 'Date Month' as 'date_month'
+            const headers = lines[0].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(h => h.trim().replace(/"/g, '').toLowerCase().replace(/\s+/g, '_'));
+            const data = [];
+            for (let i = 1; i < lines.length; i++) {
+                const obj = {};
+                const currentline = lines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(item => item.trim().replace(/"/g, ''));
+                if (currentline.length === headers.length) {
+                    for (let j = 0; j < headers.length; j++) {
+                        obj[headers[j]] = currentline[j];
+                    }
+                    data.push(obj);
+                }
+            }
+            return data;
+        }
+
+        // --- Function to fetch and process data ---
+        async function fetchAndProcessData() {
+            if (!googleSheetUrl || googleSheetUrl.includes('YOUR_GOOGLE_SHEET')) {
+                datesContainer.innerHTML = `<p class="text-center text-red-400 p-10">Please add your Google Sheet CSV link in the script.</p>`;
+                return;
+            }
+
+            datesContainer.innerHTML = `
+                <div class="text-center p-10">
+                    <svg aria-hidden="true" class="inline w-10 h-10 theme-text-secondary animate-spin" style="fill: var(--accent-color)" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
+                        <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0492C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentColor"/>
+                    </svg>
+                    <p class="mt-4 theme-text-secondary font-semibold">Loading booking data...</p>
+                </div>`;
+
+            try {
+                const response = await fetch(`${googleSheetUrl}&_=${new Date().getTime()}`);
+                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+
+                const csvText = await response.text();
+                const allBookingsData = parseCSV(csvText);
+
+                groupedData = allBookingsData.reduce((acc, row) => {
+                    if (row.year && row.date_month) {
+                        const { year, date_month } = row;
+                        if (!acc[year]) acc[year] = {};
+                        if (!acc[year][date_month]) acc[year][date_month] = [];
+
+                        const key = `${row.type}-${row.booking_no_pnr || Math.random()}`;
+                        let booking = acc[year][date_month].find(b => b.key === key);
+
+                        if (!booking) {
+                            booking = { ...row, passengers: [], key: key };
+                            acc[year][date_month].push(booking);
+                        }
+
+                        if (row.guest_name) {
+                            booking.passengers.push(row);
+                        }
+                    }
+                    return acc;
+                }, {});
+
+                setupDropdowns();
+
+            } catch (error) {
+                console.error('Error fetching or processing data:', error);
+                datesContainer.innerHTML = `<p class="text-center text-red-400 p-10">Error loading booking data. Please check the data source and network connection.</p>`;
+            }
+        }
+
+        // --- Mandir Timing Function ---
         const populateTimings = () => {
             const scheduleContainer = document.getElementById('timing-schedule');
             const now = new Date();
@@ -1246,77 +1455,8 @@
             `;
         };
 
-        function parseCSV(csvText) {
-            const lines = csvText.split(/\r?\n/).filter(line => line.trim());
-            if (lines.length < 2) return [];
-            const headers = lines[0].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(h => h.trim().replace(/"/g, '').toLowerCase());
-            const data = [];
-            for (let i = 1; i < lines.length; i++) {
-                const obj = {};
-                const currentline = lines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(item => item.trim().replace(/"/g, ''));
-                if (currentline.length === headers.length) {
-                    for (let j = 0; j < headers.length; j++) {
-                        obj[headers[j]] = currentline[j];
-                    }
-                    data.push(obj);
-                }
-            }
-            return data;
-        }
-
-        async function fetchAndProcessData() {
-            if (!googleSheetUrl || googleSheetUrl.includes('YOUR_GOOGLE_SHEET')) {
-                datesContainer.innerHTML = `<p class="text-center text-red-400 p-10">Please add your Google Sheet CSV link in the script.</p>`;
-                return;
-            }
-
-            datesContainer.innerHTML = `
-                <div class="text-center p-10">
-                    <svg aria-hidden="true" class="inline w-10 h-10 theme-text-secondary animate-spin" style="fill: var(--accent-color)" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
-                        <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0492C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentColor"/>
-                    </svg>
-                    <p class="mt-4 theme-text-secondary font-semibold">Loading booking data...</p>
-                </div>`;
-
-            try {
-                const response = await fetch(`${googleSheetUrl}&_=${new Date().getTime()}`);
-                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-
-                const csvText = await response.text();
-                const allBookingsData = parseCSV(csvText);
-
-                groupedData = allBookingsData.reduce((acc, row) => {
-                    if (row.year && row.date_month) {
-                        const { year, date_month } = row;
-                        if (!acc[year]) acc[year] = {};
-                        if (!acc[year][date_month]) acc[year][date_month] = [];
-
-                        const key = `${row.type}-${row.booking_no_pnr || Math.random()}`;
-                        let booking = acc[year][date_month].find(b => b.key === key);
-
-                        if (!booking) {
-                            booking = { ...row, passengers: [], key: key };
-                            acc[year][date_month].push(booking);
-                        }
-
-                        if (row.guest_name) {
-                            booking.passengers.push(row);
-                        }
-                    }
-                    return acc;
-                }, {});
-
-                setupDropdowns();
-
-            } catch (error) {
-                console.error('Error fetching or processing data:', error);
-                datesContainer.innerHTML = `<p class="text-center text-red-400 p-10">Error loading booking data. Please check the data source and network connection.</p>`;
-            }
-        }
-
         document.addEventListener('DOMContentLoaded', async function() {
-            // --- Theme Toggle Logic ---
+            // ... existing theme toggle logic ...
             const themeToggle = document.getElementById('theme-toggle');
             const sunIcon = document.getElementById('sun-icon');
             const moonIcon = document.getElementById('moon-icon');
@@ -1340,12 +1480,9 @@
             htmlTag.classList.toggle('light', !isDark);
             updateThemeIcons(isDark);
 
-
             // --- Original Event Listeners ---
             if(closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
-            if(modal) modal.addEventListener('click', (event) => {
-                if (event.target === modal) closeModal();
-            });
+            if(modal) modal.addEventListener('click', (event) => { if (event.target === modal) closeModal(); });
 
             document.querySelectorAll('#about-link, #mobile-about-link').forEach(link => {
                 link.addEventListener('click', (e) => { e.preventDefault(); aboutModal.classList.remove('hidden'); });
@@ -1359,16 +1496,29 @@
             document.querySelectorAll('#timing-link, #mobile-timing-link').forEach(link => {
                 link.addEventListener('click', (e) => { e.preventDefault(); timingModal.classList.remove('hidden'); });
             });
+            // NEW LISTENER FOR PLACES LINK
+            document.querySelectorAll('#places-link, #mobile-places-link').forEach(link => {
+                link.addEventListener('click', (e) => { 
+                    e.preventDefault(); 
+                    placesModal.classList.remove('hidden'); 
+                    // Render places when modal opens if not already rendered
+                    if(placesContainer.innerHTML.includes('Loading')) {
+                        fetchPlacesData(); 
+                    }
+                });
+            });
 
             document.getElementById('close-about-modal').addEventListener('click', () => aboutModal.classList.add('hidden'));
             document.getElementById('close-contact-modal').addEventListener('click', () => contactModal.classList.add('hidden'));
             document.getElementById('close-payment-modal').addEventListener('click', () => paymentModal.classList.add('hidden'));
             document.getElementById('close-timing-modal').addEventListener('click', () => timingModal.classList.add('hidden'));
+            document.getElementById('close-places-modal').addEventListener('click', () => placesModal.classList.add('hidden'));
 
-            [aboutModal, contactModal, paymentModal, timingModal, successModal].forEach(m => {
+            [aboutModal, contactModal, paymentModal, timingModal, successModal, placesModal].forEach(m => {
                  m.addEventListener('click', (e) => { if(e.target === m) m.classList.add('hidden'); });
             });
 
+            // ... existing form submission, mobile menu etc ...
             contactForm.addEventListener('submit', async function(e) {
                 e.preventDefault();
                 const form = e.target;
@@ -1399,6 +1549,7 @@
             document.getElementById('home-link').addEventListener('click', (e) => { e.preventDefault(); window.location.reload(); });
             document.getElementById('mobile-home-link').addEventListener('click', (e) => { e.preventDefault(); window.location.reload(); });
 
+            // ... existing year filter change logic ...
             yearFilter.addEventListener('change', (e) => {
                 const selectedYear = e.target.value;
                 datesContainer.innerHTML = '';
@@ -1438,6 +1589,8 @@
             startCountdown();
             populateTimings();
             showWelcomePopup();
+            // Pre-fetch places data
+            fetchPlacesData();
         });
     </script>
 </body>
