@@ -141,8 +141,19 @@
             transform: scale(0.95); opacity: 0;
             transition: transform 0.2s ease-out, opacity 0.2s ease-out;
         }
+        /* New responsive class for Places Modal */
+        .modal-content-places {
+            width: 95%; /* Mobile width */
+            max-width: 1100px; /* Desktop max width */
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: scale(0.95);
+            opacity: 0;
+            transition: transform 0.2s ease-out, opacity 0.2s ease-out;
+        }
         .modal-backdrop:not(.hidden) .modal-content,
-        .modal-backdrop:not(.hidden) .modal-content-ticket {
+        .modal-backdrop:not(.hidden) .modal-content-ticket,
+        .modal-backdrop:not(.hidden) .modal-content-places {
             transform: scale(1); opacity: 1;
         }
         .modal-content { width: 90%; max-width: 600px; max-height: 90vh; overflow-y: auto; }
@@ -396,7 +407,7 @@
 
     <!-- Nearby Places Modal -->
     <div id="places-modal" class="modal-backdrop hidden">
-        <div class="modal-content glass-card p-6 relative flex flex-col h-[90vh]">
+        <div class="modal-content-places glass-card p-6 relative flex flex-col h-[90vh]">
             <button id="close-places-modal" class="absolute top-4 right-4 theme-text-secondary hover:theme-text-primary transition-colors text-3xl z-50">&times;</button>
             <h2 class="text-3xl font-bold theme-accent-color page-title mb-6 text-center">Nearby Places to Visit</h2>
             
@@ -1213,7 +1224,7 @@
                 return;
             }
 
-            let html = '<div class="grid grid-cols-1 md:grid-cols-2 gap-6">';
+            let html = '<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">';
             
             dataToRender.forEach(place => {
                 // Using a fallback image if none provided
