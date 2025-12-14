@@ -553,123 +553,92 @@
 
         // --- GLOBAL VARIABLES ---
         let groupedData = {};
+        // UPDATED PLACES DATA WITH DISTANCE FROM MANDIR AND RENTS
         let placesData = [
             {
-                place_name: "Shri Samudra Narayan Mandir",
+                place_name: "Gomti Ghat & Samudra Narayan",
                 distance: "0.5 km",
-                auto_fare: "Walking Distance / ₹30",
+                auto_fare: "Walking / ₹30 Auto",
                 timings: "6:00 AM - 8:00 PM",
                 map_link: "https://maps.app.goo.gl/qgEyPLjzRE2SNZ588",
                 address: "Gomti Ghat, Dwarka",
-                description: "A beautiful temple dedicated to Samudra Dev (Sea God) located at the confluence of Gomti river and the sea.",
-                image_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Samudra_Narayan_Temple%2C_Dwarka.jpg/640px-Samudra_Narayan_Temple%2C_Dwarka.jpg" // Added Wikimedia link
-            },
-            {
-                place_name: "Shri Laxminarayan Panchanad Tirth",
-                distance: "0.5 km",
-                auto_fare: "Walking Distance / ₹30",
-                timings: "6:00 AM - 8:00 PM",
-                map_link: "https://maps.app.goo.gl/GoaZZvvb2etMqCv77",
-                address: "Gomti Ghat, Dwarka",
-                description: "An ancient temple complex with shrines for Laxminarayan and other deities near Gomti Ghat.",
-                image_url: "" // Add image link here
+                description: "Sacred ghats for holy dip and a beautiful temple dedicated to Samudra Dev at the confluence.",
+                image_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Samudra_Narayan_Temple%2C_Dwarka.jpg/640px-Samudra_Narayan_Temple%2C_Dwarka.jpg" 
             },
             {
                 place_name: "Bhadkeshwar Mahadev Mandir",
-                distance: "1 km",
-                auto_fare: "₹50 - ₹100",
+                distance: "2 km",
+                auto_fare: "₹100 - ₹150 (Auto Round Trip)",
                 timings: "Open all day",
                 map_link: "https://maps.app.goo.gl/fMXMhXtg4bVP6QWZ6",
                 address: "Near Geeta Mandir, Dwarka",
-                description: "A beautiful Shiva temple on a hillock in the sea, best visited during sunset.",
-                image_url: "https://lh5.googleusercontent.com/p/AF1QipM-sS_y... (Example placeholder)" // Add specific image link
-            },
-            {
-                place_name: "Dwarka Beach",
-                distance: "1 km",
-                auto_fare: "₹50 / Walking",
-                timings: "Open All Day",
-                map_link: "https://maps.app.goo.gl/ER6nerA2Vy4KnxU78",
-                address: "Near Lighthouse, Dwarka",
-                description: "A peaceful beach perfect for evening walks and enjoying the sea breeze near the city.",
-                image_url: "" // Add image link here
+                description: "A serene Shiva temple on a hillock in the sea, offering breathtaking sunset views.",
+                image_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Samudra_Narayan_Temple%2C_Dwarka.jpg/640px-Samudra_Narayan_Temple%2C_Dwarka.jpg" 
             },
             {
                 place_name: "Rukmini Devi Mandir",
-                distance: "2 km",
-                auto_fare: "₹100 - ₹150",
+                distance: "2.5 km",
+                auto_fare: "₹150 - ₹200 (Auto Round Trip)",
                 timings: "6:00 AM - 12:00 PM, 5:00 PM - 9:00 PM",
                 map_link: "https://maps.app.goo.gl/KuLpifHa69izgFJa9",
                 address: "Rukmini Devi Temple, Dwarka",
-                description: "Dedicated to Rukmini, Lord Krishna's chief queen. Known for its rich carvings.",
-                image_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Rukmini_Devi_Temple%2C_Dwarka.jpg/640px-Rukmini_Devi_Temple%2C_Dwarka.jpg" // Added Wikimedia link
+                description: "Dedicated to Rukmini, Lord Krishna's chief queen. Known for its rich carvings and history.",
+                image_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Rukmini_Devi_Temple%2C_Dwarka.jpg/640px-Rukmini_Devi_Temple%2C_Dwarka.jpg" 
+            },
+            {
+                place_name: "Nageshwar Jyotirling",
+                distance: "17 km",
+                auto_fare: "₹700 - ₹900 (Auto Round Trip)",
+                timings: "6:00 AM - 12:30 PM, 5:00 PM - 9:30 PM",
+                map_link: "https://maps.app.goo.gl/xbQcvMzDo2saKZHz8",
+                address: "Daarukavanam, Gujarat 361335",
+                description: "One of the 12 Jyotirlingas of Lord Shiva. Features a giant statue of Lord Shiva.",
+                image_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Nageshwar_Jyotirlinga_Temple_Dwarka.jpg/640px-Nageshwar_Jyotirlinga_Temple_Dwarka.jpg" 
+            },
+            {
+                place_name: "Gopi Talav",
+                distance: "22 km",
+                auto_fare: "Part of Full Day Tour",
+                timings: "6:00 AM - 6:00 PM",
+                map_link: "https://maps.app.goo.gl/xggHDjCrRURNmz5s8",
+                address: "Gopi Talav, Dwarka",
+                description: "A sacred pond associated with the Gopis of Vrindavan and Lord Krishna's Raas Leela.",
+                image_url: "" 
+            },
+            {
+                place_name: "Shivrajpur Beach",
+                distance: "13 km",
+                auto_fare: "₹600 - ₹800 (Auto Round Trip)",
+                timings: "8:00 AM - 7:00 PM",
+                map_link: "https://maps.app.goo.gl/PCenDXDfC9QhvqAN7",
+                address: "Shivrajpur, Gujarat",
+                description: "Blue Flag certified pristine beach with white sand and clear water. Ideal for water sports.",
+                image_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Shivrajpur_Beach.jpg/640px-Shivrajpur_Beach.jpg" 
+            },
+            {
+                place_name: "Bet Dwarka (Okha Jetty)",
+                distance: "32 km",
+                auto_fare: "Taxi: ₹1200-₹1500 / Bus: ₹40",
+                timings: "Ferry runs 6:00 AM to 7:00 PM",
+                map_link: "https://maps.app.goo.gl/mLiwWCAyp1B3ewVu5",
+                address: "Bet Dwarka Island",
+                description: "The original residence of Lord Krishna. Requires a ferry ride from Okha port.",
+                image_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Dwarkadhish_Temple_Dwarka.jpg/640px-Dwarkadhish_Temple_Dwarka.jpg" 
             },
             {
                 place_name: "Dwarka Light House",
                 distance: "2 km",
-                auto_fare: "₹50 - ₹100",
+                auto_fare: "₹100 (Auto)",
                 timings: "4:00 PM - 6:00 PM",
                 map_link: "https://maps.app.goo.gl/VHXm2BuMHnY4eZdN8",
                 address: "Near Bhadkeshwar, Dwarka",
-                description: "A historic lighthouse offering panoramic views of the Arabian Sea and Dwarka city.",
-                image_url: "" // Add image link here
-            },
-            {
-                place_name: "Aai Shree Mogaldham Bhimrana",
-                distance: "7 km",
-                auto_fare: "₹200 - ₹300",
-                timings: "6:00 AM - 9:00 PM",
-                map_link: "https://maps.app.goo.gl/bXtTMwMk19yGNEfq6",
-                address: "Bhimrana, Dwarka",
-                description: "A revered temple dedicated to Maa Mogal, located a short drive from the main city.",
-                image_url: "" // Add image link here
-            },
-            {
-                place_name: "Shivrajpur Beach",
-                distance: "12 km",
-                auto_fare: "₹400 - ₹500",
-                timings: "8:00 AM - 7:00 PM",
-                map_link: "https://maps.app.goo.gl/PCenDXDfC9QhvqAN7",
-                address: "Shivrajpur, Gujarat",
-                description: "Blue Flag certified pristine beach with white sand and clear water.",
-                image_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Shivrajpur_Beach.jpg/640px-Shivrajpur_Beach.jpg" // Wikimedia placeholder (might vary)
-            },
-            {
-                place_name: "Nageshwar Jyotirling",
-                distance: "16 km",
-                auto_fare: "₹400 - ₹500 (Return)",
-                timings: "6:00 AM - 12:30 PM, 5:00 PM - 9:30 PM",
-                map_link: "https://maps.app.goo.gl/xbQcvMzDo2saKZHz8",
-                address: "Daarukavanam, Gujarat 361335",
-                description: "One of the 12 Jyotirlingas of Lord Shiva. A giant statue of Lord Shiva is a major attraction.",
-                image_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Nageshwar_Jyotirlinga_Temple_Dwarka.jpg/640px-Nageshwar_Jyotirlinga_Temple_Dwarka.jpg" // Added Wikimedia link
-            },
-            {
-                place_name: "Gopi Talav",
-                distance: "20 km",
-                auto_fare: "Part of Nageshwar trip usually",
-                timings: "6:00 AM - 6:00 PM",
-                map_link: "https://maps.app.goo.gl/xggHDjCrRURNmz5s8",
-                address: "Gopi Talav, Dwarka",
-                description: "A sacred pond associated with the Gopis of Vrindavan.",
-                image_url: "" // Add image link here
-            },
-            {
-                place_name: "Bet Dwarka",
-                distance: "30 km + Ferry",
-                auto_fare: "₹800 - ₹1000 (Taxi Return)",
-                timings: "Ferry runs 6:00 AM to 7:00 PM",
-                map_link: "https://maps.app.goo.gl/mLiwWCAyp1B3ewVu5",
-                address: "Bet Dwarka Island",
-                description: "The original residence of Lord Krishna. Reached by a ferry ride from Okha.",
-                image_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Dwarkadhish_Temple_Dwarka.jpg/640px-Dwarkadhish_Temple_Dwarka.jpg" // Placeholder
+                description: "Offers panoramic views of the Arabian Sea and the city. Best visited in the evening.",
+                image_url: "" 
             }
         ];
         
         // --- Dummy Data for Places (Will be replaced by sheet data if provided) ---
-        const dummyPlacesData = [
-            // ... (keeping this just in case, but placesData is initialized above)
-        ];
+        const dummyPlacesData = [];
 
         const poonamDates = [
             { year: 2025, month: 'August', day: 9 }, { year: 2025, month: 'September', day: 7 },
@@ -740,23 +709,17 @@
             } catch (e) { return ''; }
         }
 
-        // New helper for direct text copying
+        // Helper for direct text copying
         window.copyText = function(text) {
             if (!text) return;
-            
-            // Create a temporary textarea element
             const textArea = document.createElement("textarea");
             textArea.value = text;
-            
-            // Ensure it's not visible but part of the DOM
             textArea.style.position = "fixed";
             textArea.style.left = "-9999px";
             textArea.style.top = "0";
             document.body.appendChild(textArea);
-            
             textArea.focus();
             textArea.select();
-            
             try {
                 const successful = document.execCommand('copy');
                 if (successful) {
@@ -768,7 +731,6 @@
                 console.error('Fallback: Oops, unable to copy', err);
                 showToast('Failed to copy', 'error');
             }
-            
             document.body.removeChild(textArea);
         };
 
@@ -798,6 +760,85 @@
             dateMonthFilter.innerHTML = '<option value="">-- First, Choose a Year --</option>';
             dateMonthFilter.disabled = true;
             datesContainer.innerHTML = `<p class="text-center theme-text-secondary p-10">Please select a year and date to see booking details.</p>`;
+        }
+
+        // --- NEW: Function to Populate Date/Month Dropdown Independently ---
+        function populateDateMonthDropdown(selectedYear) {
+            dateMonthFilter.innerHTML = '<option value="">-- Select a Journey Date --</option>';
+            
+            if (selectedYear && groupedData[selectedYear]) {
+                dateMonthFilter.disabled = false;
+                const dateMonths = Object.keys(groupedData[selectedYear]);
+                dateMonths.forEach(dm => {
+                    const option = document.createElement('option');
+                    option.value = dm;
+                    
+                    const fullDateString = `${dm} ${selectedYear}`;
+                    const dayName = getWeekdayName(fullDateString);
+                    option.textContent = dayName ? `${dm} (${dayName})` : dm;
+                    
+                    dateMonthFilter.appendChild(option);
+                });
+            } else {
+                dateMonthFilter.innerHTML = '<option value="">-- First, Choose a Year --</option>';
+                dateMonthFilter.disabled = true;
+            }
+        }
+
+        // --- NEW: Auto Select Next Trip Function ---
+        function autoSelectNextTrip() {
+            const now = new Date();
+            // Reset time to start of day for accurate comparison
+            now.setHours(0,0,0,0);
+            
+            let targetYear = null;
+            let targetDateMonth = null;
+
+            // Find the next Poonam date from schedule that is >= today
+            for (const date of poonamDates) {
+                 const monthIndex = new Date(Date.parse(date.month +" 1, 2012")).getMonth();
+                 const tripDate = new Date(date.year, monthIndex, date.day);
+
+                 // Check if tripDate is today or future
+                 if (tripDate >= now) {
+                     const potentialYear = date.year.toString();
+                     
+                     // Try both "9 August" and "09 August" format to be safe
+                     const dayStr = date.day.toString();
+                     const paddedDayStr = dayStr.padStart(2, '0');
+                     
+                     const potentialDateMonth1 = `${dayStr} ${date.month}`; 
+                     const potentialDateMonth2 = `${paddedDayStr} ${date.month}`;
+
+                     // CRITICAL CHECK: Do we actually have data for this date in the CSV?
+                     if (groupedData[potentialYear]) {
+                         if (groupedData[potentialYear][potentialDateMonth1]) {
+                             targetYear = potentialYear;
+                             targetDateMonth = potentialDateMonth1;
+                             break;
+                         } else if (groupedData[potentialYear][potentialDateMonth2]) {
+                             targetYear = potentialYear;
+                             targetDateMonth = potentialDateMonth2;
+                             break;
+                         }
+                     }
+                 }
+            }
+
+            // If we found a valid upcoming trip with data, load it!
+            if (targetYear && targetDateMonth) {
+                // 1. Set Year Dropdown
+                yearFilter.value = targetYear;
+                
+                // 2. Populate Date Dropdown based on Year
+                populateDateMonthDropdown(targetYear);
+                
+                // 3. Set Date Dropdown
+                dateMonthFilter.value = targetDateMonth;
+                
+                // 4. Render the cards
+                renderCards(targetYear, targetDateMonth);
+            }
         }
 
         function startCountdown() {
@@ -1227,7 +1268,6 @@
             let html = '<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">';
             
             dataToRender.forEach(place => {
-                // Using a fallback image if none provided
                 const imgUrl = place.image_url && place.image_url.trim() !== '' 
                     ? place.image_url 
                     : 'https://placehold.co/600x400/orange/white?text=' + encodeURIComponent(place.place_name);
@@ -1252,7 +1292,7 @@
                                 
                                 <div class="flex items-start text-sm theme-text-secondary">
                                     <i class="fas fa-taxi mt-1 mr-2 w-4 text-center theme-accent-color"></i>
-                                    <span>${place.auto_fare}</span>
+                                    <span><strong>Rent:</strong> ${place.auto_fare}</span>
                                 </div>
                                 
                                 <div class="flex items-start text-sm theme-text-secondary">
@@ -1276,8 +1316,6 @@
         // --- NEW: Fetch Places Data Function ---
         async function fetchPlacesData() {
             if (googleSheetUrlPlaces.includes('YOUR_SHEET_2_ID')) {
-                // If user hasn't put the link yet, use dummy data
-                console.log("Using dummy data for places");
                 renderPlaces();
                 return;
             }
@@ -1290,7 +1328,6 @@
                 renderPlaces();
             } catch (error) {
                 console.error('Error fetching places data:', error);
-                // Fallback to dummy data on error
                 renderPlaces();
             }
         }
@@ -1299,7 +1336,6 @@
         function parseCSV(csvText) {
             const lines = csvText.split(/\r?\n/).filter(line => line.trim());
             if (lines.length < 2) return [];
-            // REPLACE SPACES WITH UNDERSCORE TO HANDLE 'Date Month' as 'date_month'
             const headers = lines[0].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(h => h.trim().replace(/"/g, '').toLowerCase().replace(/\s+/g, '_'));
             const data = [];
             for (let i = 1; i < lines.length; i++) {
@@ -1360,6 +1396,8 @@
                 }, {});
 
                 setupDropdowns();
+                // --- TRIGGER AUTO SELECT ---
+                autoSelectNextTrip();
 
             } catch (error) {
                 console.error('Error fetching or processing data:', error);
@@ -1400,7 +1438,7 @@
                 { event: "First Dhwaja Arohan", time: "7:00 AM - 8:30 AM", start: 7.0, end: 8.5 },
                 { event: "Second Dhwaja Arohan", time: "8:39 AM - 10:30 AM", start: 8.65, end: 10.5 },
                 { event: "Third Dhwaja Arohan", time: "10:30 AM - 12:30 PM", start: 10.5, end: 12.5 },
-                { event: "Fourth Dhwaja Arohan", time: "5:30 PM", start: 17.0, end: 18.5 } // Highlighting window for evening
+                { event: "Fourth Dhwaja Arohan", time: "5:30 PM", start: 17.0, end: 18.5 } 
             ];
 
             let mandirHtml = '';
@@ -1419,7 +1457,6 @@
 
             let dhwajaHtml = '';
             dhwajaTimings.forEach(item => {
-                // Check if current time falls within this Dhwaja slot
                 const isCurrent = currentTime >= item.start && currentTime < item.end;
                 const activeClass = isCurrent ? 'current-timing ring-2 ring-offset-1 ring-orange-400' : '';
                 const timeColor = isCurrent ? 'text-green-500' : 'theme-accent-color';
@@ -1507,12 +1544,10 @@
             document.querySelectorAll('#timing-link, #mobile-timing-link').forEach(link => {
                 link.addEventListener('click', (e) => { e.preventDefault(); timingModal.classList.remove('hidden'); });
             });
-            // NEW LISTENER FOR PLACES LINK
             document.querySelectorAll('#places-link, #mobile-places-link').forEach(link => {
                 link.addEventListener('click', (e) => { 
                     e.preventDefault(); 
                     placesModal.classList.remove('hidden'); 
-                    // Render places when modal opens if not already rendered
                     if(placesContainer.innerHTML.includes('Loading')) {
                         fetchPlacesData(); 
                     }
@@ -1529,7 +1564,6 @@
                  m.addEventListener('click', (e) => { if(e.target === m) m.classList.add('hidden'); });
             });
 
-            // ... existing form submission, mobile menu etc ...
             contactForm.addEventListener('submit', async function(e) {
                 e.preventDefault();
                 const form = e.target;
@@ -1560,29 +1594,11 @@
             document.getElementById('home-link').addEventListener('click', (e) => { e.preventDefault(); window.location.reload(); });
             document.getElementById('mobile-home-link').addEventListener('click', (e) => { e.preventDefault(); window.location.reload(); });
 
-            // ... existing year filter change logic ...
+            // --- REFACTORED YEAR FILTER LOGIC ---
             yearFilter.addEventListener('change', (e) => {
                 const selectedYear = e.target.value;
                 datesContainer.innerHTML = '';
-                dateMonthFilter.innerHTML = '<option value="">-- First, Choose a Year --</option>';
-
-                if (selectedYear && groupedData[selectedYear]) {
-                    dateMonthFilter.disabled = false;
-                    const dateMonths = Object.keys(groupedData[selectedYear]);
-                    dateMonths.forEach(dm => {
-                        const option = document.createElement('option');
-                        option.value = dm;
-                        
-                        // Calculate day for dropdown option
-                        const fullDateString = `${dm} ${selectedYear}`;
-                        const dayName = getWeekdayName(fullDateString);
-                        option.textContent = dayName ? `${dm} (${dayName})` : dm;
-                        
-                        dateMonthFilter.appendChild(option);
-                    });
-                } else {
-                    dateMonthFilter.disabled = true;
-                }
+                populateDateMonthDropdown(selectedYear); // Using the new helper function
             });
 
             dateMonthFilter.addEventListener('change', (e) => {
@@ -1600,7 +1616,6 @@
             startCountdown();
             populateTimings();
             showWelcomePopup();
-            // Pre-fetch places data
             fetchPlacesData();
         });
     </script>
