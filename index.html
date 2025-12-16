@@ -142,7 +142,7 @@
             transition: transform 0.2s ease-out, opacity 0.2s ease-out;
         }
         /* New responsive class for Places Modal */
-        .modal-content-places {
+        .modal-content-places, .modal-content-food {
             width: 95%; /* Mobile width */
             max-width: 1100px; /* Desktop max width */
             max-height: 90vh;
@@ -153,7 +153,8 @@
         }
         .modal-backdrop:not(.hidden) .modal-content,
         .modal-backdrop:not(.hidden) .modal-content-ticket,
-        .modal-backdrop:not(.hidden) .modal-content-places {
+        .modal-backdrop:not(.hidden) .modal-content-places,
+        .modal-backdrop:not(.hidden) .modal-content-food {
             transform: scale(1); opacity: 1;
         }
         .modal-content { width: 90%; max-width: 600px; max-height: 90vh; overflow-y: auto; }
@@ -322,6 +323,10 @@
                         <a href="#" id="places-link" class="theme-text-secondary hover:theme-text-primary font-medium transition-colors duration-300 flex items-center gap-1">
                             <i class="fas fa-map-location-dot text-sm"></i> Nearby Places
                         </a>
+                        <!-- NEW FOOD & TRAVEL LINK -->
+                        <a href="#" id="food-link" class="theme-text-secondary hover:theme-text-primary font-medium transition-colors duration-300 flex items-center gap-1">
+                            <i class="fas fa-utensils text-sm"></i> Food & Travel
+                        </a>
                         <a href="#" id="timing-link" class="theme-text-secondary hover:theme-text-primary font-medium transition-colors duration-300">Mandir Timing</a>
                         <a href="#" id="about-link" class="theme-text-secondary hover:theme-text-primary font-medium transition-colors duration-300">About Us</a>
                         <a href="#" id="contact-link" class="theme-text-secondary hover:theme-text-primary font-medium transition-colors duration-300">Contact</a>
@@ -340,6 +345,7 @@
             <div id="mobile-menu" class="hidden md:hidden px-6 pb-4 glass-card rounded-b-2xl -mt-2">
                  <a href="#" id="mobile-home-link" class="block py-2 text-center theme-text-secondary hover:theme-text-primary">Home</a>
                  <a href="#" id="mobile-places-link" class="block py-2 text-center theme-text-secondary hover:theme-text-primary">Nearby Places</a>
+                 <a href="#" id="mobile-food-link" class="block py-2 text-center theme-text-secondary hover:theme-text-primary">Food & Travel</a>
                  <a href="#" id="mobile-timing-link" class="block py-2 text-center theme-text-secondary hover:theme-text-primary">Mandir Timing</a>
                  <a href="#" id="mobile-about-link" class="block py-2 text-center theme-text-secondary hover:theme-text-primary">About Us</a>
                  <a href="#" id="mobile-contact-link" class="block py-2 text-center theme-text-secondary hover:theme-text-primary">Contact</a>
@@ -416,6 +422,18 @@
                 <div class="text-center p-8">
                     <p class="theme-text-secondary">Loading places...</p>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Food & Travel Info Modal -->
+    <div id="food-travel-modal" class="modal-backdrop hidden">
+        <div class="modal-content-food glass-card p-6 relative flex flex-col h-[90vh]">
+            <button id="close-food-modal" class="absolute top-4 right-4 theme-text-secondary hover:theme-text-primary transition-colors text-3xl z-50">&times;</button>
+            <h2 class="text-3xl font-bold theme-accent-color page-title mb-6 text-center">Food & Travel Info</h2>
+            
+            <div id="food-travel-container" class="overflow-y-auto pr-2 flex-grow">
+                <!-- Content injected via JS -->
             </div>
         </div>
     </div>
@@ -551,6 +569,80 @@
         // --- REPLACE THIS WITH YOUR SHEET 2 CSV LINK ---
         const googleSheetUrlPlaces = 'https://docs.google.com/spreadsheets/d/e/YOUR_SHEET_2_ID/pub?gid=YOUR_GID&output=csv'; 
 
+        // --- DUMMY DATA FOR FOOD & TRAVEL ---
+        const foodData = [
+            {
+                name: "Dwarkadhish Bhojanalay",
+                type: "Gujarati Thali",
+                category: "meal",
+                address: "Near Temple Gate, Main Market",
+                map_link: "https://maps.app.goo.gl/dummyLink1"
+            },
+            {
+                name: "Shrinathji Dining Hall",
+                type: "Lunch / Dinner",
+                category: "meal",
+                address: "Bhadrakali Road, Dwarka",
+                map_link: "https://maps.app.goo.gl/dummyLink2"
+            },
+            {
+                name: "Chai Thela",
+                type: "Best Masala Chai",
+                category: "beverage",
+                address: "Gomti Ghat Steps",
+                map_link: "https://maps.app.goo.gl/dummyLink3"
+            },
+            {
+                name: "Govinda's Restaurant",
+                type: "Multi-Cuisine",
+                category: "meal",
+                address: "ISKCON Gate, Dwarka",
+                map_link: "https://maps.app.goo.gl/dummyLink4"
+            },
+            {
+                name: "Katu Shyam Nasta House",
+                type: "Khaman / Dhokla",
+                category: "snack",
+                address: "Teen Batti Chowk",
+                map_link: "https://maps.app.goo.gl/dummyLink5"
+            },
+            {
+                name: "Jay Jalaram Farsan",
+                type: "Samosa / Kachori",
+                category: "snack",
+                address: "Station Road",
+                map_link: "#"
+            }
+        ];
+
+        const driverData = [
+            {
+                name: "Ramesh Bhai",
+                vehicle: "Auto Rickshaw",
+                contact: "9876543210"
+            },
+            {
+                name: "Suresh Kumar",
+                vehicle: "Taxi (Innova)",
+                contact: "9123456780"
+            },
+            {
+                name: "Dinesh Bhai",
+                vehicle: "Chhakda (Local)",
+                contact: "9988776655"
+            },
+            {
+                name: "Rajesh Tours",
+                vehicle: "Taxi (Ertiga)",
+                contact: "9000011111"
+            },
+            {
+                name: "Mahesh Auto",
+                vehicle: "Auto Rickshaw",
+                contact: "8888899999"
+            }
+        ];
+
         // --- GLOBAL VARIABLES ---
         let groupedData = {};
         // UPDATED PLACES DATA WITH DISTANCE FROM MANDIR AND RENTS
@@ -671,7 +763,9 @@
         const paymentModal = document.getElementById('payment-modal');
         const timingModal = document.getElementById('timing-modal');
         const placesModal = document.getElementById('places-modal');
+        const foodTravelModal = document.getElementById('food-travel-modal');
         const placesContainer = document.getElementById('places-container');
+        const foodTravelContainer = document.getElementById('food-travel-container');
         const contactForm = document.getElementById('contact-form');
         const successModal = document.getElementById('success-modal');
         const yearFilter = document.getElementById('year-filter');
@@ -692,7 +786,7 @@
             }
         };
 
-        // --- Helper function to get Day Name ---
+        // ... (Helper Functions stay the same) ...
         function getWeekdayName(dateStr) {
             if (!dateStr) return '';
             try {
@@ -709,7 +803,6 @@
             } catch (e) { return ''; }
         }
 
-        // Helper for direct text copying
         window.copyText = function(text) {
             if (!text) return;
             const textArea = document.createElement("textarea");
@@ -748,6 +841,142 @@
             }, 2000);
         }
 
+        // --- NEW: Render Food & Travel Function ---
+        function renderFoodAndTravel() {
+            const categorizedFood = {
+                meal: foodData.filter(f => f.category === 'meal'),
+                beverage: foodData.filter(f => f.category === 'beverage'),
+                snack: foodData.filter(f => f.category === 'snack')
+            };
+
+            let html = `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Left Side: Food Options -->
+                    <div class="space-y-6">
+                        
+                        <!-- Meals Section -->
+                        ${categorizedFood.meal.length > 0 ? `
+                        <div class="space-y-3">
+                            <div class="sticky top-0 bg-white/10 backdrop-blur-md z-10 py-1 mb-2 border-b border-gray-500/20">
+                                <h3 class="text-xl font-bold theme-text-primary text-center flex items-center justify-center gap-2">
+                                    <i class="fas fa-concierge-bell theme-accent-color"></i> Lunch / Dinner
+                                </h3>
+                            </div>
+                            ${categorizedFood.meal.map(food => `
+                                <div class="p-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-gray-800/50 shadow-sm hover:shadow-md transition-all">
+                                    <div class="flex justify-between items-start">
+                                        <div>
+                                            <h4 class="font-bold theme-text-primary">${food.name}</h4>
+                                            <p class="text-xs theme-accent-color font-semibold">${food.type}</p>
+                                            <p class="text-xs theme-text-secondary mt-1"><i class="fas fa-map-marker-alt mr-1"></i> ${food.address}</p>
+                                        </div>
+                                        <a href="${food.map_link}" target="_blank" class="p-2 rounded-full bg-blue-100 text-blue-600 hover:bg-blue-200 transition-colors">
+                                            <i class="fas fa-location-arrow"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>` : ''}
+
+                        <!-- Beverages Section -->
+                        ${categorizedFood.beverage.length > 0 ? `
+                        <div class="space-y-3">
+                            <div class="sticky top-0 bg-white/10 backdrop-blur-md z-10 py-1 mb-2 border-b border-gray-500/20">
+                                <h3 class="text-xl font-bold theme-text-primary text-center flex items-center justify-center gap-2">
+                                    <i class="fas fa-mug-hot theme-accent-color"></i> Chai / Coffee / Drinks
+                                </h3>
+                            </div>
+                            ${categorizedFood.beverage.map(food => `
+                                <div class="p-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-gray-800/50 shadow-sm hover:shadow-md transition-all">
+                                    <div class="flex justify-between items-start">
+                                        <div>
+                                            <h4 class="font-bold theme-text-primary">${food.name}</h4>
+                                            <p class="text-xs theme-accent-color font-semibold">${food.type}</p>
+                                            <p class="text-xs theme-text-secondary mt-1"><i class="fas fa-map-marker-alt mr-1"></i> ${food.address}</p>
+                                        </div>
+                                        <a href="${food.map_link}" target="_blank" class="p-2 rounded-full bg-blue-100 text-blue-600 hover:bg-blue-200 transition-colors">
+                                            <i class="fas fa-location-arrow"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>` : ''}
+
+                        <!-- Snacks Section -->
+                        ${categorizedFood.snack.length > 0 ? `
+                        <div class="space-y-3">
+                            <div class="sticky top-0 bg-white/10 backdrop-blur-md z-10 py-1 mb-2 border-b border-gray-500/20">
+                                <h3 class="text-xl font-bold theme-text-primary text-center flex items-center justify-center gap-2">
+                                    <i class="fas fa-hamburger theme-accent-color"></i> Fast Food / Snacks
+                                </h3>
+                            </div>
+                            ${categorizedFood.snack.map(food => `
+                                <div class="p-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-gray-800/50 shadow-sm hover:shadow-md transition-all">
+                                    <div class="flex justify-between items-start">
+                                        <div>
+                                            <h4 class="font-bold theme-text-primary">${food.name}</h4>
+                                            <p class="text-xs theme-accent-color font-semibold">${food.type}</p>
+                                            <p class="text-xs theme-text-secondary mt-1"><i class="fas fa-map-marker-alt mr-1"></i> ${food.address}</p>
+                                        </div>
+                                        <a href="${food.map_link}" target="_blank" class="p-2 rounded-full bg-blue-100 text-blue-600 hover:bg-blue-200 transition-colors">
+                                            <i class="fas fa-location-arrow"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>` : ''}
+
+                    </div>
+
+                    <!-- Right Side: Travel Info -->
+                    <div class="space-y-4">
+                        <div class="sticky top-0 bg-white/10 backdrop-blur-md z-10 py-2 mb-2 border-b border-gray-500/20">
+                            <h3 class="text-xl font-bold theme-text-primary text-center flex items-center justify-center gap-2">
+                                <i class="fas fa-taxi theme-accent-color"></i> Auto & Taxi Drivers
+                            </h3>
+                        </div>
+
+                        <!-- Travel Warning Box -->
+                        <div class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-700 rounded-xl p-4 text-sm text-yellow-800 dark:text-yellow-200 mb-4 shadow-sm">
+                            <p class="font-bold flex items-center mb-2"><i class="fas fa-exclamation-triangle mr-2 text-yellow-600"></i> Important Warning:</p>
+                            <p class="mb-3 leading-relaxed opacity-90">These driver numbers belong to private travel owners. Please <strong>decide the price and location first</strong> before booking. Prices may increase or decrease based on the exact location.</p>
+                            <div class="pt-3 border-t border-yellow-200 dark:border-yellow-700/50">
+                                <a href="tel:9824594156" class="font-bold theme-accent-color hover:underline flex items-center justify-center gap-2">
+                                    <i class="fas fa-phone-volume animate-pulse"></i> Call me before choosing best driver, I will definitely help!
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3">
+                            ${driverData.map(driver => `
+                                <div class="p-4 rounded-xl border border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-gray-800/50 shadow-sm hover:shadow-md transition-all">
+                                    <div class="flex justify-between items-center">
+                                        <div class="flex items-center gap-3">
+                                            <div class="h-10 w-10 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-600">
+                                                <i class="fas ${driver.vehicle.toLowerCase().includes('auto') ? 'fa-motorcycle' : 'fa-car'}"></i>
+                                            </div>
+                                            <div>
+                                                <h4 class="font-bold theme-text-primary">${driver.name}</h4>
+                                                <p class="text-xs theme-text-secondary">${driver.vehicle}</p>
+                                            </div>
+                                        </div>
+                                        <a href="tel:${driver.contact}" class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-green-100 text-green-700 hover:bg-green-200 transition-colors">
+                                            <i class="fas fa-phone-alt text-xs"></i>
+                                            <span class="text-sm font-bold">${driver.contact}</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            foodTravelContainer.innerHTML = html;
+        }
+
+        // ... (Rest of existing functions: setupDropdowns, populateDateMonthDropdown, autoSelectNextTrip, startCountdown, attachModalListeners, etc.) ...
+        
         function setupDropdowns() {
             const years = Object.keys(groupedData).sort();
             yearFilter.innerHTML = '<option value="">-- Select a Journey Year --</option>';
@@ -762,21 +991,17 @@
             datesContainer.innerHTML = `<p class="text-center theme-text-secondary p-10">Please select a year and date to see booking details.</p>`;
         }
 
-        // --- NEW: Function to Populate Date/Month Dropdown Independently ---
         function populateDateMonthDropdown(selectedYear) {
             dateMonthFilter.innerHTML = '<option value="">-- Select a Journey Date --</option>';
-            
             if (selectedYear && groupedData[selectedYear]) {
                 dateMonthFilter.disabled = false;
                 const dateMonths = Object.keys(groupedData[selectedYear]);
                 dateMonths.forEach(dm => {
                     const option = document.createElement('option');
                     option.value = dm;
-                    
                     const fullDateString = `${dm} ${selectedYear}`;
                     const dayName = getWeekdayName(fullDateString);
                     option.textContent = dayName ? `${dm} (${dayName})` : dm;
-                    
                     dateMonthFilter.appendChild(option);
                 });
             } else {
@@ -785,32 +1010,20 @@
             }
         }
 
-        // --- NEW: Auto Select Next Trip Function ---
         function autoSelectNextTrip() {
             const now = new Date();
-            // Reset time to start of day for accurate comparison
             now.setHours(0,0,0,0);
-            
             let targetYear = null;
             let targetDateMonth = null;
-
-            // Find the next Poonam date from schedule that is >= today
             for (const date of poonamDates) {
                  const monthIndex = new Date(Date.parse(date.month +" 1, 2012")).getMonth();
                  const tripDate = new Date(date.year, monthIndex, date.day);
-
-                 // Check if tripDate is today or future
                  if (tripDate >= now) {
                      const potentialYear = date.year.toString();
-                     
-                     // Try both "9 August" and "09 August" format to be safe
                      const dayStr = date.day.toString();
                      const paddedDayStr = dayStr.padStart(2, '0');
-                     
                      const potentialDateMonth1 = `${dayStr} ${date.month}`; 
                      const potentialDateMonth2 = `${paddedDayStr} ${date.month}`;
-
-                     // CRITICAL CHECK: Do we actually have data for this date in the CSV?
                      if (groupedData[potentialYear]) {
                          if (groupedData[potentialYear][potentialDateMonth1]) {
                              targetYear = potentialYear;
@@ -824,19 +1037,10 @@
                      }
                  }
             }
-
-            // If we found a valid upcoming trip with data, load it!
             if (targetYear && targetDateMonth) {
-                // 1. Set Year Dropdown
                 yearFilter.value = targetYear;
-                
-                // 2. Populate Date Dropdown based on Year
                 populateDateMonthDropdown(targetYear);
-                
-                // 3. Set Date Dropdown
                 dateMonthFilter.value = targetDateMonth;
-                
-                // 4. Render the cards
                 renderCards(targetYear, targetDateMonth);
             }
         }
@@ -844,7 +1048,6 @@
         function startCountdown() {
             const now = new Date();
             let nextPoonamDate = null;
-
             for (const date of poonamDates) {
                 const monthIndex = new Date(Date.parse(date.month +" 1, 2012")).getMonth();
                 const poonamDateTime = new Date(date.year, monthIndex, date.day);
@@ -853,12 +1056,10 @@
                     break;
                 }
             }
-
             if (!nextPoonamDate) {
                 countdownContainer.innerHTML = `<h2 class="text-2xl text-center theme-accent-color">All scheduled journeys for this period are complete.</h2>`;
                 return;
             }
-
             const nextPoonamMonthYear = `${nextPoonamDate.toLocaleString('default', { month: 'long' })} ${nextPoonamDate.getFullYear()}`;
             countdownContainer.innerHTML = `
                 <div class="text-center">
@@ -871,32 +1072,26 @@
                     </div>
                 </div>
             `;
-
             const daysEl = document.getElementById('days');
             const hoursEl = document.getElementById('hours');
             const minutesEl = document.getElementById('minutes');
             const secondsEl = document.getElementById('seconds');
-
             const timerInterval = setInterval(() => {
                 const now = new Date().getTime();
                 const distance = nextPoonamDate - now;
-
                 if (distance < 0) {
                     clearInterval(timerInterval);
                     startCountdown();
                     return;
                 }
-
                 const days = Math.floor(distance / (1000 * 60 * 60 * 24));
                 const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                 const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
                 daysEl.textContent = String(days).padStart(2, '0');
                 hoursEl.textContent = String(hours).padStart(2, '0');
                 minutesEl.textContent = String(minutes).padStart(2, '0');
                 secondsEl.textContent = String(seconds).padStart(2, '0');
-
             }, 1000);
         }
 
@@ -937,7 +1132,6 @@
             const originalHTML = button.innerHTML;
             button.disabled = true;
             button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 theme-text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>`;
-
             setTimeout(() => {
                 button.innerHTML = originalHTML;
                 button.disabled = false;
@@ -973,6 +1167,8 @@
             });
         }
 
+        // ... (Render Functions: renderCards, createExpenseCard, createStayCard, createTravelCard, renderPlaces, fetchPlacesData, parseCSV, fetchAndProcessData, populateTimings stay the same) ...
+        
         function renderCards(year, dateMonth) {
             const bookings = groupedData[year]?.[dateMonth];
             if (!bookings) {
@@ -1256,22 +1452,17 @@
                 </div>`;
         }
 
-        // --- NEW: Render Nearby Places Function ---
         function renderPlaces() {
             const dataToRender = placesData.length > 0 ? placesData : dummyPlacesData;
-            
             if (dataToRender.length === 0) {
                 placesContainer.innerHTML = `<p class="text-center theme-text-secondary">No places information available at the moment.</p>`;
                 return;
             }
-
             let html = '<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">';
-            
             dataToRender.forEach(place => {
                 const imgUrl = place.image_url && place.image_url.trim() !== '' 
                     ? place.image_url 
                     : 'https://placehold.co/600x400/orange/white?text=' + encodeURIComponent(place.place_name);
-
                 html += `
                     <div class="place-card rounded-xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 flex flex-col h-full">
                         <div class="h-48 overflow-hidden relative group">
@@ -1308,18 +1499,15 @@
                     </div>
                 `;
             });
-            
             html += '</div>';
             placesContainer.innerHTML = html;
         }
 
-        // --- NEW: Fetch Places Data Function ---
         async function fetchPlacesData() {
             if (googleSheetUrlPlaces.includes('YOUR_SHEET_2_ID')) {
                 renderPlaces();
                 return;
             }
-
             try {
                 const response = await fetch(`${googleSheetUrlPlaces}&_=${new Date().getTime()}`);
                 if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
@@ -1332,7 +1520,6 @@
             }
         }
 
-        // --- Function to parse CSV ---
         function parseCSV(csvText) {
             const lines = csvText.split(/\r?\n/).filter(line => line.trim());
             if (lines.length < 2) return [];
@@ -1351,13 +1538,11 @@
             return data;
         }
 
-        // --- Function to fetch and process data ---
         async function fetchAndProcessData() {
             if (!googleSheetUrl || googleSheetUrl.includes('YOUR_GOOGLE_SHEET')) {
                 datesContainer.innerHTML = `<p class="text-center text-red-400 p-10">Please add your Google Sheet CSV link in the script.</p>`;
                 return;
             }
-
             datesContainer.innerHTML = `
                 <div class="text-center p-10">
                     <svg aria-hidden="true" class="inline w-10 h-10 theme-text-secondary animate-spin" style="fill: var(--accent-color)" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1370,47 +1555,37 @@
             try {
                 const response = await fetch(`${googleSheetUrl}&_=${new Date().getTime()}`);
                 if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-
                 const csvText = await response.text();
                 const allBookingsData = parseCSV(csvText);
-
                 groupedData = allBookingsData.reduce((acc, row) => {
                     if (row.year && row.date_month) {
                         const { year, date_month } = row;
                         if (!acc[year]) acc[year] = {};
                         if (!acc[year][date_month]) acc[year][date_month] = [];
-
                         const key = `${row.type}-${row.booking_no_pnr || Math.random()}`;
                         let booking = acc[year][date_month].find(b => b.key === key);
-
                         if (!booking) {
                             booking = { ...row, passengers: [], key: key };
                             acc[year][date_month].push(booking);
                         }
-
                         if (row.guest_name) {
                             booking.passengers.push(row);
                         }
                     }
                     return acc;
                 }, {});
-
                 setupDropdowns();
-                // --- TRIGGER AUTO SELECT ---
                 autoSelectNextTrip();
-
             } catch (error) {
                 console.error('Error fetching or processing data:', error);
                 datesContainer.innerHTML = `<p class="text-center text-red-400 p-10">Error loading booking data. Please check the data source and network connection.</p>`;
             }
         }
 
-        // --- Mandir Timing Function ---
         const populateTimings = () => {
             const scheduleContainer = document.getElementById('timing-schedule');
             const now = new Date();
             const currentTime = now.getHours() + now.getMinutes() / 60;
-            
             const mandirTimings = [
                 { time: "6:30 AM", event: "Mangla Aarti", type: "open", start: 6.5, end: 8.0 },
                 { time: "8:00 AM - 9:00 AM", event: "Mangla Darshan", type: "open", start: 8.0, end: 9.0 },
@@ -1433,20 +1608,17 @@
                 { time: "8:35 PM", event: "Shayan Aarti", type: "open", start: 20.58, end: 21.0 },
                 { time: "9:00 PM", event: "Mandir Closed", type: "closed", start: 21.0, end: 24.0 }
             ];
-
             const dhwajaTimings = [
                 { event: "First Dhwaja Arohan", time: "7:00 AM - 8:30 AM", start: 7.0, end: 8.5 },
                 { event: "Second Dhwaja Arohan", time: "8:39 AM - 10:30 AM", start: 8.65, end: 10.5 },
                 { event: "Third Dhwaja Arohan", time: "10:30 AM - 12:30 PM", start: 10.5, end: 12.5 },
                 { event: "Fourth Dhwaja Arohan", time: "5:30 PM", start: 17.0, end: 18.5 } 
             ];
-
             let mandirHtml = '';
             mandirTimings.forEach(item => {
                 const isCurrent = currentTime >= item.start && currentTime < item.end;
                 const colorClass = item.type === 'open' ? 'text-green-500' : 'text-red-400';
                 const currentClass = isCurrent ? 'current-timing ring-2 ring-offset-1 ring-orange-400' : '';
-
                 mandirHtml += `
                     <div class="flex justify-between items-center p-2 rounded-lg ${currentClass} hover:bg-black/5 dark:hover:bg-white/5 transition-colors text-sm mb-1">
                         <span class="font-medium theme-text-primary">${item.event}</span>
@@ -1454,13 +1626,11 @@
                     </div>
                 `;
             });
-
             let dhwajaHtml = '';
             dhwajaTimings.forEach(item => {
                 const isCurrent = currentTime >= item.start && currentTime < item.end;
                 const activeClass = isCurrent ? 'current-timing ring-2 ring-offset-1 ring-orange-400' : '';
                 const timeColor = isCurrent ? 'text-green-500' : 'theme-accent-color';
-
                 dhwajaHtml += `
                     <div class="flex justify-between items-center p-3 rounded-lg ${activeClass} hover:bg-black/5 dark:hover:bg-white/5 transition-colors text-sm mb-2 shadow-sm" style="background:var(--input-bg)">
                         <span class="font-medium theme-text-primary flex items-center gap-2">
@@ -1470,10 +1640,8 @@
                     </div>
                 `;
             });
-
             scheduleContainer.innerHTML = `
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-                    <!-- Mandir Darshan Column -->
                     <div>
                         <div class="sticky top-0 bg-white/10 backdrop-blur-md z-10 py-2 mb-2 border-b border-gray-500/20">
                             <h3 class="text-xl font-bold theme-text-primary text-center flex items-center justify-center gap-2">
@@ -1484,8 +1652,6 @@
                             ${mandirHtml}
                         </div>
                     </div>
-
-                    <!-- Dhwaja Arohan Column -->
                     <div>
                         <div class="sticky top-0 bg-white/10 backdrop-blur-md z-10 py-2 mb-2 border-b border-gray-500/20">
                             <h3 class="text-xl font-bold theme-text-primary text-center flex items-center justify-center gap-2">
@@ -1504,12 +1670,10 @@
         };
 
         document.addEventListener('DOMContentLoaded', async function() {
-            // ... existing theme toggle logic ...
             const themeToggle = document.getElementById('theme-toggle');
             const sunIcon = document.getElementById('sun-icon');
             const moonIcon = document.getElementById('moon-icon');
             const htmlTag = document.documentElement;
-
             function updateThemeIcons(isDarkMode) {
                 moonIcon.classList.toggle('hidden', !isDarkMode);
                 sunIcon.classList.toggle('hidden', isDarkMode);
@@ -1528,7 +1692,6 @@
             htmlTag.classList.toggle('light', !isDark);
             updateThemeIcons(isDark);
 
-            // --- Original Event Listeners ---
             if(closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
             if(modal) modal.addEventListener('click', (event) => { if (event.target === modal) closeModal(); });
 
@@ -1553,14 +1716,24 @@
                     }
                 });
             });
+            // NEW LISTENER FOR FOOD & TRAVEL LINK
+            document.querySelectorAll('#food-link, #mobile-food-link').forEach(link => {
+                link.addEventListener('click', (e) => { 
+                    e.preventDefault(); 
+                    foodTravelModal.classList.remove('hidden'); 
+                    // Render content when modal opens
+                    renderFoodAndTravel();
+                });
+            });
 
             document.getElementById('close-about-modal').addEventListener('click', () => aboutModal.classList.add('hidden'));
             document.getElementById('close-contact-modal').addEventListener('click', () => contactModal.classList.add('hidden'));
             document.getElementById('close-payment-modal').addEventListener('click', () => paymentModal.classList.add('hidden'));
             document.getElementById('close-timing-modal').addEventListener('click', () => timingModal.classList.add('hidden'));
             document.getElementById('close-places-modal').addEventListener('click', () => placesModal.classList.add('hidden'));
+            document.getElementById('close-food-modal').addEventListener('click', () => foodTravelModal.classList.add('hidden'));
 
-            [aboutModal, contactModal, paymentModal, timingModal, successModal, placesModal].forEach(m => {
+            [aboutModal, contactModal, paymentModal, timingModal, successModal, placesModal, foodTravelModal].forEach(m => {
                  m.addEventListener('click', (e) => { if(e.target === m) m.classList.add('hidden'); });
             });
 
@@ -1594,11 +1767,10 @@
             document.getElementById('home-link').addEventListener('click', (e) => { e.preventDefault(); window.location.reload(); });
             document.getElementById('mobile-home-link').addEventListener('click', (e) => { e.preventDefault(); window.location.reload(); });
 
-            // --- REFACTORED YEAR FILTER LOGIC ---
             yearFilter.addEventListener('change', (e) => {
                 const selectedYear = e.target.value;
                 datesContainer.innerHTML = '';
-                populateDateMonthDropdown(selectedYear); // Using the new helper function
+                populateDateMonthDropdown(selectedYear); 
             });
 
             dateMonthFilter.addEventListener('change', (e) => {
@@ -1611,7 +1783,6 @@
                 }
             });
 
-            // --- Initial calls to set up the site ---
             await fetchAndProcessData();
             startCountdown();
             populateTimings();
