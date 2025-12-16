@@ -141,8 +141,8 @@
             transform: scale(0.95); opacity: 0;
             transition: transform 0.2s ease-out, opacity 0.2s ease-out;
         }
-        /* New responsive class for Places Modal */
-        .modal-content-places, .modal-content-food {
+        /* New responsive class for Places/Food/Stay Modal */
+        .modal-content-places, .modal-content-food, .modal-content-stay {
             width: 95%; /* Mobile width */
             max-width: 1100px; /* Desktop max width */
             max-height: 90vh;
@@ -154,7 +154,8 @@
         .modal-backdrop:not(.hidden) .modal-content,
         .modal-backdrop:not(.hidden) .modal-content-ticket,
         .modal-backdrop:not(.hidden) .modal-content-places,
-        .modal-backdrop:not(.hidden) .modal-content-food {
+        .modal-backdrop:not(.hidden) .modal-content-food,
+        .modal-backdrop:not(.hidden) .modal-content-stay {
             transform: scale(1); opacity: 1;
         }
         .modal-content { width: 90%; max-width: 600px; max-height: 90vh; overflow-y: auto; }
@@ -319,13 +320,15 @@
                 <div class="flex items-center space-x-2">
                     <div class="hidden md:flex items-center space-x-6">
                         <a href="#" id="home-link" class="theme-text-secondary hover:theme-text-primary font-medium transition-colors duration-300">Home</a>
-                        <!-- NEW NEARBY PLACES LINK -->
                         <a href="#" id="places-link" class="theme-text-secondary hover:theme-text-primary font-medium transition-colors duration-300 flex items-center gap-1">
                             <i class="fas fa-map-location-dot text-sm"></i> Nearby Places
                         </a>
-                        <!-- NEW FOOD & TRAVEL LINK -->
                         <a href="#" id="food-link" class="theme-text-secondary hover:theme-text-primary font-medium transition-colors duration-300 flex items-center gap-1">
                             <i class="fas fa-utensils text-sm"></i> Food & Travel
+                        </a>
+                        <!-- NEW BEST STAY LINK -->
+                        <a href="#" id="stay-link" class="theme-text-secondary hover:theme-text-primary font-medium transition-colors duration-300 flex items-center gap-1">
+                            <i class="fas fa-bed text-sm"></i> Best Stay
                         </a>
                         <a href="#" id="timing-link" class="theme-text-secondary hover:theme-text-primary font-medium transition-colors duration-300">Mandir Timing</a>
                         <a href="#" id="about-link" class="theme-text-secondary hover:theme-text-primary font-medium transition-colors duration-300">About Us</a>
@@ -346,6 +349,7 @@
                  <a href="#" id="mobile-home-link" class="block py-2 text-center theme-text-secondary hover:theme-text-primary">Home</a>
                  <a href="#" id="mobile-places-link" class="block py-2 text-center theme-text-secondary hover:theme-text-primary">Nearby Places</a>
                  <a href="#" id="mobile-food-link" class="block py-2 text-center theme-text-secondary hover:theme-text-primary">Food & Travel</a>
+                 <a href="#" id="mobile-stay-link" class="block py-2 text-center theme-text-secondary hover:theme-text-primary">Best Stay</a>
                  <a href="#" id="mobile-timing-link" class="block py-2 text-center theme-text-secondary hover:theme-text-primary">Mandir Timing</a>
                  <a href="#" id="mobile-about-link" class="block py-2 text-center theme-text-secondary hover:theme-text-primary">About Us</a>
                  <a href="#" id="mobile-contact-link" class="block py-2 text-center theme-text-secondary hover:theme-text-primary">Contact</a>
@@ -433,6 +437,18 @@
             <h2 class="text-3xl font-bold theme-accent-color page-title mb-6 text-center">Food & Travel Info</h2>
             
             <div id="food-travel-container" class="overflow-y-auto pr-2 flex-grow">
+                <!-- Content injected via JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Best Stay Modal (NEW) -->
+    <div id="stay-modal" class="modal-backdrop hidden">
+        <div class="modal-content-stay glass-card p-6 relative flex flex-col h-[90vh]">
+            <button id="close-stay-modal" class="absolute top-4 right-4 theme-text-secondary hover:theme-text-primary transition-colors text-3xl z-50">&times;</button>
+            <h2 class="text-3xl font-bold theme-accent-color page-title mb-6 text-center">Best Stay Options</h2>
+            
+            <div id="stay-container" class="overflow-y-auto pr-2 flex-grow">
                 <!-- Content injected via JS -->
             </div>
         </div>
@@ -568,6 +584,68 @@
         const googleSheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSqINNmQ6CtGixfyo5goqhTKfVwIMGjQi_5MIc4FtTx053jXO2QftjgUt26XLQXE8Ld7kt7VEPK4TJO/pub?output=csv';
         // --- REPLACE THIS WITH YOUR SHEET 2 CSV LINK ---
         const googleSheetUrlPlaces = 'https://docs.google.com/spreadsheets/d/e/YOUR_SHEET_2_ID/pub?gid=YOUR_GID&output=csv'; 
+
+        // --- DUMMY DATA FOR BEST STAY ---
+        const stayData = [
+            // Dharamshalas (Updated)
+            {
+                name: "Dwarka - Gayatri Shantivan",
+                type: "dharamshala",
+                image: "https://yatrinivash.in/assets/State/Gujarat/Dwarka%20-%20Gayatri%20Shantivan/2021-11-09.jpg",
+                cost: "₹",
+                address: "Ratneshwar Road, Opp. Dwarkadhish Lords Eco Inn",
+                map_link: "https://maps.app.goo.gl/uSk6NsX54caaTXEG9",
+                food: { available: true, price: "Facility Available" },
+                contact: "9824594156",
+                distance: "2.0 km"
+            },
+            {
+                name: "Shri Swaminarayan Bhaktidham",
+                type: "dharamshala",
+                image: "https://www.yatrinivash.in/assets/State/Gujarat/Dwarka%20-%20Swaminarayan%20Bhakti%20Dham/180106_1bce88bb9b0dc7bfce9a96a882a58c52_600.jpg",
+                cost: "₹₹",
+                address: "Nageshwar Road, Near Railway Crossing",
+                map_link: "https://maps.app.goo.gl/ve2zngjhoskevhDq5",
+                food: { available: true, price: "Facility Available" },
+                contact: "9824594156",
+                distance: "2.5 km"
+            },
+            
+            // Hotels
+            {
+                name: "Hotel Vraj Inn",
+                type: "hotel",
+                image: "https://cf.bstatic.com/xdata/images/hotel/max1024x768/123456.jpg", // Placeholder
+                cost: "₹₹₹",
+                address: "Teen Batti Chowk",
+                map_link: "https://maps.app.goo.gl/dummyStay4",
+                food: { available: true, price: "Restaurant Menu" },
+                contact: "02892-234000",
+                distance: "0.8 km"
+            },
+            {
+                name: "Hawthorn Suites by Wyndham",
+                type: "hotel",
+                image: "https://cf.bstatic.com/xdata/images/hotel/max1024x768/789012.jpg", // Placeholder
+                cost: "₹₹₹₹₹",
+                address: "Porbandar - Dwarka Highway",
+                map_link: "https://maps.app.goo.gl/dummyStay5",
+                food: { available: true, price: "Luxury Dining" },
+                contact: "02892-235000",
+                distance: "6 km"
+            },
+            {
+                name: "Hotel Gomti (TCGL)",
+                type: "hotel",
+                image: "https://gujarattourism.com/content/dam/gujrattourism/images/hotels/hotel-gomti/Thumbnail.jpg", // Placeholder
+                cost: "₹₹",
+                address: "Near Dwarkadhish Temple",
+                map_link: "https://maps.app.goo.gl/dummyStay6",
+                food: { available: true, price: "A la carte" },
+                contact: "02892-234111",
+                distance: "0.5 km"
+            }
+        ];
 
         // --- DUMMY DATA FOR FOOD & TRAVEL ---
         const foodData = [
@@ -764,8 +842,10 @@
         const timingModal = document.getElementById('timing-modal');
         const placesModal = document.getElementById('places-modal');
         const foodTravelModal = document.getElementById('food-travel-modal');
+        const stayModal = document.getElementById('stay-modal');
         const placesContainer = document.getElementById('places-container');
         const foodTravelContainer = document.getElementById('food-travel-container');
+        const stayContainer = document.getElementById('stay-container');
         const contactForm = document.getElementById('contact-form');
         const successModal = document.getElementById('success-modal');
         const yearFilter = document.getElementById('year-filter');
@@ -839,6 +919,89 @@
                 welcomePopup.querySelector('.welcome-content').classList.remove('welcome-content-visible');
                 setTimeout(() => { welcomePopup.style.display = 'none'; }, 500);
             }, 2000);
+        }
+
+        // --- NEW: Render Best Stay Function ---
+        function renderStayInfo() {
+            const dharamshalas = stayData.filter(s => s.type === 'dharamshala');
+            const hotels = stayData.filter(s => s.type === 'hotel');
+
+            let html = `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Left Side: Dharamshalas -->
+                    <div class="space-y-4">
+                        <div class="sticky top-0 bg-white/10 backdrop-blur-md z-10 py-2 mb-2 border-b border-gray-500/20">
+                            <h3 class="text-xl font-bold theme-text-primary text-center flex items-center justify-center gap-2">
+                                <i class="fas fa-place-of-worship theme-accent-color"></i> Dharamshalas
+                            </h3>
+                        </div>
+                        <div class="space-y-4">
+                            ${dharamshalas.map(stay => `
+                                <div class="place-card rounded-xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 flex flex-col h-full">
+                                    <div class="h-40 overflow-hidden relative group">
+                                        <img src="${stay.image}" alt="${stay.name}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                                        <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/80 to-transparent p-3 flex justify-between items-end">
+                                            <h3 class="text-lg font-bold text-white">${stay.name}</h3>
+                                            <span class="bg-yellow-400 text-black text-xs font-bold px-2 py-1 rounded">${stay.cost}</span>
+                                        </div>
+                                    </div>
+                                    <div class="p-4 flex-grow flex flex-col justify-between">
+                                        <div class="space-y-2 mb-3 text-sm">
+                                            <p class="theme-text-secondary"><i class="fas fa-map-marker-alt mr-2 theme-accent-color"></i> ${stay.address}</p>
+                                            <p class="theme-text-secondary"><i class="fas fa-road mr-2 theme-accent-color"></i> ${stay.distance} from Mandir</p>
+                                            <p class="theme-text-secondary">
+                                                <i class="fas fa-utensils mr-2 theme-accent-color"></i> 
+                                                ${stay.food.available ? `<span class="text-green-600 font-semibold">Food Available (${stay.food.price || ''})</span>` : '<span class="text-red-500">No Food Facility</span>'}
+                                            </p>
+                                            ${stay.contact ? `<p class="theme-text-secondary"><i class="fas fa-phone mr-2 theme-accent-color"></i> <a href="tel:${stay.contact}" class="hover:underline">${stay.contact}</a></p>` : ''}
+                                        </div>
+                                        <a href="${stay.map_link}" target="_blank" class="w-full bg-blue-100 hover:bg-blue-200 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 dark:hover:bg-blue-800/50 py-2 rounded-lg text-center font-semibold text-sm transition-colors flex items-center justify-center gap-2">
+                                            <i class="fas fa-location-arrow"></i> Navigate
+                                        </a>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <!-- Right Side: Hotels -->
+                    <div class="space-y-4">
+                        <div class="sticky top-0 bg-white/10 backdrop-blur-md z-10 py-2 mb-2 border-b border-gray-500/20">
+                            <h3 class="text-xl font-bold theme-text-primary text-center flex items-center justify-center gap-2">
+                                <i class="fas fa-hotel theme-accent-color"></i> Hotels
+                            </h3>
+                        </div>
+                        <div class="space-y-4">
+                            ${hotels.map(stay => `
+                                <div class="place-card rounded-xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 flex flex-col h-full">
+                                    <div class="h-40 overflow-hidden relative group">
+                                        <img src="${stay.image}" alt="${stay.name}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                                        <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/80 to-transparent p-3 flex justify-between items-end">
+                                            <h3 class="text-lg font-bold text-white">${stay.name}</h3>
+                                            <span class="bg-yellow-400 text-black text-xs font-bold px-2 py-1 rounded">${stay.cost}</span>
+                                        </div>
+                                    </div>
+                                    <div class="p-4 flex-grow flex flex-col justify-between">
+                                        <div class="space-y-2 mb-3 text-sm">
+                                            <p class="theme-text-secondary"><i class="fas fa-map-marker-alt mr-2 theme-accent-color"></i> ${stay.address}</p>
+                                            <p class="theme-text-secondary"><i class="fas fa-road mr-2 theme-accent-color"></i> ${stay.distance} from Mandir</p>
+                                            <p class="theme-text-secondary">
+                                                <i class="fas fa-utensils mr-2 theme-accent-color"></i> 
+                                                ${stay.food.available ? `<span class="text-green-600 font-semibold">Restaurant Available (${stay.food.price || ''})</span>` : '<span class="text-red-500">No Restaurant</span>'}
+                                            </p>
+                                            ${stay.contact ? `<p class="theme-text-secondary"><i class="fas fa-phone mr-2 theme-accent-color"></i> <a href="tel:${stay.contact}" class="hover:underline">${stay.contact}</a></p>` : ''}
+                                        </div>
+                                        <a href="${stay.map_link}" target="_blank" class="w-full bg-blue-100 hover:bg-blue-200 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 dark:hover:bg-blue-800/50 py-2 rounded-lg text-center font-semibold text-sm transition-colors flex items-center justify-center gap-2">
+                                            <i class="fas fa-location-arrow"></i> Navigate
+                                        </a>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+            stayContainer.innerHTML = html;
         }
 
         // --- NEW: Render Food & Travel Function ---
@@ -1725,6 +1888,15 @@
                     renderFoodAndTravel();
                 });
             });
+            // NEW LISTENER FOR BEST STAY LINK
+            document.querySelectorAll('#stay-link, #mobile-stay-link').forEach(link => {
+                link.addEventListener('click', (e) => { 
+                    e.preventDefault(); 
+                    stayModal.classList.remove('hidden'); 
+                    // Render content when modal opens
+                    renderStayInfo();
+                });
+            });
 
             document.getElementById('close-about-modal').addEventListener('click', () => aboutModal.classList.add('hidden'));
             document.getElementById('close-contact-modal').addEventListener('click', () => contactModal.classList.add('hidden'));
@@ -1732,8 +1904,9 @@
             document.getElementById('close-timing-modal').addEventListener('click', () => timingModal.classList.add('hidden'));
             document.getElementById('close-places-modal').addEventListener('click', () => placesModal.classList.add('hidden'));
             document.getElementById('close-food-modal').addEventListener('click', () => foodTravelModal.classList.add('hidden'));
+            document.getElementById('close-stay-modal').addEventListener('click', () => stayModal.classList.add('hidden'));
 
-            [aboutModal, contactModal, paymentModal, timingModal, successModal, placesModal, foodTravelModal].forEach(m => {
+            [aboutModal, contactModal, paymentModal, timingModal, successModal, placesModal, foodTravelModal, stayModal].forEach(m => {
                  m.addEventListener('click', (e) => { if(e.target === m) m.classList.add('hidden'); });
             });
 
