@@ -315,39 +315,46 @@
                     <svg class="w-8 h-8 mr-2 theme-accent-color" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M3 20h18" /><path d="M7 20L12 5l5 15" /><path d="M12 5V2l5 1.5L12 2" /><path d="M8 20v-3h8v3" />
                     </svg>
-                    Jay Dwarkadhish
+                    <span class="hidden sm:inline">Jay Dwarkadhish</span>
                 </div>
                 <div class="flex items-center space-x-2">
-                    <!-- CHANGED: 'hidden md:flex' to 'hidden xl:flex' to show hamburger on laptops/tablets if space is tight -->
-                    <div class="hidden xl:flex items-center space-x-6">
-                        <a href="#" id="home-link" class="theme-text-secondary hover:theme-text-primary font-medium transition-colors duration-300">Home</a>
-                        <a href="#" id="places-link" class="theme-text-secondary hover:theme-text-primary font-medium transition-colors duration-300 flex items-center gap-1">
-                            <i class="fas fa-map-location-dot text-sm"></i> Nearby Places
+                    <!-- 
+                        RESPONSIVE NAVIGATION 
+                        - Hidden on Mobile (md:hidden) -> Replaced by Hamburger
+                        - Visible on Tablet & Desktop (md:flex) 
+                        - 'gap-1' for Tablet to squeeze items
+                        - 'lg:gap-4' for Desktop to space them out
+                    -->
+                    <div class="hidden md:flex items-center gap-1 lg:gap-4">
+                        <a href="#" id="home-link" class="theme-text-secondary hover:theme-text-primary font-medium text-[11px] lg:text-base px-1.5 py-1 rounded-lg hover:bg-white/10 transition-colors whitespace-nowrap">Home</a>
+                        <a href="#" id="places-link" class="theme-text-secondary hover:theme-text-primary font-medium text-[11px] lg:text-base px-1.5 py-1 rounded-lg hover:bg-white/10 transition-colors whitespace-nowrap flex items-center gap-1">
+                            <i class="fas fa-map-location-dot text-xs lg:text-sm"></i> Nearby
                         </a>
-                        <a href="#" id="food-link" class="theme-text-secondary hover:theme-text-primary font-medium transition-colors duration-300 flex items-center gap-1">
-                            <i class="fas fa-utensils text-sm"></i> Food & Travel
+                        <a href="#" id="food-link" class="theme-text-secondary hover:theme-text-primary font-medium text-[11px] lg:text-base px-1.5 py-1 rounded-lg hover:bg-white/10 transition-colors whitespace-nowrap flex items-center gap-1">
+                            <i class="fas fa-utensils text-xs lg:text-sm"></i> Food
                         </a>
-                        <a href="#" id="stay-link" class="theme-text-secondary hover:theme-text-primary font-medium transition-colors duration-300 flex items-center gap-1">
-                            <i class="fas fa-bed text-sm"></i> Best Stay
+                        <a href="#" id="stay-link" class="theme-text-secondary hover:theme-text-primary font-medium text-[11px] lg:text-base px-1.5 py-1 rounded-lg hover:bg-white/10 transition-colors whitespace-nowrap flex items-center gap-1">
+                            <i class="fas fa-bed text-xs lg:text-sm"></i> Stay
                         </a>
-                        <a href="#" id="timing-link" class="theme-text-secondary hover:theme-text-primary font-medium transition-colors duration-300">Mandir Timing</a>
-                        <a href="#" id="about-link" class="theme-text-secondary hover:theme-text-primary font-medium transition-colors duration-300">About Us</a>
-                        <a href="#" id="contact-link" class="theme-text-secondary hover:theme-text-primary font-medium transition-colors duration-300">Contact</a>
-                        <a href="#" id="pay-link" class="pay-button font-bold py-2 px-4 rounded-xl">Pay Me Here</a>
+                        <a href="#" id="timing-link" class="theme-text-secondary hover:theme-text-primary font-medium text-[11px] lg:text-base px-1.5 py-1 rounded-lg hover:bg-white/10 transition-colors whitespace-nowrap">Timing</a>
+                        <a href="#" id="about-link" class="theme-text-secondary hover:theme-text-primary font-medium text-[11px] lg:text-base px-1.5 py-1 rounded-lg hover:bg-white/10 transition-colors whitespace-nowrap">About</a>
+                        <a href="#" id="contact-link" class="theme-text-secondary hover:theme-text-primary font-medium text-[11px] lg:text-base px-1.5 py-1 rounded-lg hover:bg-white/10 transition-colors whitespace-nowrap">Contact</a>
+                        <a href="#" id="pay-link" class="pay-button font-bold py-1.5 px-3 lg:py-2 lg:px-4 rounded-xl text-[10px] lg:text-base whitespace-nowrap transition-all duration-300">Pay Me</a>
                     </div>
+
                     <!-- Theme Toggle -->
-                    <button id="theme-toggle" title="Toggle Theme" class="p-2 rounded-full hover:bg-black/10 dark:hover:bg-white/10 transition-colors">
-                        <svg id="sun-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="theme-text-secondary"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
-                        <svg id="moon-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden theme-text-secondary"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                    <button id="theme-toggle" title="Toggle Theme" class="p-2 rounded-full hover:bg-black/10 dark:hover:bg-white/10 transition-colors flex-shrink-0">
+                        <svg id="sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="theme-text-secondary"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                        <svg id="moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden theme-text-secondary"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
                     </button>
-                    <!-- CHANGED: 'md:hidden' to 'xl:hidden' so hamburger appears on tablets/small laptops -->
-                    <button class="xl:hidden" id="mobile-menu-button">
+
+                    <!-- Mobile Menu Button (Visible only on Mobile < md) -->
+                    <button class="md:hidden p-2" id="mobile-menu-button">
                         <svg class="w-6 h-6 theme-text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
                     </button>
                 </div>
             </nav>
-            <!-- CHANGED: 'md:hidden' to 'xl:hidden' for mobile menu container -->
-            <div id="mobile-menu" class="hidden xl:hidden px-6 pb-4 glass-card rounded-b-2xl -mt-2">
+            <div id="mobile-menu" class="hidden md:hidden px-6 pb-4 glass-card rounded-b-2xl -mt-2">
                  <a href="#" id="mobile-home-link" class="block py-2 text-center theme-text-secondary hover:theme-text-primary">Home</a>
                  <a href="#" id="mobile-places-link" class="block py-2 text-center theme-text-secondary hover:theme-text-primary">Nearby Places</a>
                  <a href="#" id="mobile-food-link" class="block py-2 text-center theme-text-secondary hover:theme-text-primary">Food & Travel</a>
