@@ -286,6 +286,44 @@
             transform: translateY(-3px);
         }
 
+        /* --- FLOATING THEME TOGGLE BUTTON --- */
+        .floating-fab {
+            position: fixed;
+            bottom: 2rem;
+            right: 1.5rem;
+            width: 3.5rem;
+            height: 3.5rem;
+            border-radius: 50%;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 60;
+            cursor: pointer;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .floating-fab:hover {
+            transform: scale(1.1);
+        }
+        .floating-fab:active {
+            transform: scale(0.95);
+        }
+
+        /* --- CHECKLIST STYLES --- */
+        .checklist-item {
+            transition: all 0.2s;
+        }
+        .checklist-item:hover {
+            background: var(--input-bg);
+        }
+        .checklist-item input:checked + span {
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+
         @media (max-width: 640px) {
             .countdown-item {
                 width: 70px; height: 70px;
@@ -293,6 +331,9 @@
             #countdown-timer { gap: 0.5rem; }
             .ticket-card::before, .ticket-card::after {
                 width: 30px; height: 30px;
+            }
+            .floating-fab {
+                bottom: 5rem; /* Adjusted for mobile to clear footer area */
             }
         }
     </style>
@@ -336,17 +377,17 @@
                         <a href="#" id="stay-link" class="theme-text-secondary hover:theme-text-primary font-medium text-[10px] lg:text-xs xl:text-base px-1.5 py-1 rounded-lg hover:bg-white/10 transition-colors whitespace-nowrap flex items-center gap-1">
                             <i class="fas fa-bed text-[10px] lg:text-xs"></i> Best Stay
                         </a>
+                        <!-- SMART CHECKLIST ADDED -->
+                        <a href="#" id="checklist-link" class="theme-text-secondary hover:theme-text-primary font-medium text-[10px] lg:text-xs xl:text-base px-1.5 py-1 rounded-lg hover:bg-white/10 transition-colors whitespace-nowrap flex items-center gap-1">
+                            <i class="fas fa-clipboard-check text-[10px] lg:text-xs"></i> Checklist
+                        </a>
                         <a href="#" id="timing-link" class="theme-text-secondary hover:theme-text-primary font-medium text-[10px] lg:text-xs xl:text-base px-1.5 py-1 rounded-lg hover:bg-white/10 transition-colors whitespace-nowrap">Mandir Timing</a>
                         <a href="#" id="about-link" class="theme-text-secondary hover:theme-text-primary font-medium text-[10px] lg:text-xs xl:text-base px-1.5 py-1 rounded-lg hover:bg-white/10 transition-colors whitespace-nowrap">About Us</a>
                         <a href="#" id="contact-link" class="theme-text-secondary hover:theme-text-primary font-medium text-[10px] lg:text-xs xl:text-base px-1.5 py-1 rounded-lg hover:bg-white/10 transition-colors whitespace-nowrap">Contact</a>
                         <a href="#" id="pay-link" class="pay-button font-bold py-1 px-2 lg:py-1.5 lg:px-3 xl:py-2 xl:px-4 rounded-xl text-[10px] lg:text-xs xl:text-base whitespace-nowrap transition-all duration-300">Pay Me Here</a>
                     </div>
 
-                    <!-- Theme Toggle -->
-                    <button id="theme-toggle" title="Toggle Theme" class="p-2 rounded-full hover:bg-black/10 dark:hover:bg-white/10 transition-colors flex-shrink-0">
-                        <svg id="sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="theme-text-secondary"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
-                        <svg id="moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden theme-text-secondary"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-                    </button>
+                    <!-- Theme Toggle REMOVED from Header, Moved to Floating Button -->
 
                     <!-- Mobile Menu Button (Visible < md) -->
                     <button class="md:hidden p-2" id="mobile-menu-button">
@@ -360,6 +401,7 @@
                  <a href="#" id="mobile-places-link" class="block py-2 text-center theme-text-secondary hover:theme-text-primary">Nearby Places</a>
                  <a href="#" id="mobile-food-link" class="block py-2 text-center theme-text-secondary hover:theme-text-primary">Food & Travel</a>
                  <a href="#" id="mobile-stay-link" class="block py-2 text-center theme-text-secondary hover:theme-text-primary">Best Stay</a>
+                 <a href="#" id="mobile-checklist-link" class="block py-2 text-center theme-text-secondary hover:theme-text-primary">Smart Checklist</a>
                  <a href="#" id="mobile-timing-link" class="block py-2 text-center theme-text-secondary hover:theme-text-primary">Mandir Timing</a>
                  <a href="#" id="mobile-about-link" class="block py-2 text-center theme-text-secondary hover:theme-text-primary">About Us</a>
                  <a href="#" id="mobile-contact-link" class="block py-2 text-center theme-text-secondary hover:theme-text-primary">Contact</a>
@@ -372,6 +414,28 @@
                 <section class="text-center mb-12">
                     <h1 class="text-4xl sm:text-5xl font-black theme-text-primary leading-tight" style="text-shadow: 0 2px 4px rgba(0,0,0,0.1);">🌕 Our Spiritual Journey to Dwarka Begins!</h1>
                     <p class="text-base sm:text-lg theme-text-secondary mt-4 max-w-3xl mx-auto">Join our sacred pilgrimage on these special Poonam days! Stay updated with all travel and booking details below.</p>
+                </section>
+
+                <!-- NEW: Weather & Crowd Section -->
+                <section id="weather-crowd-section" class="mb-12 grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- Live Weather -->
+                    <div class="glass-card p-4 flex flex-col items-center justify-center text-center">
+                        <div class="text-3xl mb-2 theme-accent-color"><i class="fas fa-cloud-sun"></i></div>
+                        <h3 class="font-bold theme-text-primary">Live Weather</h3>
+                        <p id="live-weather-text" class="text-lg font-semibold theme-text-secondary">Loading...</p>
+                    </div>
+                    <!-- Journey Forecast -->
+                    <div class="glass-card p-4 flex flex-col items-center justify-center text-center">
+                        <div class="text-3xl mb-2 theme-accent-color"><i class="fas fa-calendar-day"></i></div>
+                        <h3 class="font-bold theme-text-primary">Journey Forecast</h3>
+                        <p id="forecast-weather-text" class="text-lg font-semibold theme-text-secondary">Select a date</p>
+                    </div>
+                    <!-- Expected Crowd -->
+                    <div class="glass-card p-4 flex flex-col items-center justify-center text-center">
+                        <div class="text-3xl mb-2 text-red-500"><i class="fas fa-users"></i></div>
+                        <h3 class="font-bold theme-text-primary">Expected Crowd</h3>
+                        <p class="text-lg font-bold text-red-600">Very High (Poonam)</p>
+                    </div>
                 </section>
 
                 <!-- Countdown Timer -->
@@ -413,6 +477,12 @@
             </div>
         </footer>
     </div>
+
+    <!-- FLOATING THEME TOGGLE (MOVED HERE) -->
+    <button id="theme-toggle-fab" title="Toggle Theme" class="floating-fab">
+        <svg id="sun-icon-fab" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="theme-text-secondary"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        <svg id="moon-icon-fab" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden theme-text-secondary"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    </button>
 
     <!-- Ticket Viewer Modal -->
     <div id="ticketModal" class="modal-backdrop hidden">
@@ -460,6 +530,19 @@
             
             <div id="stay-container" class="overflow-y-auto pr-2 flex-grow">
                 <!-- Content injected via JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Smart Checklist Modal (NEW) -->
+    <div id="checklist-modal" class="modal-backdrop hidden">
+        <div class="modal-content glass-card p-6 sm:p-8 relative flex flex-col max-h-[80vh]">
+            <button id="close-checklist-modal" class="absolute top-4 right-4 theme-text-secondary hover:theme-text-primary transition-colors text-3xl">&times;</button>
+            <h2 class="text-3xl font-bold theme-accent-color page-title mb-2 text-center">Smart Packing Checklist</h2>
+            <p id="checklist-subtitle" class="text-center theme-text-secondary mb-6">Suggestions for your journey</p>
+            
+            <div id="checklist-container" class="overflow-y-auto pr-2 space-y-2">
+                <!-- Items injected via JS -->
             </div>
         </div>
     </div>
@@ -900,6 +983,8 @@
         const successModal = document.getElementById('success-modal');
         const yearFilter = document.getElementById('year-filter');
         const dateMonthFilter = document.getElementById('date-month-filter');
+        const checklistModal = document.getElementById('checklist-modal');
+        const checklistContainer = document.getElementById('checklist-container');
 
         const cardColors = {
             travel: {
@@ -1976,18 +2061,120 @@
             `;
         };
 
+        // --- WEATHER & CROWD LOGIC ---
+        function updateWeatherAndCrowd() {
+            // Simulated Weather based on Month
+            const month = new Date().getMonth(); // 0-11
+            let season = "";
+            let weatherIcon = "";
+            let temp = "";
+            let forecastText = "";
+
+            if (month >= 10 || month <= 1) { // Winter (Nov, Dec, Jan, Feb)
+                season = "Winter";
+                weatherIcon = '<i class="fas fa-snowflake text-blue-400"></i>';
+                temp = "18°C - 25°C";
+                forecastText = "Cool & Pleasant";
+            } else if (month >= 2 && month <= 5) { // Summer (Mar, Apr, May, Jun)
+                season = "Summer";
+                weatherIcon = '<i class="fas fa-sun text-yellow-500"></i>';
+                temp = "28°C - 35°C";
+                forecastText = "Sunny & Warm";
+            } else { // Monsoon (July, Aug, Sep, Oct)
+                season = "Monsoon";
+                weatherIcon = '<i class="fas fa-cloud-showers-heavy text-gray-500"></i>';
+                temp = "25°C - 30°C";
+                forecastText = "Cloudy with Showers";
+            }
+
+            // Update DOM
+            const liveWeatherEl = document.getElementById('live-weather-text');
+            const liveWeatherIcon = document.querySelector('#weather-crowd-section div:first-child .text-3xl');
+            
+            if(liveWeatherEl && liveWeatherIcon) {
+                liveWeatherEl.innerHTML = `${temp}<br><span class="text-sm opacity-80">${season}</span>`;
+                liveWeatherIcon.innerHTML = weatherIcon;
+            }
+
+            // Forecast Logic (Linked to dropdown or next date)
+            const forecastEl = document.getElementById('forecast-weather-text');
+            if(forecastEl) {
+                // If a specific date is selected, we could refine this, but for now we show the general forecast for the current season
+                forecastEl.textContent = forecastText; 
+            }
+        }
+
+        // --- SMART CHECKLIST LOGIC ---
+        function generateChecklist() {
+            const month = new Date().getMonth();
+            const baseItems = [
+                "Government ID Proof (Aadhar/Voter ID)",
+                "Tickets (Train/Bus) & Booking Prints",
+                "Mobile Charger & Power Bank",
+                "Personal Medicines & First Aid",
+                "Cash (Small denominations)",
+                "Water Bottle"
+            ];
+
+            let seasonalItems = [];
+            let seasonName = "";
+
+            if (month >= 10 || month <= 1) { // Winter
+                seasonName = "Winter";
+                seasonalItems = ["Sweater / Light Jacket", "Shawl / Scarf", "Moisturizer / Lip Balm"];
+            } else if (month >= 2 && month <= 5) { // Summer
+                seasonName = "Summer";
+                seasonalItems = ["Sunglasses", "Cap / Hat", "Sunscreen", "Light Cotton Clothes"];
+            } else { // Monsoon
+                seasonName = "Monsoon";
+                seasonalItems = ["Umbrella / Raincoat", "Waterproof Bag cover", "Extra pair of clothes", "Non-slip footwear"];
+            }
+
+            const subtitle = document.getElementById('checklist-subtitle');
+            if(subtitle) subtitle.textContent = `Recommended for ${seasonName} Season`;
+
+            const container = document.getElementById('checklist-container');
+            if(container) {
+                let html = '';
+                
+                // Base Items
+                html += `<h4 class="font-bold theme-accent-color mt-2 mb-1 text-sm uppercase">Essentials</h4>`;
+                baseItems.forEach(item => {
+                    html += `
+                        <label class="checklist-item flex items-center p-3 rounded-lg cursor-pointer border border-gray-100 dark:border-gray-700 bg-white/50 dark:bg-white/5">
+                            <input type="checkbox" class="form-checkbox h-5 w-5 text-orange-500 rounded border-gray-300 focus:ring-orange-500 mr-3">
+                            <span class="theme-text-primary">${item}</span>
+                        </label>
+                    `;
+                });
+
+                // Seasonal Items
+                html += `<h4 class="font-bold theme-accent-color mt-4 mb-1 text-sm uppercase">${seasonName} Specials</h4>`;
+                seasonalItems.forEach(item => {
+                    html += `
+                        <label class="checklist-item flex items-center p-3 rounded-lg cursor-pointer border border-gray-100 dark:border-gray-700 bg-white/50 dark:bg-white/5">
+                            <input type="checkbox" class="form-checkbox h-5 w-5 text-orange-500 rounded border-gray-300 focus:ring-orange-500 mr-3">
+                            <span class="theme-text-primary">${item}</span>
+                        </label>
+                    `;
+                });
+
+                container.innerHTML = html;
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', async function() {
             // ... existing theme toggle logic ...
-            const themeToggle = document.getElementById('theme-toggle');
-            const sunIcon = document.getElementById('sun-icon');
-            const moonIcon = document.getElementById('moon-icon');
+            const themeToggleBtn = document.getElementById('theme-toggle-fab'); // CHANGED ID
+            const sunIcon = document.getElementById('sun-icon-fab'); // CHANGED ID
+            const moonIcon = document.getElementById('moon-icon-fab'); // CHANGED ID
             const htmlTag = document.documentElement;
 
             function updateThemeIcons(isDarkMode) {
                 moonIcon.classList.toggle('hidden', !isDarkMode);
                 sunIcon.classList.toggle('hidden', isDarkMode);
             }
-            themeToggle.addEventListener('click', () => {
+            themeToggleBtn.addEventListener('click', () => {
                 htmlTag.classList.toggle('dark');
                 htmlTag.classList.toggle('light');
                 const isDarkMode = htmlTag.classList.contains('dark');
@@ -2044,6 +2231,16 @@
                     renderStayInfo();
                 });
             });
+            
+            // NEW LISTENER FOR CHECKLIST
+            document.querySelectorAll('#checklist-link, #mobile-checklist-link').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    generateChecklist(); // Generate based on current season
+                    checklistModal.classList.remove('hidden');
+                });
+            });
+            document.getElementById('close-checklist-modal').addEventListener('click', () => checklistModal.classList.add('hidden'));
 
 
             document.getElementById('close-about-modal').addEventListener('click', () => aboutModal.classList.add('hidden'));
@@ -2054,7 +2251,7 @@
             document.getElementById('close-food-modal').addEventListener('click', () => foodTravelModal.classList.add('hidden'));
             document.getElementById('close-stay-modal').addEventListener('click', () => stayModal.classList.add('hidden'));
 
-            [aboutModal, contactModal, paymentModal, timingModal, successModal, placesModal, foodTravelModal, stayModal].forEach(m => {
+            [aboutModal, contactModal, paymentModal, timingModal, successModal, placesModal, foodTravelModal, stayModal, checklistModal].forEach(m => {
                  m.addEventListener('click', (e) => { if(e.target === m) m.classList.add('hidden'); });
             });
 
@@ -2111,6 +2308,7 @@
             populateTimings();
             showWelcomePopup();
             fetchPlacesData();
+            updateWeatherAndCrowd(); // Trigger weather update
         });
     </script>
 </body>
