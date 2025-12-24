@@ -411,30 +411,37 @@
 
         <main id="content-area" class="container mx-auto px-4 sm:px-6 pt-24 md:pt-28 pb-12 flex-grow">
             <div id="main-view">
-                <section class="text-center mb-12">
+                <section class="text-center mb-3">
                     <h1 class="text-4xl sm:text-5xl font-black theme-text-primary leading-tight" style="text-shadow: 0 2px 4px rgba(0,0,0,0.1);">🌕 Our Spiritual Journey to Dwarka Begins!</h1>
-                    <p class="text-base sm:text-lg theme-text-secondary mt-4 max-w-3xl mx-auto">Join our sacred pilgrimage on these special Poonam days! Stay updated with all travel and booking details below.</p>
+                    <p class="text-base sm:text-lg theme-text-secondary mt-2 max-w-3xl mx-auto">Join our sacred pilgrimage on these special Poonam days! Stay updated with all travel and booking details below.</p>
                 </section>
 
-                <!-- NEW: Weather & Crowd Section -->
-                <section id="weather-crowd-section" class="mb-12 grid grid-cols-1 md:grid-cols-3 gap-4">
+                <!-- NEW: Weather & Crowd Section (Very Small Cards - 4 in total) -->
+                <!-- Updated Layout: grid-cols-2 on mobile, md:grid-cols-4 on larger screens -->
+                <section id="weather-crowd-section" class="mb-3 grid grid-cols-2 md:grid-cols-4 gap-2 px-2">
                     <!-- Live Weather -->
-                    <div class="glass-card p-4 flex flex-col items-center justify-center text-center">
-                        <div class="text-3xl mb-2 theme-accent-color"><i class="fas fa-cloud-sun"></i></div>
-                        <h3 class="font-bold theme-text-primary">Live Weather</h3>
-                        <p id="live-weather-text" class="text-lg font-semibold theme-text-secondary">Loading...</p>
+                    <div class="glass-card p-2 flex flex-col items-center justify-center text-center h-20">
+                        <div class="text-xl mb-1 theme-accent-color"><i class="fas fa-cloud-sun"></i></div>
+                        <h3 class="text-[10px] font-bold theme-text-primary uppercase tracking-wide">Live Weather</h3>
+                        <p id="live-weather-text" class="text-xs font-bold theme-text-secondary leading-tight">Loading...</p>
                     </div>
                     <!-- Journey Forecast -->
-                    <div class="glass-card p-4 flex flex-col items-center justify-center text-center">
-                        <div class="text-3xl mb-2 theme-accent-color"><i class="fas fa-calendar-day"></i></div>
-                        <h3 class="font-bold theme-text-primary">Journey Forecast</h3>
-                        <p id="forecast-weather-text" class="text-lg font-semibold theme-text-secondary">Select a date</p>
+                    <div class="glass-card p-2 flex flex-col items-center justify-center text-center h-20">
+                        <div class="text-xl mb-1 theme-accent-color"><i class="fas fa-calendar-day"></i></div>
+                        <h3 class="text-[10px] font-bold theme-text-primary uppercase tracking-wide">Forecast</h3>
+                        <p id="forecast-weather-text" class="text-xs font-bold theme-text-secondary leading-tight">Select date</p>
                     </div>
                     <!-- Expected Crowd -->
-                    <div class="glass-card p-4 flex flex-col items-center justify-center text-center">
-                        <div class="text-3xl mb-2 text-red-500"><i class="fas fa-users"></i></div>
-                        <h3 class="font-bold theme-text-primary">Expected Crowd</h3>
-                        <p class="text-lg font-bold text-red-600">Very High (Poonam)</p>
+                    <div class="glass-card p-2 flex flex-col items-center justify-center text-center h-20">
+                        <div class="text-xl mb-1 text-red-500"><i class="fas fa-users"></i></div>
+                        <h3 class="text-[10px] font-bold theme-text-primary uppercase tracking-wide">Poonam Crowd</h3>
+                        <p class="text-xs font-bold text-red-600 leading-tight">High</p>
+                    </div>
+                    <!-- Live Crowd (New 4th Card) -->
+                    <div class="glass-card p-2 flex flex-col items-center justify-center text-center h-20">
+                        <div class="text-xl mb-1 text-orange-500"><i class="fas fa-walking"></i></div>
+                        <h3 class="text-[10px] font-bold theme-text-primary uppercase tracking-wide">Live Crowd</h3>
+                        <p id="live-crowd-text" class="text-xs font-bold theme-text-secondary leading-tight">Loading...</p>
                     </div>
                 </section>
 
@@ -2074,25 +2081,25 @@
                 season = "Winter";
                 weatherIcon = '<i class="fas fa-snowflake text-blue-400"></i>';
                 temp = "18°C - 25°C";
-                forecastText = "Cool & Pleasant";
+                forecastText = "19°C - 24°C<br>Cool & Pleasant";
             } else if (month >= 2 && month <= 5) { // Summer (Mar, Apr, May, Jun)
                 season = "Summer";
                 weatherIcon = '<i class="fas fa-sun text-yellow-500"></i>';
                 temp = "28°C - 35°C";
-                forecastText = "Sunny & Warm";
+                forecastText = "30°C - 36°C<br>Sunny & Warm";
             } else { // Monsoon (July, Aug, Sep, Oct)
                 season = "Monsoon";
                 weatherIcon = '<i class="fas fa-cloud-showers-heavy text-gray-500"></i>';
                 temp = "25°C - 30°C";
-                forecastText = "Cloudy with Showers";
+                forecastText = "26°C - 31°C<br>Cloudy/Rain";
             }
 
             // Update DOM
             const liveWeatherEl = document.getElementById('live-weather-text');
-            const liveWeatherIcon = document.querySelector('#weather-crowd-section div:first-child .text-3xl');
+            const liveWeatherIcon = document.querySelector('#weather-crowd-section div:first-child .text-xl'); // Updated selector for text-xl
             
             if(liveWeatherEl && liveWeatherIcon) {
-                liveWeatherEl.innerHTML = `${temp}<br><span class="text-sm opacity-80">${season}</span>`;
+                liveWeatherEl.innerHTML = `${temp}<br><span class="text-[10px] opacity-80">${season}</span>`;
                 liveWeatherIcon.innerHTML = weatherIcon;
             }
 
@@ -2100,7 +2107,19 @@
             const forecastEl = document.getElementById('forecast-weather-text');
             if(forecastEl) {
                 // If a specific date is selected, we could refine this, but for now we show the general forecast for the current season
-                forecastEl.textContent = forecastText; 
+                forecastEl.innerHTML = forecastText; 
+            }
+
+            // Live Crowd Logic (Mock)
+            const liveCrowdEl = document.getElementById('live-crowd-text');
+            if(liveCrowdEl) {
+                const hour = new Date().getHours();
+                let crowdLevel = "Moderate";
+                if(hour >= 6 && hour <= 10) crowdLevel = "High (Morning Aarti)";
+                else if(hour >= 17 && hour <= 20) crowdLevel = "Peak (Evening Aarti)";
+                else if(hour >= 13 && hour <= 16) crowdLevel = "Low (Anosar)";
+                
+                liveCrowdEl.textContent = crowdLevel;
             }
         }
 
