@@ -222,32 +222,33 @@
         #toast-notification.show { transform: translate(-50%, 0); opacity: 1; pointer-events: auto; }
 
         /* --- COUNTDOWN TIMER --- */
-        /* --- UPDATED COUNTDOWN TIMER --- */
         .countdown-item {
             background-image: url('https://hookstar1993.github.io/dwarka/img/moon.png');
-            background-color: transparent; /* Explicitly remove any background color */
+            background-color: transparent; 
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             border-radius: 1rem;
             padding: 0.5rem;
-            width: 100px;
-            height: 100px;
+            width: 80px; /* Small for dashboard */
+            height: 80px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            box-shadow: none; /* Remove shadow */
-            border-radius: 0; /* Remove border-radius to prevent any shape */
+            box-shadow: none; 
+            border-radius: 0; 
         }
         .countdown-item span {
             color: black;
+            font-size: 2rem; 
+            line-height: 1;
             text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
         }
         .countdown-item p {
             color: black;
             font-weight: 600;
+            font-size: 0.7rem;
         }
 
         .status-duration-circle {
@@ -323,11 +324,44 @@
             text-decoration: line-through;
             opacity: 0.6;
         }
+        
+        /* New Unified Dashboard Styles */
+        .dashboard-small-card {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem;
+            text-align: center;
+            min-height: 80px; /* Reduced fixed height */
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.4);
+            transition: transform 0.2s;
+        }
+        .dark .dashboard-small-card {
+            background: rgba(30, 40, 50, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .dashboard-small-card:hover {
+            transform: translateY(-2px);
+        }
+        .dashboard-icon { font-size: 1.5rem; margin-bottom: 0.25rem; }
+        .dashboard-title { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0; color: var(--text-primary); opacity: 0.8; }
+        .dashboard-value { font-size: 0.85rem; font-weight: 800; line-height: 1.1; color: var(--text-primary); }
 
-        @media (max-width: 640px) {
+        @media (max-width: 1024px) {
             .countdown-item {
                 width: 70px; height: 70px;
             }
+            .countdown-item span {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 640px) {
             #countdown-timer { gap: 0.5rem; }
             .ticket-card::before, .ticket-card::after {
                 width: 30px; height: 30px;
@@ -335,6 +369,7 @@
             .floating-fab {
                 bottom: 5rem; /* Adjusted for mobile to clear footer area */
             }
+            .dashboard-small-card { min-height: 70px; }
         }
     </style>
 </head>
@@ -411,43 +446,57 @@
 
         <main id="content-area" class="container mx-auto px-4 sm:px-6 pt-24 md:pt-28 pb-12 flex-grow">
             <div id="main-view">
-                <section class="text-center mb-3">
+                <section class="text-center mb-6">
                     <h1 class="text-4xl sm:text-5xl font-black theme-text-primary leading-tight" style="text-shadow: 0 2px 4px rgba(0,0,0,0.1);">🌕 Our Spiritual Journey to Dwarka Begins!</h1>
                     <p class="text-base sm:text-lg theme-text-secondary mt-2 max-w-3xl mx-auto">Join our sacred pilgrimage on these special Poonam days! Stay updated with all travel and booking details below.</p>
                 </section>
 
-                <!-- NEW: Weather & Crowd Section (Very Small Cards - 4 in total) -->
-                <!-- Updated Layout: grid-cols-2 on mobile, md:grid-cols-4 on larger screens -->
-                <section id="weather-crowd-section" class="mb-3 grid grid-cols-2 md:grid-cols-4 gap-2 px-2">
-                    <!-- Live Weather -->
-                    <div class="glass-card p-2 flex flex-col items-center justify-center text-center h-20">
-                        <div class="text-xl mb-1 theme-accent-color"><i class="fas fa-cloud-sun"></i></div>
-                        <h3 class="text-[10px] font-bold theme-text-primary uppercase tracking-wide">Live Weather</h3>
-                        <p id="live-weather-text" class="text-xs font-bold theme-text-secondary leading-tight">Loading...</p>
-                    </div>
-                    <!-- Journey Forecast -->
-                    <div class="glass-card p-2 flex flex-col items-center justify-center text-center h-20">
-                        <div class="text-xl mb-1 theme-accent-color"><i class="fas fa-calendar-day"></i></div>
-                        <h3 class="text-[10px] font-bold theme-text-primary uppercase tracking-wide">Forecast</h3>
-                        <p id="forecast-weather-text" class="text-xs font-bold theme-text-secondary leading-tight">Select date</p>
-                    </div>
-                    <!-- Expected Crowd -->
-                    <div class="glass-card p-2 flex flex-col items-center justify-center text-center h-20">
-                        <div class="text-xl mb-1 text-red-500"><i class="fas fa-users"></i></div>
-                        <h3 class="text-[10px] font-bold theme-text-primary uppercase tracking-wide">Poonam Crowd</h3>
-                        <p class="text-xs font-bold text-red-600 leading-tight">High</p>
-                    </div>
-                    <!-- Live Crowd (New 4th Card) -->
-                    <div class="glass-card p-2 flex flex-col items-center justify-center text-center h-20">
-                        <div class="text-xl mb-1 text-orange-500"><i class="fas fa-walking"></i></div>
-                        <h3 class="text-[10px] font-bold theme-text-primary uppercase tracking-wide">Live Crowd</h3>
-                        <p id="live-crowd-text" class="text-xs font-bold theme-text-secondary leading-tight">Loading...</p>
-                    </div>
-                </section>
+                <!-- NEW UNIFIED DASHBOARD SECTION -->
+                <!-- Layout: Left(2 cards) - Center(Countdown) - Right(2 cards) -->
+                <section class="w-full max-w-6xl mx-auto mb-8 px-2">
+                    <div class="grid grid-cols-12 gap-3 items-stretch">
+                        
+                        <!-- LEFT COLUMN: WEATHER (Col Span 3 on Desktop, 6 on Mobile) -->
+                        <div class="col-span-6 md:col-span-2 flex flex-col gap-2">
+                             <!-- Live Weather -->
+                            <div id="card-live-weather" class="dashboard-small-card">
+                                <div class="dashboard-icon theme-accent-color"><i class="fas fa-cloud-sun"></i></div>
+                                <h3 class="dashboard-title">Live Weather</h3>
+                                <p id="live-weather-text" class="dashboard-value">Loading...</p>
+                            </div>
+                            <!-- Forecast -->
+                            <div id="card-forecast" class="dashboard-small-card">
+                                <div class="dashboard-icon theme-accent-color"><i class="fas fa-calendar-day"></i></div>
+                                <h3 class="dashboard-title">Forecast</h3>
+                                <p id="forecast-weather-text" class="dashboard-value">Select date</p>
+                            </div>
+                        </div>
 
-                <!-- Countdown Timer -->
-                <section id="countdown-container" class="mb-12 sm:mb-16">
-                    <!-- Timer will be injected here -->
+                        <!-- MIDDLE COLUMN: COUNTDOWN (Col Span 6 on Desktop, 12 on Mobile - order change) -->
+                        <!-- Mobile: Order 1 (Top), Desktop: Order 2 (Middle) -->
+                        <div class="col-span-12 md:col-span-8 order-first md:order-none flex flex-col justify-center">
+                             <div id="countdown-container" class="w-full">
+                                 <!-- JS injects here -->
+                             </div>
+                        </div>
+
+                        <!-- RIGHT COLUMN: CROWD (Col Span 3 on Desktop, 6 on Mobile) -->
+                        <div class="col-span-6 md:col-span-2 flex flex-col gap-2">
+                             <!-- Poonam Crowd -->
+                            <div id="card-poonam-crowd" class="dashboard-small-card">
+                                <div class="dashboard-icon text-red-500"><i class="fas fa-users"></i></div>
+                                <h3 class="dashboard-title">Poonam Crowd</h3>
+                                <p class="dashboard-value text-red-600">High</p>
+                            </div>
+                            <!-- Live Crowd -->
+                            <div id="card-live-crowd" class="dashboard-small-card">
+                                <div class="dashboard-icon text-green-500"><i class="fas fa-walking"></i></div>
+                                <h3 class="dashboard-title">Live Crowd</h3>
+                                <p id="live-crowd-text" class="dashboard-value text-green-600">Loading...</p>
+                            </div>
+                        </div>
+
+                    </div>
                 </section>
 
                 <!-- DROPDOWN MENUS -->
@@ -490,194 +539,19 @@
         <svg id="sun-icon-fab" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="theme-text-secondary"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
         <svg id="moon-icon-fab" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden theme-text-secondary"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
     </button>
-
-    <!-- Ticket Viewer Modal -->
-    <div id="ticketModal" class="modal-backdrop hidden">
-        <div class="modal-content-ticket glass-card p-2 sm:p-4 relative flex flex-col">
-            <button id="closeModalBtn" class="ios-button !bg-red-600/80 absolute -top-2 -right-2 sm:-top-3 sm:-right-3 text-white rounded-full h-8 w-8 flex items-center justify-center text-lg font-bold z-50 hover:!bg-red-700 transition-all">&times;</button>
-            <iframe id="ticketViewerIframe" class="modal-iframe flex-grow rounded-t-lg" src="" title="Ticket Viewer"></iframe>
-            <div class="text-center p-2">
-                <a id="downloadBtn" href="#" download class="w-full sm:w-auto inline-block animated-glow-border ios-button px-6 py-2 rounded-xl transition-all duration-300" style="color:var(--accent-color)">Download</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Nearby Places Modal -->
-    <div id="places-modal" class="modal-backdrop hidden">
-        <div class="modal-content-places glass-card p-6 relative flex flex-col h-[90vh]">
-            <button id="close-places-modal" class="absolute top-4 right-4 theme-text-secondary hover:theme-text-primary transition-colors text-3xl z-50">&times;</button>
-            <h2 class="text-3xl font-bold theme-accent-color page-title mb-6 text-center">Nearby Places to Visit</h2>
-            
-            <div id="places-container" class="overflow-y-auto pr-2 space-y-4">
-                <!-- Places will be loaded here -->
-                <div class="text-center p-8">
-                    <p class="theme-text-secondary">Loading places...</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Food & Travel Info Modal -->
-    <div id="food-travel-modal" class="modal-backdrop hidden">
-        <div class="modal-content-food glass-card p-6 relative flex flex-col h-[90vh]">
-            <button id="close-food-modal" class="absolute top-4 right-4 theme-text-secondary hover:theme-text-primary transition-colors text-3xl z-50">&times;</button>
-            <h2 class="text-3xl font-bold theme-accent-color page-title mb-6 text-center">Food & Travel Info</h2>
-            
-            <div id="food-travel-container" class="overflow-y-auto pr-2 flex-grow">
-                <!-- Content injected via JS -->
-            </div>
-        </div>
-    </div>
-
-    <!-- Best Stay Modal (NEW) -->
-    <div id="stay-modal" class="modal-backdrop hidden">
-        <div class="modal-content-stay glass-card p-6 relative flex flex-col h-[90vh]">
-            <button id="close-stay-modal" class="absolute top-4 right-4 theme-text-secondary hover:theme-text-primary transition-colors text-3xl z-50">&times;</button>
-            <h2 class="text-3xl font-bold theme-accent-color page-title mb-6 text-center">Best Stay Options</h2>
-            
-            <div id="stay-container" class="overflow-y-auto pr-2 flex-grow">
-                <!-- Content injected via JS -->
-            </div>
-        </div>
-    </div>
-
-    <!-- Smart Checklist Modal (NEW) -->
-    <div id="checklist-modal" class="modal-backdrop hidden">
-        <div class="modal-content glass-card p-6 sm:p-8 relative flex flex-col max-h-[80vh]">
-            <button id="close-checklist-modal" class="absolute top-4 right-4 theme-text-secondary hover:theme-text-primary transition-colors text-3xl">&times;</button>
-            <h2 class="text-3xl font-bold theme-accent-color page-title mb-2 text-center">Smart Packing Checklist</h2>
-            <p id="checklist-subtitle" class="text-center theme-text-secondary mb-6">Suggestions for your journey</p>
-            
-            <div id="checklist-container" class="overflow-y-auto pr-2 space-y-2">
-                <!-- Items injected via JS -->
-            </div>
-        </div>
-    </div>
-
-    <!-- About Us Modal -->
-    <div id="about-modal" class="modal-backdrop hidden">
-        <div class="modal-content glass-card p-6 sm:p-8 relative flex flex-col">
-            <button id="close-about-modal" class="absolute top-4 right-4 theme-text-secondary hover:theme-text-primary transition-colors text-3xl">&times;</button>
-            <h2 class="text-3xl font-bold theme-accent-color page-title mb-4">About Us</h2>
-            <div class="theme-text-secondary overflow-y-auto pr-4 space-y-4">
-                <h3 class="text-2xl font-bold theme-accent-color">Welcome to Jay Dwarkadhish’s Sacred Pilgrimage</h3>
-                <p>At Jay Dwarkadhish, we bring together a community of seekers who embark on a spiritual journey to Dwarka during auspicious Poonam (full-moon) occasions. Rooted in devotion and fellowship, our mission is to facilitate this sacred pilgrimage with warmth, ease, and purpose.</p>
-                <h3 class="text-2xl font-bold theme-accent-color mt-6">What We Offer:</h3>
-                <ul class="list-disc list-inside space-y-2">
-                    <li><span class="font-semibold theme-text-primary">Curated Yatra Travel:</span> Comprehensive bookings and logistics aligned with special Poonam days to ensure serene and hassle-free travel.</li>
-                    <li><span class="font-semibold theme-text-primary">Community Focus:</span> A heartfelt space for devotees to connect, share, and experience the spiritual richness of Dwarka together.</li>
-                </ul>
-                <h3 class="text-2xl font-bold theme-accent-color mt-6">About the Organizers</h3>
-                <p>The journey is organized by <span class="font-semibold theme-text-primary">Hardeep Savani</span> from Surat, Gujarat. With a deep reverence for our spiritual heritage and a passion for community, Hardeep is committed to guiding everyone on a blessed and memorable pilgrimage.</p>
-
-                <h3 class="text-2xl font-bold theme-accent-color mt-6">New Features & Updates</h3>
-                <ul class="list-disc list-inside space-y-2">
-                    <li><span class="font-semibold theme-text-primary">Nearby Places Guide:</span> Explore famous places around Dwarka with distance, timings, and map links.</li>
-                    <li><span class="font-semibold theme-text-primary">Live Train Status:</span> Click on the Train Name to see live running status instantly.</li>
-                    <li><span class="font-semibold theme-text-primary">Smart PNR:</span> Click on PNR Number to check status or use the copy button.</li>
-                    <li><span class="font-semibold theme-text-primary">Location Map:</span> Added "View on Google Maps" link for Hotels & Dharamshalas.</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-
-    <!-- Contact Modal -->
-    <div id="contact-modal" class="modal-backdrop hidden">
-        <div class="modal-content glass-card p-6 sm:p-8 relative flex flex-col">
-            <button id="close-contact-modal" class="absolute top-4 right-4 theme-text-secondary hover:theme-text-primary transition-colors text-3xl">&times;</button>
-            <h2 class="text-3xl font-bold theme-accent-color page-title mb-4">Contact & Suggestions</h2>
-            <div class="theme-text-secondary mb-6">
-                <p class="font-semibold text-lg theme-text-primary">Hardeep Savani</p>
-                <p>Surat, Gujarat</p>
-            </div>
-            <div class="flex items-center justify-center space-x-6 mb-8">
-                <a href="https://wa.me/919824594156" target="_blank" class="flex items-center space-x-2 text-green-400 hover:text-green-300 transition-colors"><svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.894 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654z"/></svg><span class="font-semibold">WhatsApp</span></a>
-                <a href="https://instagram.com/hookstar.fx" target="_blank" class="flex items-center space-x-2 text-pink-400 hover:text-pink-300 transition-colors"><svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8A3.6 3.6 0 0 0 7.6 20h8.8A3.6 3.6 0 0 0 20 16.4V7.6A3.6 3.6 0 0 0 16.4 4H7.6m9.65 1.5a1.25 1.25 0 1 1-2.5 0 1.25 1.25 0 0 1 2.5 0M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10m0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/></svg><span class="font-semibold">Instagram</span></a>
-            </div>
-            <form id="contact-form" action="https://formspree.io/f/xovlkbqr" method="POST" class="space-y-4">
-                <input type="text" name="name" id="contact-name" placeholder="Your Name" class="w-full p-2 rounded-lg border theme-text-primary focus:outline-none" style="background: var(--input-bg); border-color: var(--glass-border);" required>
-                <input type="email" name="email" id="contact-email" placeholder="Your Email" class="w-full p-2 rounded-lg border theme-text-primary focus:outline-none" style="background: var(--input-bg); border-color: var(--glass-border);" required>
-                <textarea name="message" id="contact-message" placeholder="Your Suggestion..." rows="4" class="w-full p-2 rounded-lg border theme-text-primary focus:outline-none" style="background: var(--input-bg); border-color: var(--glass-border);" required></textarea>
-                <button type="submit" class="ios-button w-full p-3 rounded-xl text-center font-semibold transition-all duration-300 hover:shadow-xl transform hover:scale-105" style="background:var(--accent-color); color:white;">Send Suggestion</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Payment Modal -->
-    <div id="payment-modal" class="modal-backdrop hidden">
-        <div class="modal-content glass-card p-6 sm:p-8 relative flex flex-col max-h-[90vh] overflow-y-auto">
-            <button id="close-payment-modal" class="absolute top-4 right-4 theme-text-secondary hover:theme-text-primary transition-colors text-3xl">&times;</button>
-            <div class="text-center">
-                <h1 class="text-2xl sm:text-3xl font-bold theme-text-primary tracking-tight">Make a Secure Payment</h1>
-                <p class="theme-text-secondary mt-2 text-sm sm:text-base">Click a button to pay with your preferred mobile app. (Mobile only)</p>
-            </div>
-            <div class="space-y-4 mt-8">
-                <h2 class="text-lg font-semibold theme-accent-color">1. Pay Directly via App</h2>
-                <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                    <a href="upi://pay?pa=9824594156@okbizaxis&pn=Your%20Name&cu=INR" class="ios-button p-4 rounded-xl flex flex-col items-center justify-center space-y-2"><div class="h-8 flex items-center"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Google_Pay_Logo.svg/2560px-Google_Pay_Logo.svg.png" alt="Google Pay" class="h-full w-auto object-contain"></div><span class="font-semibold theme-text-primary text-xs">Google Pay</span></a>
-                    <a href="phonepe://pay?pa=9824594156@okbizaxis&pn=Your%20Name&cu=INR" class="ios-button p-4 rounded-xl flex flex-col items-center justify-center space-y-2"><div class="h-8 flex items-center"><img src="https://upload.wikimedia.org/wikipedia/commons/7/71/PhonePe_Logo.svg" alt="PhonePe" class="h-full w-auto object-contain"></div><span class="font-semibold theme-text-primary text-xs">PhonePe</span></a>
-                    <a href="bhim://upi/pay?pa=9824594156@okbizaxis&pn=Your%20Name&cu=INR" class="ios-button p-4 rounded-xl flex flex-col items-center justify-center space-y-2"><div class="h-8 flex items-center"><img src="https://upload.wikimedia.org/wikipedia/en/6/65/BHIM_SVG_Logo.svg" alt="BHIM UPI" class="h-full w-auto object-contain"></div><span class="font-semibold theme-text-primary text-xs">BHIM</span></a>
-                </div>
-            </div>
-            <div class="relative my-6"><div class="absolute inset-0 flex items-center"><div class="w-full" style="border-top:1px solid var(--glass-border)"></div></div><div class="relative flex justify-center"><span class="px-2 text-sm theme-text-secondary" style="background:var(--glass-bg)">OR</span></div></div>
-            <div class="space-y-4">
-                <h2 class="text-lg font-semibold theme-accent-color">2. Scan & Pay</h2>
-                <div class="bg-white/90 p-4 rounded-lg flex justify-center"><img src="https://hookstar1993.github.io/paymehook/qr-9824594156@okbizaxis.png" alt="QR Code for Payment" class="rounded-md w-full max-w-[200px]"></div>
-            </div>
-            <div class="space-y-4 mt-6">
-                <h2 class="text-lg font-semibold theme-accent-color">3. Pay with UPI ID</h2>
-                <div class="p-4 rounded-lg flex justify-between items-center" style="background:var(--input-bg)">
-                    <span id="upiId" class="font-medium theme-text-primary text-sm sm:text-base break-all">9824594156@okbizaxis</span>
-                    <button onclick="copyToClipboard('upiId', this)" title="Copy UPI ID" class="ios-button p-1.5 rounded-xl flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 theme-text-primary" viewBox="0 0 20 20" fill="currentColor"><path d="M7 9a2 2 0 012-2h6a2 2 0 012 2v6a2 2 0 01-2 2H9a2 2 0 01-2-2V9z" /><path d="M5 3a2 2 0 00-2 2v6a2 2 0 002 2V5h6a2 2 0 00-2-2H5z" /></svg></button>
-                </div>
-            </div>
-            <div class="space-y-4 mt-6">
-                <h2 class="text-lg font-semibold theme-accent-color">4. Direct Bank Transfer</h2>
-                <div class="p-4 rounded-lg space-y-4 text-sm sm:text-base" style="background:var(--input-bg)">
-                    <div class="flex justify-between items-center"><span class="theme-text-secondary">Account Name:</span><div class="flex items-center space-x-3"><span id="accName" class="font-medium theme-text-primary text-right">SAVANI HARDEEP M.</span><button onclick="copyToClipboard('accName', this)" title="Copy Account Name" class="ios-button p-1.5 rounded-xl flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 theme-text-primary" viewBox="0 0 20 20" fill="currentColor"><path d="M7 9a2 2 0 012-2h6a2 2 0 012 2v6a2 2 0 01-2 2H9a2 2 0 01-2-2V9z" /><path d="M5 3a2 2 0 00-2 2v6a2 2 0 002 2V5h6a2 2 0 00-2-2H5z" /></svg></button></div></div>
-                    <div class="flex justify-between items-center"><span class="theme-text-secondary">Bank Name:</span><div class="flex items-center space-x-3"><span id="bankName" class="font-medium theme-text-primary text-right">STATE BANK OF INDIA</span><button onclick="copyToClipboard('bankName', this)" title="Copy Bank Name" class="ios-button p-1.5 rounded-xl flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 theme-text-primary" viewBox="0 0 20 20" fill="currentColor"><path d="M7 9a2 2 0 012-2h6a2 2 0 012 2v6a2 2 0 01-2 2H9a2 2 0 01-2-2V9z" /><path d="M5 3a2 2 0 00-2 2v6a2 2 0 002 2V5h6a2 2 0 00-2-2H5z" /></svg></button></div></div>
-                    <div class="flex justify-between items-center"><span class="theme-text-secondary">Account No:</span><div class="flex items-center space-x-3"><span id="accNum" class="font-medium theme-text-primary">40003791171</span><button onclick="copyToClipboard('accNum', this)" title="Copy Account Number" class="ios-button p-1.5 rounded-xl flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 theme-text-primary" viewBox="0 0 20 20" fill="currentColor"><path d="M7 9a2 2 0 012-2h6a2 2 0 012 2v6a2 2 0 01-2 2H9a2 2 0 01-2-2V9z" /><path d="M5 3a2 2 0 00-2 2v6a2 2 0 002 2V5h6a2 2 0 00-2-2H5z" /></svg></button></div></div>
-                    <div class="flex justify-between items-center"><span class="theme-text-secondary">IFSC Code:</span><div class="flex items-center space-x-3"><span id="ifscCode" class="font-medium theme-text-primary">SBIN0060236</span><button onclick="copyToClipboard('ifscCode', this)" title="Copy IFSC Code" class="ios-button p-1.5 rounded-xl flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 theme-text-primary" viewBox="0 0 20 20" fill="currentColor"><path d="M7 9a2 2 0 012-2h6a2 2 0 012 2v6a2 2 0 01-2 2H9a2 2 0 01-2-2V9z" /><path d="M5 3a2 2 0 00-2 2v6a2 2 0 002 2V5h6a2 2 0 00-2-2H5z" /></svg></button></div></div>
-                </div>
-            </div>
-            <div class="space-y-4 pt-6">
-                <h2 class="text-lg font-semibold theme-accent-color">5. Confirm on WhatsApp</h2>
-                <p class="text-center text-sm theme-text-secondary">After payment, click the button below to send us the screenshot for confirmation.</p>
-                <a href="https://wa.me/919824594156?text=Hello!%20I%20have%20completed%20the%20payment.%20Here%20is%20the%20screenshot." target="_blank" rel="noopener noreferrer" class="pay-button w-full font-bold py-3 px-4 rounded-xl flex items-center justify-center space-x-3 transition-all duration-300 transform hover:scale-105">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.894 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654z"/></svg>
-                    <span>Send Screenshot on WhatsApp</span>
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Notification element for copy feedback -->
-    <div id="toast-notification" class="glass-card theme-text-primary py-2 px-4 rounded-lg shadow-lg z-50">
-        <!-- Message will be set by JS -->
-    </div>
-
-    <!-- Mandir Timing Modal -->
-    <div id="timing-modal" class="modal-backdrop hidden">
-        <!-- Updated max-width to 900px to fit side-by-side columns comfortably -->
-        <div class="modal-content glass-card p-6 sm:p-8 relative flex flex-col" style="max-width: 900px;">
-            <button id="close-timing-modal" class="absolute top-4 right-4 theme-text-secondary hover:theme-text-primary transition-colors text-3xl">&times;</button>
-            <h2 class="text-3xl font-bold theme-accent-color page-title mb-4 text-center">Dwarkadhish Mandir & Dhwaja Timings</h2>
-            <div id="timing-schedule" class="theme-text-secondary overflow-y-auto pr-4 space-y-2">
-                <!-- Timings will be injected here by JavaScript -->
-            </div>
-        </div>
-    </div>
-
-    <!-- Success Modal -->
-    <div id="success-modal" class="modal-backdrop hidden">
-        <div class="modal-content glass-card p-6 sm:p-8 relative flex flex-col rounded-2xl text-center">
-            <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100 mb-4">
-                <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-            </div>
-            <h2 class="text-2xl font-bold theme-text-primary mb-2">Message Sent!</h2>
-            <p class="theme-text-secondary">Thank you for reaching out. We will get back to you shortly.</p>
-        </div>
-    </div>
+    
+    <!-- Modals (Ticket, Places, Food, Stay, Checklist, About, Contact, Payment, Timing, Success, Toast) -->
+    <div id="ticketModal" class="modal-backdrop hidden"> <div class="modal-content-ticket glass-card p-2 sm:p-4 relative flex flex-col"> <button id="closeModalBtn" class="ios-button !bg-red-600/80 absolute -top-2 -right-2 sm:-top-3 sm:-right-3 text-white rounded-full h-8 w-8 flex items-center justify-center text-lg font-bold z-50 hover:!bg-red-700 transition-all">&times;</button> <iframe id="ticketViewerIframe" class="modal-iframe flex-grow rounded-t-lg" src="" title="Ticket Viewer"></iframe> <div class="text-center p-2"> <a id="downloadBtn" href="#" download class="w-full sm:w-auto inline-block animated-glow-border ios-button px-6 py-2 rounded-xl transition-all duration-300" style="color:var(--accent-color)">Download</a> </div> </div> </div>
+    <div id="places-modal" class="modal-backdrop hidden"> <div class="modal-content-places glass-card p-6 relative flex flex-col h-[90vh]"> <button id="close-places-modal" class="absolute top-4 right-4 theme-text-secondary hover:theme-text-primary transition-colors text-3xl z-50">&times;</button> <h2 class="text-3xl font-bold theme-accent-color page-title mb-6 text-center">Nearby Places to Visit</h2> <div id="places-container" class="overflow-y-auto pr-2 space-y-4"> <div class="text-center p-8"> <p class="theme-text-secondary">Loading places...</p> </div> </div> </div> </div>
+    <div id="food-travel-modal" class="modal-backdrop hidden"> <div class="modal-content-food glass-card p-6 relative flex flex-col h-[90vh]"> <button id="close-food-modal" class="absolute top-4 right-4 theme-text-secondary hover:theme-text-primary transition-colors text-3xl z-50">&times;</button> <h2 class="text-3xl font-bold theme-accent-color page-title mb-6 text-center">Food & Travel Info</h2> <div id="food-travel-container" class="overflow-y-auto pr-2 flex-grow"> </div> </div> </div>
+    <div id="stay-modal" class="modal-backdrop hidden"> <div class="modal-content-stay glass-card p-6 relative flex flex-col h-[90vh]"> <button id="close-stay-modal" class="absolute top-4 right-4 theme-text-secondary hover:theme-text-primary transition-colors text-3xl z-50">&times;</button> <h2 class="text-3xl font-bold theme-accent-color page-title mb-6 text-center">Best Stay Options</h2> <div id="stay-container" class="overflow-y-auto pr-2 flex-grow"> </div> </div> </div>
+    <div id="checklist-modal" class="modal-backdrop hidden"> <div class="modal-content glass-card p-6 sm:p-8 relative flex flex-col max-h-[80vh]"> <button id="close-checklist-modal" class="absolute top-4 right-4 theme-text-secondary hover:theme-text-primary transition-colors text-3xl">&times;</button> <h2 class="text-3xl font-bold theme-accent-color page-title mb-2 text-center">Smart Packing Checklist</h2> <p id="checklist-subtitle" class="text-center theme-text-secondary mb-6">Suggestions for your journey</p> <div id="checklist-container" class="overflow-y-auto pr-2 space-y-2"> </div> </div> </div>
+    <div id="about-modal" class="modal-backdrop hidden"> <div class="modal-content glass-card p-6 sm:p-8 relative flex flex-col"> <button id="close-about-modal" class="absolute top-4 right-4 theme-text-secondary hover:theme-text-primary transition-colors text-3xl">&times;</button> <h2 class="text-3xl font-bold theme-accent-color page-title mb-4">About Us</h2> <div class="theme-text-secondary overflow-y-auto pr-4 space-y-4"> <h3 class="text-2xl font-bold theme-accent-color">Welcome to Jay Dwarkadhish’s Sacred Pilgrimage</h3> <p>At Jay Dwarkadhish, we bring together a community of seekers who embark on a spiritual journey to Dwarka during auspicious Poonam (full-moon) occasions. Rooted in devotion and fellowship, our mission is to facilitate this sacred pilgrimage with warmth, ease, and purpose.</p> <h3 class="text-2xl font-bold theme-accent-color mt-6">What We Offer:</h3> <ul class="list-disc list-inside space-y-2"> <li><span class="font-semibold theme-text-primary">Curated Yatra Travel:</span> Comprehensive bookings and logistics aligned with special Poonam days to ensure serene and hassle-free travel.</li> <li><span class="font-semibold theme-text-primary">Community Focus:</span> A heartfelt space for devotees to connect, share, and experience the spiritual richness of Dwarka together.</li> </ul> <h3 class="text-2xl font-bold theme-accent-color mt-6">About the Organizers</h3> <p>The journey is organized by <span class="font-semibold theme-text-primary">Hardeep Savani</span> from Surat, Gujarat. With a deep reverence for our spiritual heritage and a passion for community, Hardeep is committed to guiding everyone on a blessed and memorable pilgrimage.</p> <h3 class="text-2xl font-bold theme-accent-color mt-6">New Features & Updates</h3> <ul class="list-disc list-inside space-y-2"> <li><span class="font-semibold theme-text-primary">Nearby Places Guide:</span> Explore famous places around Dwarka with distance, timings, and map links.</li> <li><span class="font-semibold theme-text-primary">Live Train Status:</span> Click on the Train Name to see live running status instantly.</li> <li><span class="font-semibold theme-text-primary">Smart PNR:</span> Click on PNR Number to check status or use the copy button.</li> <li><span class="font-semibold theme-text-primary">Location Map:</span> Added "View on Google Maps" link for Hotels & Dharamshalas.</li> </ul> </div> </div> </div>
+    <div id="contact-modal" class="modal-backdrop hidden"> <div class="modal-content glass-card p-6 sm:p-8 relative flex flex-col"> <button id="close-contact-modal" class="absolute top-4 right-4 theme-text-secondary hover:theme-text-primary transition-colors text-3xl">&times;</button> <h2 class="text-3xl font-bold theme-accent-color page-title mb-4">Contact & Suggestions</h2> <div class="theme-text-secondary mb-6"> <p class="font-semibold text-lg theme-text-primary">Hardeep Savani</p> <p>Surat, Gujarat</p> </div> <div class="flex items-center justify-center space-x-6 mb-8"> <a href="https://wa.me/919824594156" target="_blank" class="flex items-center space-x-2 text-green-400 hover:text-green-300 transition-colors"><svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.894 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654z"/></svg><span class="font-semibold">WhatsApp</span></a> <a href="https://instagram.com/hookstar.fx" target="_blank" class="flex items-center space-x-2 text-pink-400 hover:text-pink-300 transition-colors"><svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8A3.6 3.6 0 0 0 7.6 20h8.8A3.6 3.6 0 0 0 20 16.4V7.6A3.6 3.6 0 0 0 16.4 4H7.6m9.65 1.5a1.25 1.25 0 1 1-2.5 0 1.25 1.25 0 0 1 2.5 0M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10m0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/></svg><span class="font-semibold">Instagram</span></a> </div> <form id="contact-form" action="https://formspree.io/f/xovlkbqr" method="POST" class="space-y-4"> <input type="text" name="name" id="contact-name" placeholder="Your Name" class="w-full p-2 rounded-lg border theme-text-primary focus:outline-none" style="background: var(--input-bg); border-color: var(--glass-border);" required> <input type="email" name="email" id="contact-email" placeholder="Your Email" class="w-full p-2 rounded-lg border theme-text-primary focus:outline-none" style="background: var(--input-bg); border-color: var(--glass-border);" required> <textarea name="message" id="contact-message" placeholder="Your Suggestion..." rows="4" class="w-full p-2 rounded-lg border theme-text-primary focus:outline-none" style="background: var(--input-bg); border-color: var(--glass-border);" required></textarea> <button type="submit" class="ios-button w-full p-3 rounded-xl text-center font-semibold transition-all duration-300 hover:shadow-xl transform hover:scale-105" style="background:var(--accent-color); color:white;">Send Suggestion</button> </form> </div> </div>
+    <div id="payment-modal" class="modal-backdrop hidden"> <div class="modal-content glass-card p-6 sm:p-8 relative flex flex-col max-h-[90vh] overflow-y-auto"> <button id="close-payment-modal" class="absolute top-4 right-4 theme-text-secondary hover:theme-text-primary transition-colors text-3xl">&times;</button> <div class="text-center"> <h1 class="text-2xl sm:text-3xl font-bold theme-text-primary tracking-tight">Make a Secure Payment</h1> <p class="theme-text-secondary mt-2 text-sm sm:text-base">Click a button to pay with your preferred mobile app. (Mobile only)</p> </div> <div class="space-y-4 mt-8"> <h2 class="text-lg font-semibold theme-accent-color">1. Pay Directly via App</h2> <div class="grid grid-cols-2 sm:grid-cols-3 gap-4"> <a href="upi://pay?pa=9824594156@okbizaxis&pn=Your%20Name&cu=INR" class="ios-button p-4 rounded-xl flex flex-col items-center justify-center space-y-2"><div class="h-8 flex items-center"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Google_Pay_Logo.svg/2560px-Google_Pay_Logo.svg.png" alt="Google Pay" class="h-full w-auto object-contain"></div><span class="font-semibold theme-text-primary text-xs">Google Pay</span></a> <a href="phonepe://pay?pa=9824594156@okbizaxis&pn=Your%20Name&cu=INR" class="ios-button p-4 rounded-xl flex flex-col items-center justify-center space-y-2"><div class="h-8 flex items-center"><img src="https://upload.wikimedia.org/wikipedia/commons/7/71/PhonePe_Logo.svg" alt="PhonePe" class="h-full w-auto object-contain"></div><span class="font-semibold theme-text-primary text-xs">PhonePe</span></a> <a href="bhim://upi/pay?pa=9824594156@okbizaxis&pn=Your%20Name&cu=INR" class="ios-button p-4 rounded-xl flex flex-col items-center justify-center space-y-2"><div class="h-8 flex items-center"><img src="https://upload.wikimedia.org/wikipedia/en/6/65/BHIM_SVG_Logo.svg" alt="BHIM UPI" class="h-full w-auto object-contain"></div><span class="font-semibold theme-text-primary text-xs">BHIM</span></a> </div> </div> <div class="relative my-6"><div class="absolute inset-0 flex items-center"><div class="w-full" style="border-top:1px solid var(--glass-border)"></div></div><div class="relative flex justify-center"><span class="px-2 text-sm theme-text-secondary" style="background:var(--glass-bg)">OR</span></div></div> <div class="space-y-4"> <h2 class="text-lg font-semibold theme-accent-color">2. Scan & Pay</h2> <div class="bg-white/90 p-4 rounded-lg flex justify-center"><img src="https://hookstar1993.github.io/paymehook/qr-9824594156@okbizaxis.png" alt="QR Code for Payment" class="rounded-md w-full max-w-[200px]"></div> </div> <div class="space-y-4 mt-6"> <h2 class="text-lg font-semibold theme-accent-color">3. Pay with UPI ID</h2> <div class="p-4 rounded-lg flex justify-between items-center" style="background:var(--input-bg)"> <span id="upiId" class="font-medium theme-text-primary text-sm sm:text-base break-all">9824594156@okbizaxis</span> <button onclick="copyToClipboard('upiId', this)" title="Copy UPI ID" class="ios-button p-1.5 rounded-xl flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 theme-text-primary" viewBox="0 0 20 20" fill="currentColor"><path d="M7 9a2 2 0 012-2h6a2 2 0 012 2v6a2 2 0 01-2 2H9a2 2 0 01-2-2V9z" /><path d="M5 3a2 2 0 00-2 2v6a2 2 0 002 2V5h6a2 2 0 00-2-2H5z" /></svg></button> </div> </div> <div class="space-y-4 mt-6"> <h2 class="text-lg font-semibold theme-accent-color">4. Direct Bank Transfer</h2> <div class="p-4 rounded-lg space-y-4 text-sm sm:text-base" style="background:var(--input-bg)"> <div class="flex justify-between items-center"><span class="theme-text-secondary">Account Name:</span><div class="flex items-center space-x-3"><span id="accName" class="font-medium theme-text-primary text-right">SAVANI HARDEEP M.</span><button onclick="copyToClipboard('accName', this)" title="Copy Account Name" class="ios-button p-1.5 rounded-xl flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 theme-text-primary" viewBox="0 0 20 20" fill="currentColor"><path d="M7 9a2 2 0 012-2h6a2 2 0 012 2v6a2 2 0 01-2 2H9a2 2 0 01-2-2V9z" /><path d="M5 3a2 2 0 00-2 2v6a2 2 0 002 2V5h6a2 2 0 00-2-2H5z" /></svg></button></div></div> <div class="flex justify-between items-center"><span class="theme-text-secondary">Bank Name:</span><div class="flex items-center space-x-3"><span id="bankName" class="font-medium theme-text-primary text-right">STATE BANK OF INDIA</span><button onclick="copyToClipboard('bankName', this)" title="Copy Bank Name" class="ios-button p-1.5 rounded-xl flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 theme-text-primary" viewBox="0 0 20 20" fill="currentColor"><path d="M7 9a2 2 0 012-2h6a2 2 0 012 2v6a2 2 0 01-2 2H9a2 2 0 01-2-2V9z" /><path d="M5 3a2 2 0 00-2 2v6a2 2 0 002 2V5h6a2 2 0 00-2-2H5z" /></svg></button></div></div> <div class="flex justify-between items-center"><span class="theme-text-secondary">Account No:</span><div class="flex items-center space-x-3"><span id="accNum" class="font-medium theme-text-primary">40003791171</span><button onclick="copyToClipboard('accNum', this)" title="Copy Account Number" class="ios-button p-1.5 rounded-xl flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 theme-text-primary" viewBox="0 0 20 20" fill="currentColor"><path d="M7 9a2 2 0 012-2h6a2 2 0 012 2v6a2 2 0 01-2 2H9a2 2 0 01-2-2V9z" /><path d="M5 3a2 2 0 00-2 2v6a2 2 0 002 2V5h6a2 2 0 00-2-2H5z" /></svg></button></div></div> <div class="flex justify-between items-center"><span class="theme-text-secondary">IFSC Code:</span><div class="flex items-center space-x-3"><span id="ifscCode" class="font-medium theme-text-primary">SBIN0060236</span><button onclick="copyToClipboard('ifscCode', this)" title="Copy IFSC Code" class="ios-button p-1.5 rounded-xl flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 theme-text-primary" viewBox="0 0 20 20" fill="currentColor"><path d="M7 9a2 2 0 012-2h6a2 2 0 012 2v6a2 2 0 01-2 2H9a2 2 0 01-2-2V9z" /><path d="M5 3a2 2 0 00-2 2v6a2 2 0 002 2V5h6a2 2 0 00-2-2H5z" /></svg></button></div></div> </div> </div> <div class="space-y-4 pt-6"> <h2 class="text-lg font-semibold theme-accent-color">5. Confirm on WhatsApp</h2> <p class="text-center text-sm theme-text-secondary">After payment, click the button below to send us the screenshot for confirmation.</p> <a href="https://wa.me/919824594156?text=Hello!%20I%20have%20completed%20the%20payment.%20Here%20is%20the%20screenshot." target="_blank" rel="noopener noreferrer" class="pay-button w-full font-bold py-3 px-4 rounded-xl flex items-center justify-center space-x-3 transition-all duration-300 transform hover:scale-105"> <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.894 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654z"/></svg> <span>Send Screenshot on WhatsApp</span> </a> </div> </div> </div>
+    <div id="toast-notification" class="glass-card theme-text-primary py-2 px-4 rounded-lg shadow-lg z-50"></div>
+    <div id="timing-modal" class="modal-backdrop hidden"> <div class="modal-content glass-card p-6 sm:p-8 relative flex flex-col" style="max-width: 900px;"> <button id="close-timing-modal" class="absolute top-4 right-4 theme-text-secondary hover:theme-text-primary transition-colors text-3xl">&times;</button> <h2 class="text-3xl font-bold theme-accent-color page-title mb-4 text-center">Dwarkadhish Mandir & Dhwaja Timings</h2> <div id="timing-schedule" class="theme-text-secondary overflow-y-auto pr-4 space-y-2"> </div> </div> </div>
+    <div id="success-modal" class="modal-backdrop hidden"> <div class="modal-content glass-card p-6 sm:p-8 relative flex flex-col rounded-2xl text-center"> <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100 mb-4"> <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> </div> <h2 class="text-2xl font-bold theme-text-primary mb-2">Message Sent!</h2> <p class="theme-text-secondary">Thank you for reaching out. We will get back to you shortly.</p> </div> </div>
 
     <script>
         // --- PASTE YOUR GOOGLE SHEET CSV LINK HERE ---
@@ -685,9 +559,8 @@
         // --- REPLACE THIS WITH YOUR SHEET 2 CSV LINK ---
         const googleSheetUrlPlaces = 'https://docs.google.com/spreadsheets/d/e/YOUR_SHEET_2_ID/pub?gid=YOUR_GID&output=csv'; 
 
-        // --- DUMMY DATA FOR BEST STAY ---
+        // --- DATA OBJECTS (Restored) ---
         const stayData = [
-            // Dharamshalas (Updated)
             {
                 name: "Dwarka - Gayatri Shantivan",
                 type: "dharamshala",
@@ -750,12 +623,10 @@
                     { type: "5 Bed Non AC Room", price: "3,500 + 175 Tax", person: "~735" }
                 ]
             },
-            
-            // Hotels
             {
                 name: "Hotel Vraj Inn",
                 type: "hotel",
-                image: "https://cf.bstatic.com/xdata/images/hotel/max1024x768/123456.jpg", // Placeholder
+                image: "https://cf.bstatic.com/xdata/images/hotel/max1024x768/123456.jpg", 
                 cost: "Start @ ₹1000/Person",
                 address: "Teen Batti Chowk",
                 map_link: "https://maps.app.goo.gl/dummyStay4",
@@ -766,7 +637,7 @@
             {
                 name: "Hawthorn Suites by Wyndham",
                 type: "hotel",
-                image: "https://cf.bstatic.com/xdata/images/hotel/max1024x768/789012.jpg", // Placeholder
+                image: "https://cf.bstatic.com/xdata/images/hotel/max1024x768/789012.jpg", 
                 cost: "Start @ ₹2500/Person",
                 address: "Porbandar - Dwarka Highway",
                 map_link: "https://maps.app.goo.gl/dummyStay5",
@@ -777,7 +648,7 @@
             {
                 name: "Hotel Gomti (TCGL)",
                 type: "hotel",
-                image: "https://gujarattourism.com/content/dam/gujrattourism/images/hotels/hotel-gomti/Thumbnail.jpg", // Placeholder
+                image: "https://gujarattourism.com/content/dam/gujrattourism/images/hotels/hotel-gomti/Thumbnail.jpg", 
                 cost: "Start @ ₹750/Person",
                 address: "Near Dwarkadhish Temple",
                 map_link: "https://maps.app.goo.gl/dummyStay6",
@@ -786,8 +657,6 @@
                 distance: "0.5 km"
             }
         ];
-
-        // --- DUMMY DATA FOR FOOD & TRAVEL ---
         const foodData = [
             {
                 name: "Dwarkadhish Bhojanalay",
@@ -832,7 +701,6 @@
                 map_link: "#"
             }
         ];
-
         const driverData = [
             {
                 name: "Somabhai Mordav (Rabari)",
@@ -860,96 +728,6 @@
                 contact: "8888899999"
             }
         ];
-
-        // --- GLOBAL VARIABLES ---
-        let groupedData = {};
-        // UPDATED PLACES DATA WITH DISTANCE FROM MANDIR AND RENTS
-        let placesData = [
-            {
-                place_name: "Gomti Ghat & Samudra Narayan",
-                distance: "0.5 km",
-                auto_fare: "Walking / ₹30 Auto",
-                timings: "6:00 AM - 8:00 PM",
-                map_link: "https://maps.app.goo.gl/qgEyPLjzRE2SNZ588",
-                address: "Gomti Ghat, Dwarka",
-                description: "Sacred ghats for holy dip and a beautiful temple dedicated to Samudra Dev at the confluence.",
-                image_url: "https://touringwithpk.com/wp-content/uploads/2025/11/IMG_6123a-700x432.jpg" 
-            },
-            {
-                place_name: "Bhadkeshwar Mahadev Mandir",
-                distance: "2 km",
-                auto_fare: "₹100 - ₹150 (Auto Round Trip)",
-                timings: "Open all day",
-                map_link: "https://maps.app.goo.gl/fMXMhXtg4bVP6QWZ6",
-                address: "Near Geeta Mandir, Dwarka",
-                description: "A serene Shiva temple on a hillock in the sea, offering breathtaking sunset views.",
-                image_url: "https://temple.yatradham.org/public/Product/temple/temple_rLrAgqEI_202507021532410.webp" 
-            },
-            {
-                place_name: "Rukmini Devi Mandir",
-                distance: "2.5 km",
-                auto_fare: "₹150 - ₹200 (Auto Round Trip)",
-                timings: "6:00 AM - 12:00 PM, 5:00 PM - 9:00 PM",
-                map_link: "https://maps.app.goo.gl/KuLpifHa69izgFJa9",
-                address: "Rukmini Devi Temple, Dwarka",
-                description: "Dedicated to Rukmini, Lord Krishna's chief queen. Known for its rich carvings and history.",
-                image_url: "https://s7ap1.scene7.com/is/image/incredibleindia/rukmini-devi-temple-01-attr-hero?qlt=82&ts=1726734757812" 
-            },
-            {
-                place_name: "Nageshwar Jyotirling",
-                distance: "17 km",
-                auto_fare: "₹700 - ₹900 (Auto Round Trip)",
-                timings: "6:00 AM - 12:30 PM, 5:00 PM - 9:30 PM",
-                map_link: "https://maps.app.goo.gl/xbQcvMzDo2saKZHz8",
-                address: "Daarukavanam, Gujarat 361335",
-                description: "One of the 12 Jyotirlingas of Lord Shiva. Features a giant statue of Lord Shiva.",
-                image_url: "https://blog.yatradham.org/wp-content/uploads/2023/08/Nageshwar-Jyotirlinga-Temple-Timings.jpg" 
-            },
-            {
-                place_name: "Gopi Talav",
-                distance: "22 km",
-                auto_fare: "Part of Full Day Tour",
-                timings: "6:00 AM - 6:00 PM",
-                map_link: "https://maps.app.goo.gl/xggHDjCrRURNmz5s8",
-                address: "Gopi Talav, Dwarka",
-                description: "A sacred pond associated with the Gopis of Vrindavan and Lord Krishna's Raas Leela.",
-                image_url: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Gopi_Talab_Dwarka_during_Dwaraka_DWARASPDB_2015_%2819%29.jpg/2560px-Gopi_Talab_Dwarka_during_Dwaraka_DWARASPDB_2015_%2819%29.jpg" 
-            },
-            {
-                place_name: "Shivrajpur Beach",
-                distance: "13 km",
-                auto_fare: "₹600 - ₹800 (Auto Round Trip)",
-                timings: "8:00 AM - 7:00 PM",
-                map_link: "https://maps.app.goo.gl/PCenDXDfC9QhvqAN7",
-                address: "Shivrajpur, Gujarat",
-                description: "Blue Flag certified pristine beach with white sand and clear water. Ideal for water sports.",
-                image_url: "https://s7ap1.scene7.com/is/image/incredibleindia/shivrajpur-beach-dwarka-gujarat-3-musthead-hero?qlt=82&ts=1726734727403" 
-            },
-            {
-                place_name: "Bet Dwarka (Okha Jetty)",
-                distance: "32 km",
-                auto_fare: "Taxi: ₹1200-₹1500 / Bus: ₹40",
-                timings: "Ferry runs 6:00 AM to 7:00 PM",
-                map_link: "https://maps.app.goo.gl/mLiwWCAyp1B3ewVu5",
-                address: "Bet Dwarka Island",
-                description: "The original residence of Lord Krishna. Requires a ferry ride from Okha port.",
-                image_url: "https://thrillingtravel.in/wp-content/uploads/2021/07/Bet-Dwarka-Temple-Gujarat.jpg" 
-            },
-            {
-                place_name: "Dwarka Light House",
-                distance: "2 km",
-                auto_fare: "₹100 (Auto)",
-                timings: "4:00 PM - 6:00 PM",
-                map_link: "https://maps.app.goo.gl/VHXm2BuMHnY4eZdN8",
-                address: "Near Bhadkeshwar, Dwarka",
-                description: "Offers panoramic views of the Arabian Sea and the city. Best visited in the evening.",
-                image_url: "https://lighthouse.nic.in/sites/default/files/2025-06/Dwarka_0.png" 
-            }
-        ];
-        
-        // --- Dummy Data for Places (Will be replaced by sheet data if provided) ---
-        const dummyPlacesData = [];
-
         const poonamDates = [
             { year: 2025, month: 'August', day: 9 }, { year: 2025, month: 'September', day: 7 },
             { year: 2025, month: 'October', day: 7 }, { year: 2025, month: 'November', day: 5 },
@@ -967,8 +745,11 @@
             { year: 2027, month: 'September', day: 15 }, { year: 2027, month: 'October', day: 15 },
             { year: 2027, month: 'November', day: 13 }, { year: 2027, month: 'December', day: 13 }
         ];
+        let groupedData = {};
+        let placesData = [];
+        const dummyPlacesData = [];
 
-        // --- DOM Element References ---
+        // --- DOM Elements ---
         const welcomePopup = document.getElementById('welcome-popup');
         const datesContainer = document.getElementById('poonam-dates-container');
         const countdownContainer = document.getElementById('countdown-container');
@@ -1008,80 +789,146 @@
             }
         };
 
-        // ... (Helper Functions stay the same) ...
-        function getWeekdayName(dateStr) {
-            if (!dateStr) return '';
-            try {
-                const parts = dateStr.split(/[\/\-]/);
-                let dateObj;
-                if (parts.length === 3 && parts[2].length === 4) {
-                    dateObj = new Date(parts[2], parts[1] - 1, parts[0]);
-                } else {
-                    dateObj = new Date(dateStr);
-                }
-                if (isNaN(dateObj.getTime())) return '';
-                const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-                return days[dateObj.getDay()];
-            } catch (e) { return ''; }
+        // --- Helper Functions (Hoisted) ---
+        function getWeekdayName(dateStr) { 
+            if (!dateStr) return ''; 
+            try { 
+                const parts = dateStr.split(/[\/\-]/); 
+                let dateObj; 
+                if (parts.length === 3 && parts[2].length === 4) { 
+                    dateObj = new Date(parts[2], parts[1] - 1, parts[0]); 
+                } else { 
+                    dateObj = new Date(dateStr); 
+                } 
+                if (isNaN(dateObj.getTime())) return ''; 
+                const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']; 
+                return days[dateObj.getDay()]; 
+            } catch (e) { return ''; } 
         }
 
-        window.copyText = function(text) {
-            if (!text) return;
-            const textArea = document.createElement("textarea");
-            textArea.value = text;
-            textArea.style.position = "fixed";
-            textArea.style.left = "-9999px";
-            textArea.style.top = "0";
-            document.body.appendChild(textArea);
-            textArea.focus();
-            textArea.select();
-            try {
-                const successful = document.execCommand('copy');
-                if (successful) {
-                    showToast(`Copied: ${text}`);
-                } else {
-                    showToast('Failed to copy', 'error');
-                }
-            } catch (err) {
-                console.error('Fallback: Oops, unable to copy', err);
-                showToast('Failed to copy', 'error');
-            }
-            document.body.removeChild(textArea);
+        function copyText(text) { 
+            if (!text) return; 
+            const textArea = document.createElement("textarea"); 
+            textArea.value = text; 
+            textArea.style.position = "fixed"; 
+            textArea.style.left = "-9999px"; 
+            textArea.style.top = "0"; 
+            document.body.appendChild(textArea); 
+            textArea.focus(); 
+            textArea.select(); 
+            try { 
+                const successful = document.execCommand('copy'); 
+                if (successful) { showToast(`Copied: ${text}`); } else { showToast('Failed to copy', 'error'); } 
+            } catch (err) { 
+                console.error('Fallback: Oops, unable to copy', err); 
+                showToast('Failed to copy', 'error'); 
+            } 
+            document.body.removeChild(textArea); 
         };
 
-        function showWelcomePopup() {
-            if (!welcomePopup) return;
-            welcomePopup.style.display = 'flex';
+        function showWelcomePopup() { 
+            if (!welcomePopup) return; 
+            welcomePopup.style.display = 'flex'; 
+            setTimeout(() => { 
+                welcomePopup.classList.add('welcome-popup-visible'); 
+                welcomePopup.querySelector('.welcome-content').classList.add('welcome-content-visible'); 
+            }, 10); 
+            setTimeout(() => { 
+                welcomePopup.classList.remove('welcome-popup-visible'); 
+                welcomePopup.querySelector('.welcome-content').classList.remove('welcome-content-visible'); 
+                setTimeout(() => { welcomePopup.style.display = 'none'; }, 500); 
+            }, 2000); 
+        }
+
+        function closeModal() {
+            if(modal) modal.classList.add('hidden');
+            if(iframe) iframe.src = '';
+        }
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast-notification');
+            toast.textContent = message;
+            toast.style.background = type === 'error' ? 'var(--accent-color)' : '#28a745';
+            toast.style.color = 'white';
+            toast.classList.add('show');
             setTimeout(() => {
-                welcomePopup.classList.add('welcome-popup-visible');
-                welcomePopup.querySelector('.welcome-content').classList.add('welcome-content-visible');
-            }, 10);
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        function updateButtonState(button) {
+            const originalHTML = button.innerHTML;
+            button.disabled = true;
+            button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 theme-text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>`;
             setTimeout(() => {
-                welcomePopup.classList.remove('welcome-popup-visible');
-                welcomePopup.querySelector('.welcome-content').classList.remove('welcome-content-visible');
-                setTimeout(() => { welcomePopup.style.display = 'none'; }, 500);
+                button.innerHTML = originalHTML;
+                button.disabled = false;
             }, 2000);
         }
 
-        // --- NEW: Attach Stay Collapsible Listeners ---
-        function attachStayCollapsibleListeners() {
-            const triggers = document.querySelectorAll('.stay-rates-trigger');
-            triggers.forEach(trigger => {
-                trigger.addEventListener('click', function() {
-                    const content = this.nextElementSibling;
-                    const icon = this.querySelector('i');
-                    if (content.classList.contains('hidden')) {
-                        content.classList.remove('hidden');
-                        icon.style.transform = 'rotate(180deg)';
+        window.copyToClipboard = function(elementId, button) {
+            const textToCopy = document.getElementById(elementId).innerText;
+            copyText(textToCopy); // Use hoisted helper
+            updateButtonState(button);
+        };
+
+        function attachStayCollapsibleListeners() { 
+            const triggers = document.querySelectorAll('.stay-rates-trigger'); 
+            triggers.forEach(trigger => { 
+                trigger.addEventListener('click', function() { 
+                    const content = this.nextElementSibling; 
+                    const icon = this.querySelector('i'); 
+                    if (content.classList.contains('hidden')) { 
+                        content.classList.remove('hidden'); 
+                        icon.style.transform = 'rotate(180deg)'; 
+                    } else { 
+                        content.classList.add('hidden'); 
+                        icon.style.transform = 'rotate(0deg)'; 
+                    } 
+                }); 
+            }); 
+        }
+
+        function attachModalListeners() {
+            document.querySelectorAll('.view-ticket-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    const ticketUrl = button.dataset.ticketUrl;
+                    if (ticketUrl && ticketUrl.trim() !== '#' && ticketUrl !== 'undefined') {
+                        iframe.src = ticketUrl;
+                        downloadBtn.href = ticketUrl;
+                        const fileName = ticketUrl.substring(ticketUrl.lastIndexOf('/') + 1);
+                        downloadBtn.setAttribute('download', fileName);
+                        modal.classList.remove('hidden');
                     } else {
-                        content.classList.add('hidden');
-                        icon.style.transform = 'rotate(0deg)';
+                        showToast('Document not available right now.', 'error');
                     }
                 });
             });
         }
 
-        // --- NEW: Render Best Stay Function ---
+        function attachCollapsibleListeners() {
+            const triggers = document.querySelectorAll('.collapsible-trigger');
+            triggers.forEach(trigger => {
+                trigger.addEventListener('click', function() {
+                    const content = this.nextElementSibling;
+                    const isActive = this.classList.contains('active');
+                    triggers.forEach(otherTrigger => {
+                        if (otherTrigger !== this) {
+                            otherTrigger.classList.remove('active');
+                            otherTrigger.nextElementSibling.style.maxHeight = null;
+                        }
+                    });
+                    if (isActive) {
+                        this.classList.remove('active');
+                        content.style.maxHeight = null;
+                    } else {
+                        this.classList.add('active');
+                        content.style.maxHeight = content.scrollHeight + "px";
+                    }
+                });
+            });
+        }
+
         function renderStayInfo() {
             const dharamshalas = stayData.filter(s => s.type === 'dharamshala');
             const hotels = stayData.filter(s => s.type === 'hotel');
@@ -1188,11 +1035,9 @@
                 </div>
             `;
             stayContainer.innerHTML = html;
-            // Attach listeners after HTML injection
             attachStayCollapsibleListeners();
         }
 
-        // --- NEW: Render Food & Travel Function ---
         function renderFoodAndTravel() {
             const categorizedFood = {
                 meal: foodData.filter(f => f.category === 'meal'),
@@ -1202,10 +1047,7 @@
 
             let html = `
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <!-- Left Side: Food Options -->
                     <div class="space-y-6">
-                        
-                        <!-- Meals Section -->
                         ${categorizedFood.meal.length > 0 ? `
                         <div class="space-y-3">
                             <div class="sticky top-0 bg-white/10 backdrop-blur-md z-10 py-1 mb-2 border-b border-gray-500/20">
@@ -1229,7 +1071,6 @@
                             `).join('')}
                         </div>` : ''}
 
-                        <!-- Beverages Section -->
                         ${categorizedFood.beverage.length > 0 ? `
                         <div class="space-y-3">
                             <div class="sticky top-0 bg-white/10 backdrop-blur-md z-10 py-1 mb-2 border-b border-gray-500/20">
@@ -1253,7 +1094,6 @@
                             `).join('')}
                         </div>` : ''}
 
-                        <!-- Snacks Section -->
                         ${categorizedFood.snack.length > 0 ? `
                         <div class="space-y-3">
                             <div class="sticky top-0 bg-white/10 backdrop-blur-md z-10 py-1 mb-2 border-b border-gray-500/20">
@@ -1287,7 +1127,6 @@
                             </h3>
                         </div>
 
-                        <!-- Travel Warning Box -->
                         <div class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-700 rounded-xl p-4 text-sm text-yellow-800 dark:text-yellow-200 mb-4 shadow-sm">
                             <p class="font-bold flex items-center mb-2"><i class="fas fa-exclamation-triangle mr-2 text-yellow-600"></i> Important Warning:</p>
                             <p class="mb-3 leading-relaxed opacity-90">These driver numbers belong to private travel owners. Please <strong>decide the price and location first</strong> before booking. Prices may increase or decrease based on the exact location.</p>
@@ -1326,7 +1165,97 @@
             foodTravelContainer.innerHTML = html;
         }
 
-        // ... (Rest of existing functions: setupDropdowns, populateDateMonthDropdown, autoSelectNextTrip, startCountdown, attachModalListeners, etc.) ...
+        function renderPlaces() {
+            const dataToRender = placesData.length > 0 ? placesData : dummyPlacesData;
+            
+            if (dataToRender.length === 0) {
+                placesContainer.innerHTML = `<p class="text-center theme-text-secondary">No places information available at the moment.</p>`;
+                return;
+            }
+
+            let html = '<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">';
+            
+            dataToRender.forEach(place => {
+                const imgUrl = place.image_url && place.image_url.trim() !== '' 
+                    ? place.image_url 
+                    : 'https://placehold.co/600x400/orange/white?text=' + encodeURIComponent(place.place_name);
+
+                html += `
+                    <div class="place-card rounded-xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 flex flex-col h-full">
+                        <div class="h-48 overflow-hidden relative group">
+                            <img src="${imgUrl}" alt="${place.place_name}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                            <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/80 to-transparent p-4">
+                                <h3 class="text-xl font-bold text-white">${place.place_name}</h3>
+                                <p class="text-yellow-300 text-xs font-semibold"><i class="fas fa-road mr-1"></i> ${place.distance} from Mandir</p>
+                            </div>
+                        </div>
+                        <div class="p-4 flex-grow flex flex-col justify-between">
+                            <div class="space-y-2 mb-4">
+                                ${place.description ? `<p class="text-sm theme-text-secondary line-clamp-2 mb-3">${place.description}</p>` : ''}
+                                
+                                <div class="flex items-start text-sm theme-text-secondary">
+                                    <i class="fas fa-clock mt-1 mr-2 w-4 text-center theme-accent-color"></i>
+                                    <span>${place.timings}</span>
+                                </div>
+                                
+                                <div class="flex items-start text-sm theme-text-secondary">
+                                    <i class="fas fa-taxi mt-1 mr-2 w-4 text-center theme-accent-color"></i>
+                                    <span><strong>Rent:</strong> ${place.auto_fare}</span>
+                                </div>
+                                
+                                <div class="flex items-start text-sm theme-text-secondary">
+                                    <i class="fas fa-map-marker-alt mt-1 mr-2 w-4 text-center theme-accent-color"></i>
+                                    <span class="line-clamp-1">${place.address}</span>
+                                </div>
+                            </div>
+                            
+                            <a href="${place.map_link}" target="_blank" class="w-full bg-blue-100 hover:bg-blue-200 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 dark:hover:bg-blue-800/50 py-2 rounded-lg text-center font-semibold text-sm transition-colors flex items-center justify-center gap-2">
+                                <i class="fas fa-location-arrow"></i> Navigate
+                            </a>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            placesContainer.innerHTML = html;
+        }
+
+        async function fetchPlacesData() {
+            if (googleSheetUrlPlaces.includes('YOUR_SHEET_2_ID')) {
+                renderPlaces();
+                return;
+            }
+
+            try {
+                const response = await fetch(`${googleSheetUrlPlaces}&_=${new Date().getTime()}`);
+                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+                const csvText = await response.text();
+                placesData = parseCSV(csvText);
+                renderPlaces();
+            } catch (error) {
+                console.error('Error fetching places data:', error);
+                renderPlaces();
+            }
+        }
+
+        function parseCSV(csvText) {
+            const lines = csvText.split(/\r?\n/).filter(line => line.trim());
+            if (lines.length < 2) return [];
+            const headers = lines[0].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(h => h.trim().replace(/"/g, '').toLowerCase().replace(/\s+/g, '_'));
+            const data = [];
+            for (let i = 1; i < lines.length; i++) {
+                const obj = {};
+                const currentline = lines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(item => item.trim().replace(/"/g, ''));
+                if (currentline.length === headers.length) {
+                    for (let j = 0; j < headers.length; j++) {
+                        obj[headers[j]] = currentline[j];
+                    }
+                    data.push(obj);
+                }
+            }
+            return data;
+        }
         
         function setupDropdowns() {
             const years = Object.keys(groupedData).sort();
@@ -1396,6 +1325,304 @@
             }
         }
 
+        async function fetchAndProcessData() {
+            if (!googleSheetUrl || googleSheetUrl.includes('YOUR_GOOGLE_SHEET')) {
+                datesContainer.innerHTML = `<p class="text-center text-red-400 p-10">Please add your Google Sheet CSV link in the script.</p>`;
+                return;
+            }
+
+            datesContainer.innerHTML = `
+                <div class="text-center p-10">
+                    <svg aria-hidden="true" class="inline w-10 h-10 theme-text-secondary animate-spin" style="fill: var(--accent-color)" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
+                        <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0492C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentColor"/>
+                    </svg>
+                    <p class="mt-4 theme-text-secondary font-semibold">Loading booking data...</p>
+                </div>`;
+
+            try {
+                const response = await fetch(`${googleSheetUrl}&_=${new Date().getTime()}`);
+                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+
+                const csvText = await response.text();
+                const allBookingsData = parseCSV(csvText);
+
+                groupedData = allBookingsData.reduce((acc, row) => {
+                    if (row.year && row.date_month) {
+                        const { year, date_month } = row;
+                        if (!acc[year]) acc[year] = {};
+                        if (!acc[year][date_month]) acc[year][date_month] = [];
+
+                        const key = `${row.type}-${row.booking_no_pnr || Math.random()}`;
+                        let booking = acc[year][date_month].find(b => b.key === key);
+
+                        if (!booking) {
+                            booking = { ...row, passengers: [], key: key };
+                            acc[year][date_month].push(booking);
+                        }
+
+                        if (row.guest_name) {
+                            booking.passengers.push(row);
+                        }
+                    }
+                    return acc;
+                }, {});
+
+                setupDropdowns();
+                autoSelectNextTrip();
+
+            } catch (error) {
+                console.error('Error fetching or processing data:', error);
+                datesContainer.innerHTML = `<p class="text-center text-red-400 p-10">Error loading booking data. Please check the data source and network connection.</p>`;
+            }
+        }
+
+        const populateTimings = () => {
+            const scheduleContainer = document.getElementById('timing-schedule');
+            const now = new Date();
+            const currentTime = now.getHours() + now.getMinutes() / 60;
+            
+            const mandirTimings = [
+                { time: "6:30 AM", event: "Mangla Aarti", type: "open", start: 6.5, end: 8.0 },
+                { time: "8:00 AM - 9:00 AM", event: "Mangla Darshan", type: "open", start: 8.0, end: 9.0 },
+                { time: "9:00 AM - 9:30 AM", event: "Abhishek Pooja (Closed)", type: "closed", start: 9.0, end: 9.5 },
+                { time: "9:30 AM - 10:15 AM", event: "Shringar Darshan", type: "open", start: 9.5, end: 10.25 },
+                { time: "10:15 AM - 10:30 AM", event: "Shringar Bhog (Closed)", type: "closed", start: 10.25, end: 10.5 },
+                { time: "10:30 AM - 10:45 AM", event: "Shringar Aarti", type: "open", start: 10.5, end: 10.75 },
+                { time: "11:05 AM - 11:20 AM", event: "Gwal Bhog (Closed)", type: "closed", start: 11.08, end: 11.33 },
+                { time: "11:20 AM - 12:00 PM", event: "Darshan Open", type: "open", start: 11.33, end: 12.0 },
+                { time: "12:00 PM - 12:20 PM", event: "Rajbhog (Closed)", type: "closed", start: 12.0, end: 12.33 },
+                { time: "12:20 PM - 1:00 PM", event: "Darshan Open", type: "open", start: 12.33, end: 13.0 },
+                { time: "1:00 PM - 5:00 PM", event: "Anosar (Mandir Closed)", type: "closed", start: 13.0, end: 17.0 },
+                { time: "5:00 PM - 5:30 PM", event: "Uthapan Darshan", type: "open", start: 17.0, end: 17.5 },
+                { time: "5:45 PM - 6:00 PM", event: "Uthapan Bhog (Closed)", type: "closed", start: 17.75, end: 18.0 },
+                { time: "6:15 PM - 6:45 PM", event: "Darshan Open", type: "open", start: 18.25, end: 18.75 },
+                { time: "7:00 PM - 7:25 PM", event: "Sandhya Bhog (Closed)", type: "closed", start: 19.0, end: 19.42 },
+                { time: "7:25 PM - 7:45 PM", event: "Sandhya Aarti", type: "open", start: 19.42, end: 19.75 },
+                { time: "8:00 PM - 8:10 PM", event: "Shayan Bhog (Closed)", type: "closed", start: 20.0, end: 20.17 },
+                { time: "8:10 PM - 8:35 PM", event: "Shayan Darshan", type: "open", start: 20.17, end: 20.58 },
+                { time: "8:35 PM", event: "Shayan Aarti", type: "open", start: 20.58, end: 21.0 },
+                { time: "9:00 PM", event: "Mandir Closed", type: "closed", start: 21.0, end: 24.0 }
+            ];
+
+            const dhwajaTimings = [
+                { event: "First Dhwaja Arohan", time: "7:00 AM - 8:30 AM", start: 7.0, end: 8.5 },
+                { event: "Second Dhwaja Arohan", time: "8:39 AM - 10:30 AM", start: 8.65, end: 10.5 },
+                { event: "Third Dhwaja Arohan", time: "10:30 AM - 12:30 PM", start: 10.5, end: 12.5 },
+                { event: "Fourth Dhwaja Arohan", time: "5:30 PM", start: 17.0, end: 18.5 } 
+            ];
+
+            let mandirHtml = '';
+            mandirTimings.forEach(item => {
+                const isCurrent = currentTime >= item.start && currentTime < item.end;
+                const colorClass = item.type === 'open' ? 'text-green-500' : 'text-red-400';
+                const currentClass = isCurrent ? 'current-timing ring-2 ring-offset-1 ring-orange-400' : '';
+
+                mandirHtml += `
+                    <div class="flex justify-between items-center p-2 rounded-lg ${currentClass} hover:bg-black/5 dark:hover:bg-white/5 transition-colors text-sm mb-1">
+                        <span class="font-medium theme-text-primary">${item.event}</span>
+                        <span class="${colorClass} font-bold text-right ml-2 whitespace-nowrap">${item.time}</span>
+                    </div>
+                `;
+            });
+
+            let dhwajaHtml = '';
+            dhwajaTimings.forEach(item => {
+                const isCurrent = currentTime >= item.start && currentTime < item.end;
+                const activeClass = isCurrent ? 'current-timing ring-2 ring-offset-1 ring-orange-400' : '';
+                const timeColor = isCurrent ? 'text-green-500' : 'theme-accent-color';
+
+                dhwajaHtml += `
+                    <div class="flex justify-between items-center p-3 rounded-lg ${activeClass} hover:bg-black/5 dark:hover:bg-white/5 transition-colors text-sm mb-2 shadow-sm" style="background:var(--input-bg)">
+                        <span class="font-medium theme-text-primary flex items-center gap-2">
+                            <i class="fas fa-flag theme-accent-color text-xs"></i> ${item.event}
+                        </span>
+                        <span class="${timeColor} font-bold text-right ml-2 whitespace-nowrap">${item.time}</span>
+                    </div>
+                `;
+            });
+
+            scheduleContainer.innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                    <!-- Mandir Darshan Column -->
+                    <div>
+                        <div class="sticky top-0 bg-white/10 backdrop-blur-md z-10 py-2 mb-2 border-b border-gray-500/20">
+                            <h3 class="text-xl font-bold theme-text-primary text-center flex items-center justify-center gap-2">
+                                <i class="fas fa-gopuram theme-accent-color"></i> Darshan Timing
+                            </h3>
+                        </div>
+                        <div class="space-y-1">
+                            ${mandirHtml}
+                        </div>
+                    </div>
+
+                    <!-- Dhwaja Arohan Column -->
+                    <div>
+                        <div class="sticky top-0 bg-white/10 backdrop-blur-md z-10 py-2 mb-2 border-b border-gray-500/20">
+                            <h3 class="text-xl font-bold theme-text-primary text-center flex items-center justify-center gap-2">
+                                <i class="fas fa-flag theme-accent-color"></i> Dhwaja Timing
+                            </h3>
+                        </div>
+                        <div class="space-y-1">
+                            ${dhwajaHtml}
+                            <div class="mt-4 p-3 rounded-lg bg-orange-100/10 border border-orange-500/30 text-xs theme-text-secondary text-center">
+                                <p><i class="fas fa-info-circle mr-1"></i> Note: Dhwaja timings are subject to change during festivals.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        };
+
+        function updateWeatherAndCrowd() {
+            const month = new Date().getMonth(); // 0-11
+            let season = "";
+            let weatherIcon = "";
+            let temp = "";
+            let forecastText = "";
+            
+            // Elements
+            const liveWeatherCard = document.getElementById('card-live-weather');
+            const liveWeatherIconEl = liveWeatherCard ? liveWeatherCard.querySelector('.dashboard-icon') : null;
+            const liveWeatherTextEl = document.getElementById('live-weather-text');
+            const forecastCard = document.getElementById('card-forecast');
+            const forecastIconEl = forecastCard ? forecastCard.querySelector('.dashboard-icon') : null;
+            const forecastTextEl = document.getElementById('forecast-weather-text');
+
+            if (month >= 10 || month <= 1) { // Winter
+                season = "Winter";
+                weatherIcon = '<i class="fas fa-snowflake"></i>';
+                temp = "18°C - 25°C";
+                forecastText = "19°C - 24°C<br>Cool & Pleasant";
+                
+                // Winter Colors (Cool Blue)
+                if(liveWeatherIconEl) liveWeatherIconEl.className = "dashboard-icon text-blue-400";
+                if(liveWeatherTextEl) liveWeatherTextEl.className = "dashboard-value text-blue-500";
+                if(forecastIconEl) forecastIconEl.className = "dashboard-icon text-blue-300";
+
+            } else if (month >= 2 && month <= 5) { // Summer
+                season = "Summer";
+                weatherIcon = '<i class="fas fa-sun"></i>';
+                temp = "28°C - 35°C";
+                forecastText = "30°C - 36°C<br>Sunny & Warm";
+
+                // Summer Colors (Warm Orange/Yellow)
+                if(liveWeatherIconEl) liveWeatherIconEl.className = "dashboard-icon text-orange-500";
+                if(liveWeatherTextEl) liveWeatherTextEl.className = "dashboard-value text-orange-600";
+                if(forecastIconEl) forecastIconEl.className = "dashboard-icon text-yellow-500";
+
+            } else { // Monsoon
+                season = "Monsoon";
+                weatherIcon = '<i class="fas fa-cloud-showers-heavy"></i>';
+                temp = "25°C - 30°C";
+                forecastText = "26°C - 31°C<br>Cloudy/Rain";
+
+                // Monsoon Colors (Gray/Teal)
+                if(liveWeatherIconEl) liveWeatherIconEl.className = "dashboard-icon text-teal-600";
+                if(liveWeatherTextEl) liveWeatherTextEl.className = "dashboard-value text-teal-700";
+                if(forecastIconEl) forecastIconEl.className = "dashboard-icon text-gray-500";
+            }
+
+            if(liveWeatherTextEl) {
+                liveWeatherTextEl.innerHTML = `${temp}<br><span class="text-[10px] opacity-80">${season}</span>`;
+            }
+            if(liveWeatherIconEl) liveWeatherIconEl.innerHTML = weatherIcon;
+            
+            if(forecastTextEl) {
+                forecastTextEl.innerHTML = forecastText;
+            }
+
+            // --- Crowd Logic ---
+            // Poonam Crowd is always HIGH (Red)
+            const poonamCrowdCard = document.getElementById('card-poonam-crowd');
+            
+            // Live Crowd (Time based)
+            const liveCrowdTextEl = document.getElementById('live-crowd-text');
+            const liveCrowdIconEl = document.querySelector('#card-live-crowd .dashboard-icon');
+            
+            if(liveCrowdTextEl && liveCrowdIconEl) {
+                const hour = new Date().getHours();
+                // Always Green Icon as requested
+                liveCrowdIconEl.className = "dashboard-icon text-green-500";
+                
+                // Status Text color changes based on level
+                let crowdLevelText = "Moderate";
+                let crowdClass = "text-yellow-600"; // Default moderate
+
+                if(hour >= 6 && hour <= 10) {
+                    crowdLevelText = "High (Aarti)";
+                    crowdClass = "text-red-600";
+                } else if(hour >= 17 && hour <= 20) {
+                    crowdLevelText = "Peak (Aarti)";
+                    crowdClass = "text-red-600";
+                } else if(hour >= 13 && hour <= 16) {
+                    crowdLevelText = "Low (Anosar)";
+                    crowdClass = "text-green-600";
+                }
+
+                liveCrowdTextEl.textContent = crowdLevelText;
+                liveCrowdTextEl.className = `dashboard-value ${crowdClass}`;
+            }
+        }
+
+        function generateChecklist() {
+            const month = new Date().getMonth();
+            const baseItems = [
+                "Government ID Proof (Aadhar/Voter ID)",
+                "Tickets (Train/Bus) & Booking Prints",
+                "Mobile Charger & Power Bank",
+                "Personal Medicines & First Aid",
+                "Cash (Small denominations)",
+                "Water Bottle"
+            ];
+
+            let seasonalItems = [];
+            let seasonName = "";
+
+            if (month >= 10 || month <= 1) { // Winter
+                seasonName = "Winter";
+                seasonalItems = ["Sweater / Light Jacket", "Shawl / Scarf", "Moisturizer / Lip Balm"];
+            } else if (month >= 2 && month <= 5) { // Summer
+                seasonName = "Summer";
+                seasonalItems = ["Sunglasses", "Cap / Hat", "Sunscreen", "Light Cotton Clothes"];
+            } else { // Monsoon
+                seasonName = "Monsoon";
+                seasonalItems = ["Umbrella / Raincoat", "Waterproof Bag cover", "Extra pair of clothes", "Non-slip footwear"];
+            }
+
+            const subtitle = document.getElementById('checklist-subtitle');
+            if(subtitle) subtitle.textContent = `Recommended for ${seasonName} Season`;
+
+            const container = document.getElementById('checklist-container');
+            if(container) {
+                let html = '';
+                
+                // Base Items
+                html += `<h4 class="font-bold theme-accent-color mt-2 mb-1 text-sm uppercase">Essentials</h4>`;
+                baseItems.forEach(item => {
+                    html += `
+                        <label class="checklist-item flex items-center p-3 rounded-lg cursor-pointer border border-gray-100 dark:border-gray-700 bg-white/50 dark:bg-white/5">
+                            <input type="checkbox" class="form-checkbox h-5 w-5 text-orange-500 rounded border-gray-300 focus:ring-orange-500 mr-3">
+                            <span class="theme-text-primary">${item}</span>
+                        </label>
+                    `;
+                });
+
+                // Seasonal Items
+                html += `<h4 class="font-bold theme-accent-color mt-4 mb-1 text-sm uppercase">${seasonName} Specials</h4>`;
+                seasonalItems.forEach(item => {
+                    html += `
+                        <label class="checklist-item flex items-center p-3 rounded-lg cursor-pointer border border-gray-100 dark:border-gray-700 bg-white/50 dark:bg-white/5">
+                            <input type="checkbox" class="form-checkbox h-5 w-5 text-orange-500 rounded border-gray-300 focus:ring-orange-500 mr-3">
+                            <span class="theme-text-primary">${item}</span>
+                        </label>
+                    `;
+                });
+
+                container.innerHTML = html;
+            }
+        }
+
         function startCountdown() {
             const now = new Date();
             let nextPoonamDate = null;
@@ -1414,7 +1641,7 @@
             const nextPoonamMonthYear = `${nextPoonamDate.toLocaleString('default', { month: 'long' })} ${nextPoonamDate.getFullYear()}`;
             countdownContainer.innerHTML = `
                 <div class="text-center">
-                    <h2 class="text-3xl sm:text-4xl font-semibold theme-accent-color page-title">Next Journey Countdown: ${nextPoonamMonthYear}</h2>
+                    <h2 class="text-2xl sm:text-4xl font-semibold theme-accent-color page-title">Next Journey Countdown: ${nextPoonamMonthYear}</h2>
                     <div id="countdown-timer" class="flex flex-wrap justify-center gap-2 sm:gap-4 lg:gap-8 mt-4">
                         <div class="countdown-item"><span id="days" class="text-4xl sm:text-6xl">00</span><p class="text-xs sm:text-sm">Days</p></div>
                         <div class="countdown-item"><span id="hours" class="text-4xl sm:text-6xl">00</span><p class="text-xs sm:text-sm">Hours</p></div>
@@ -1444,107 +1671,6 @@
                 minutesEl.textContent = String(minutes).padStart(2, '0');
                 secondsEl.textContent = String(seconds).padStart(2, '0');
             }, 1000);
-        }
-
-        const attachModalListeners = () => {
-            document.querySelectorAll('.view-ticket-btn').forEach(button => {
-                button.addEventListener('click', () => {
-                    const ticketUrl = button.dataset.ticketUrl;
-                    if (ticketUrl && ticketUrl.trim() !== '#' && ticketUrl !== 'undefined') {
-                        iframe.src = ticketUrl;
-                        downloadBtn.href = ticketUrl;
-                        const fileName = ticketUrl.substring(ticketUrl.lastIndexOf('/') + 1);
-                        downloadBtn.setAttribute('download', fileName);
-                        modal.classList.remove('hidden');
-                    } else {
-                        showToast('Document not available right now.', 'error');
-                    }
-                });
-            });
-        };
-
-        const closeModal = () => {
-            if(modal) modal.classList.add('hidden');
-            if(iframe) iframe.src = '';
-        };
-
-        const showToast = (message, type = 'success') => {
-            const toast = document.getElementById('toast-notification');
-            toast.textContent = message;
-            toast.style.background = type === 'error' ? 'var(--accent-color)' : '#28a745';
-            toast.style.color = 'white';
-            toast.classList.add('show');
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
-        };
-
-        const updateButtonState = (button) => {
-            const originalHTML = button.innerHTML;
-            button.disabled = true;
-            button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 theme-text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>`;
-            setTimeout(() => {
-                button.innerHTML = originalHTML;
-                button.disabled = false;
-            }, 2000);
-        };
-
-        window.copyToClipboard = function(elementId, button) {
-            const textToCopy = document.getElementById(elementId).innerText;
-            window.copyText(textToCopy);
-            updateButtonState(button);
-        };
-
-        function attachCollapsibleListeners() {
-            const triggers = document.querySelectorAll('.collapsible-trigger');
-            triggers.forEach(trigger => {
-                trigger.addEventListener('click', function() {
-                    const content = this.nextElementSibling;
-                    const isActive = this.classList.contains('active');
-                    triggers.forEach(otherTrigger => {
-                        if (otherTrigger !== this) {
-                            otherTrigger.classList.remove('active');
-                            otherTrigger.nextElementSibling.style.maxHeight = null;
-                        }
-                    });
-                    if (isActive) {
-                        this.classList.remove('active');
-                        content.style.maxHeight = null;
-                    } else {
-                        this.classList.add('active');
-                        content.style.maxHeight = content.scrollHeight + "px";
-                    }
-                });
-            });
-        }
-
-        // ... (Render Functions: renderCards, createExpenseCard, createStayCard, createTravelCard, renderPlaces, fetchPlacesData, parseCSV, fetchAndProcessData, populateTimings stay the same) ...
-        
-        function renderCards(year, dateMonth) {
-            const bookings = groupedData[year]?.[dateMonth];
-            if (!bookings) {
-                datesContainer.innerHTML = `<p class="text-center theme-text-secondary p-10">No bookings found for this date.</p>`;
-                return;
-            }
-            let detailsHtml = '';
-            let foundExpenseLink = null;
-            bookings.forEach(item => {
-                if (item.type === 'stay') detailsHtml += createStayCard(item);
-                else if (item.type === 'travel') detailsHtml += createTravelCard(item);
-                
-                if (item.expenses_pdf_link && item.expenses_pdf_link.trim() !== '' && item.expenses_pdf_link.trim() !== '#') {
-                    foundExpenseLink = item.expenses_pdf_link;
-                }
-            });
-            detailsHtml += createExpenseCard(foundExpenseLink);
-            datesContainer.innerHTML = detailsHtml;
-            
-            const cards = datesContainer.querySelectorAll('.card-item');
-            cards.forEach((card, index) => {
-                setTimeout(() => { card.classList.add('visible'); }, 100 * index);
-            });
-            attachModalListeners();
-            attachCollapsibleListeners();
         }
 
         function createExpenseCard(link) {
@@ -1820,373 +1946,39 @@
                     </div>
                 </div>`;
         }
-
-        // --- NEW: Render Nearby Places Function ---
-        function renderPlaces() {
-            const dataToRender = placesData.length > 0 ? placesData : dummyPlacesData;
-            
-            if (dataToRender.length === 0) {
-                placesContainer.innerHTML = `<p class="text-center theme-text-secondary">No places information available at the moment.</p>`;
+        
+        function renderCards(year, dateMonth) {
+            const bookings = groupedData[year]?.[dateMonth];
+            if (!bookings) {
+                datesContainer.innerHTML = `<p class="text-center theme-text-secondary p-10">No bookings found for this date.</p>`;
                 return;
             }
-
-            let html = '<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">';
-            
-            dataToRender.forEach(place => {
-                const imgUrl = place.image_url && place.image_url.trim() !== '' 
-                    ? place.image_url 
-                    : 'https://placehold.co/600x400/orange/white?text=' + encodeURIComponent(place.place_name);
-
-                html += `
-                    <div class="place-card rounded-xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 flex flex-col h-full">
-                        <div class="h-48 overflow-hidden relative group">
-                            <img src="${imgUrl}" alt="${place.place_name}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                            <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/80 to-transparent p-4">
-                                <h3 class="text-xl font-bold text-white">${place.place_name}</h3>
-                                <p class="text-yellow-300 text-xs font-semibold"><i class="fas fa-road mr-1"></i> ${place.distance} from Mandir</p>
-                            </div>
-                        </div>
-                        <div class="p-4 flex-grow flex flex-col justify-between">
-                            <div class="space-y-2 mb-4">
-                                ${place.description ? `<p class="text-sm theme-text-secondary line-clamp-2 mb-3">${place.description}</p>` : ''}
-                                
-                                <div class="flex items-start text-sm theme-text-secondary">
-                                    <i class="fas fa-clock mt-1 mr-2 w-4 text-center theme-accent-color"></i>
-                                    <span>${place.timings}</span>
-                                </div>
-                                
-                                <div class="flex items-start text-sm theme-text-secondary">
-                                    <i class="fas fa-taxi mt-1 mr-2 w-4 text-center theme-accent-color"></i>
-                                    <span><strong>Rent:</strong> ${place.auto_fare}</span>
-                                </div>
-                                
-                                <div class="flex items-start text-sm theme-text-secondary">
-                                    <i class="fas fa-map-marker-alt mt-1 mr-2 w-4 text-center theme-accent-color"></i>
-                                    <span class="line-clamp-1">${place.address}</span>
-                                </div>
-                            </div>
-                            
-                            <a href="${place.map_link}" target="_blank" class="w-full bg-blue-100 hover:bg-blue-200 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 dark:hover:bg-blue-800/50 py-2 rounded-lg text-center font-semibold text-sm transition-colors flex items-center justify-center gap-2">
-                                <i class="fas fa-location-arrow"></i> Navigate
-                            </a>
-                        </div>
-                    </div>
-                `;
-            });
-            
-            html += '</div>';
-            placesContainer.innerHTML = html;
-        }
-
-        // --- NEW: Fetch Places Data Function ---
-        async function fetchPlacesData() {
-            if (googleSheetUrlPlaces.includes('YOUR_SHEET_2_ID')) {
-                renderPlaces();
-                return;
-            }
-
-            try {
-                const response = await fetch(`${googleSheetUrlPlaces}&_=${new Date().getTime()}`);
-                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-                const csvText = await response.text();
-                placesData = parseCSV(csvText);
-                renderPlaces();
-            } catch (error) {
-                console.error('Error fetching places data:', error);
-                renderPlaces();
-            }
-        }
-
-        // --- Function to parse CSV ---
-        function parseCSV(csvText) {
-            const lines = csvText.split(/\r?\n/).filter(line => line.trim());
-            if (lines.length < 2) return [];
-            const headers = lines[0].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(h => h.trim().replace(/"/g, '').toLowerCase().replace(/\s+/g, '_'));
-            const data = [];
-            for (let i = 1; i < lines.length; i++) {
-                const obj = {};
-                const currentline = lines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(item => item.trim().replace(/"/g, ''));
-                if (currentline.length === headers.length) {
-                    for (let j = 0; j < headers.length; j++) {
-                        obj[headers[j]] = currentline[j];
-                    }
-                    data.push(obj);
+            let detailsHtml = '';
+            let foundExpenseLink = null;
+            bookings.forEach(item => {
+                if (item.type === 'stay') detailsHtml += createStayCard(item);
+                else if (item.type === 'travel') detailsHtml += createTravelCard(item);
+                
+                if (item.expenses_pdf_link && item.expenses_pdf_link.trim() !== '' && item.expenses_pdf_link.trim() !== '#') {
+                    foundExpenseLink = item.expenses_pdf_link;
                 }
-            }
-            return data;
-        }
-
-        // --- Function to fetch and process data ---
-        async function fetchAndProcessData() {
-            if (!googleSheetUrl || googleSheetUrl.includes('YOUR_GOOGLE_SHEET')) {
-                datesContainer.innerHTML = `<p class="text-center text-red-400 p-10">Please add your Google Sheet CSV link in the script.</p>`;
-                return;
-            }
-
-            datesContainer.innerHTML = `
-                <div class="text-center p-10">
-                    <svg aria-hidden="true" class="inline w-10 h-10 theme-text-secondary animate-spin" style="fill: var(--accent-color)" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
-                        <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0492C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentColor"/>
-                    </svg>
-                    <p class="mt-4 theme-text-secondary font-semibold">Loading booking data...</p>
-                </div>`;
-
-            try {
-                const response = await fetch(`${googleSheetUrl}&_=${new Date().getTime()}`);
-                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-
-                const csvText = await response.text();
-                const allBookingsData = parseCSV(csvText);
-
-                groupedData = allBookingsData.reduce((acc, row) => {
-                    if (row.year && row.date_month) {
-                        const { year, date_month } = row;
-                        if (!acc[year]) acc[year] = {};
-                        if (!acc[year][date_month]) acc[year][date_month] = [];
-
-                        const key = `${row.type}-${row.booking_no_pnr || Math.random()}`;
-                        let booking = acc[year][date_month].find(b => b.key === key);
-
-                        if (!booking) {
-                            booking = { ...row, passengers: [], key: key };
-                            acc[year][date_month].push(booking);
-                        }
-
-                        if (row.guest_name) {
-                            booking.passengers.push(row);
-                        }
-                    }
-                    return acc;
-                }, {});
-
-                setupDropdowns();
-                // --- TRIGGER AUTO SELECT ---
-                autoSelectNextTrip();
-
-            } catch (error) {
-                console.error('Error fetching or processing data:', error);
-                datesContainer.innerHTML = `<p class="text-center text-red-400 p-10">Error loading booking data. Please check the data source and network connection.</p>`;
-            }
-        }
-
-        // --- Mandir Timing Function ---
-        const populateTimings = () => {
-            const scheduleContainer = document.getElementById('timing-schedule');
-            const now = new Date();
-            const currentTime = now.getHours() + now.getMinutes() / 60;
-            
-            const mandirTimings = [
-                { time: "6:30 AM", event: "Mangla Aarti", type: "open", start: 6.5, end: 8.0 },
-                { time: "8:00 AM - 9:00 AM", event: "Mangla Darshan", type: "open", start: 8.0, end: 9.0 },
-                { time: "9:00 AM - 9:30 AM", event: "Abhishek Pooja (Closed)", type: "closed", start: 9.0, end: 9.5 },
-                { time: "9:30 AM - 10:15 AM", event: "Shringar Darshan", type: "open", start: 9.5, end: 10.25 },
-                { time: "10:15 AM - 10:30 AM", event: "Shringar Bhog (Closed)", type: "closed", start: 10.25, end: 10.5 },
-                { time: "10:30 AM - 10:45 AM", event: "Shringar Aarti", type: "open", start: 10.5, end: 10.75 },
-                { time: "11:05 AM - 11:20 AM", event: "Gwal Bhog (Closed)", type: "closed", start: 11.08, end: 11.33 },
-                { time: "11:20 AM - 12:00 PM", event: "Darshan Open", type: "open", start: 11.33, end: 12.0 },
-                { time: "12:00 PM - 12:20 PM", event: "Rajbhog (Closed)", type: "closed", start: 12.0, end: 12.33 },
-                { time: "12:20 PM - 1:00 PM", event: "Darshan Open", type: "open", start: 12.33, end: 13.0 },
-                { time: "1:00 PM - 5:00 PM", event: "Anosar (Mandir Closed)", type: "closed", start: 13.0, end: 17.0 },
-                { time: "5:00 PM - 5:30 PM", event: "Uthapan Darshan", type: "open", start: 17.0, end: 17.5 },
-                { time: "5:45 PM - 6:00 PM", event: "Uthapan Bhog (Closed)", type: "closed", start: 17.75, end: 18.0 },
-                { time: "6:15 PM - 6:45 PM", event: "Darshan Open", type: "open", start: 18.25, end: 18.75 },
-                { time: "7:00 PM - 7:25 PM", event: "Sandhya Bhog (Closed)", type: "closed", start: 19.0, end: 19.42 },
-                { time: "7:25 PM - 7:45 PM", event: "Sandhya Aarti", type: "open", start: 19.42, end: 19.75 },
-                { time: "8:00 PM - 8:10 PM", event: "Shayan Bhog (Closed)", type: "closed", start: 20.0, end: 20.17 },
-                { time: "8:10 PM - 8:35 PM", event: "Shayan Darshan", type: "open", start: 20.17, end: 20.58 },
-                { time: "8:35 PM", event: "Shayan Aarti", type: "open", start: 20.58, end: 21.0 },
-                { time: "9:00 PM", event: "Mandir Closed", type: "closed", start: 21.0, end: 24.0 }
-            ];
-
-            const dhwajaTimings = [
-                { event: "First Dhwaja Arohan", time: "7:00 AM - 8:30 AM", start: 7.0, end: 8.5 },
-                { event: "Second Dhwaja Arohan", time: "8:39 AM - 10:30 AM", start: 8.65, end: 10.5 },
-                { event: "Third Dhwaja Arohan", time: "10:30 AM - 12:30 PM", start: 10.5, end: 12.5 },
-                { event: "Fourth Dhwaja Arohan", time: "5:30 PM", start: 17.0, end: 18.5 } 
-            ];
-
-            let mandirHtml = '';
-            mandirTimings.forEach(item => {
-                const isCurrent = currentTime >= item.start && currentTime < item.end;
-                const colorClass = item.type === 'open' ? 'text-green-500' : 'text-red-400';
-                const currentClass = isCurrent ? 'current-timing ring-2 ring-offset-1 ring-orange-400' : '';
-
-                mandirHtml += `
-                    <div class="flex justify-between items-center p-2 rounded-lg ${currentClass} hover:bg-black/5 dark:hover:bg-white/5 transition-colors text-sm mb-1">
-                        <span class="font-medium theme-text-primary">${item.event}</span>
-                        <span class="${colorClass} font-bold text-right ml-2 whitespace-nowrap">${item.time}</span>
-                    </div>
-                `;
             });
-
-            let dhwajaHtml = '';
-            dhwajaTimings.forEach(item => {
-                const isCurrent = currentTime >= item.start && currentTime < item.end;
-                const activeClass = isCurrent ? 'current-timing ring-2 ring-offset-1 ring-orange-400' : '';
-                const timeColor = isCurrent ? 'text-green-500' : 'theme-accent-color';
-
-                dhwajaHtml += `
-                    <div class="flex justify-between items-center p-3 rounded-lg ${activeClass} hover:bg-black/5 dark:hover:bg-white/5 transition-colors text-sm mb-2 shadow-sm" style="background:var(--input-bg)">
-                        <span class="font-medium theme-text-primary flex items-center gap-2">
-                            <i class="fas fa-flag theme-accent-color text-xs"></i> ${item.event}
-                        </span>
-                        <span class="${timeColor} font-bold text-right ml-2 whitespace-nowrap">${item.time}</span>
-                    </div>
-                `;
-            });
-
-            scheduleContainer.innerHTML = `
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-                    <!-- Mandir Darshan Column -->
-                    <div>
-                        <div class="sticky top-0 bg-white/10 backdrop-blur-md z-10 py-2 mb-2 border-b border-gray-500/20">
-                            <h3 class="text-xl font-bold theme-text-primary text-center flex items-center justify-center gap-2">
-                                <i class="fas fa-gopuram theme-accent-color"></i> Darshan Timing
-                            </h3>
-                        </div>
-                        <div class="space-y-1">
-                            ${mandirHtml}
-                        </div>
-                    </div>
-
-                    <!-- Dhwaja Arohan Column -->
-                    <div>
-                        <div class="sticky top-0 bg-white/10 backdrop-blur-md z-10 py-2 mb-2 border-b border-gray-500/20">
-                            <h3 class="text-xl font-bold theme-text-primary text-center flex items-center justify-center gap-2">
-                                <i class="fas fa-flag theme-accent-color"></i> Dhwaja Timing
-                            </h3>
-                        </div>
-                        <div class="space-y-1">
-                            ${dhwajaHtml}
-                            <div class="mt-4 p-3 rounded-lg bg-orange-100/10 border border-orange-500/30 text-xs theme-text-secondary text-center">
-                                <p><i class="fas fa-info-circle mr-1"></i> Note: Dhwaja timings are subject to change during festivals.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
-        };
-
-        // --- WEATHER & CROWD LOGIC ---
-        function updateWeatherAndCrowd() {
-            // Simulated Weather based on Month
-            const month = new Date().getMonth(); // 0-11
-            let season = "";
-            let weatherIcon = "";
-            let temp = "";
-            let forecastText = "";
-
-            if (month >= 10 || month <= 1) { // Winter (Nov, Dec, Jan, Feb)
-                season = "Winter";
-                weatherIcon = '<i class="fas fa-snowflake text-blue-400"></i>';
-                temp = "18°C - 25°C";
-                forecastText = "19°C - 24°C<br>Cool & Pleasant";
-            } else if (month >= 2 && month <= 5) { // Summer (Mar, Apr, May, Jun)
-                season = "Summer";
-                weatherIcon = '<i class="fas fa-sun text-yellow-500"></i>';
-                temp = "28°C - 35°C";
-                forecastText = "30°C - 36°C<br>Sunny & Warm";
-            } else { // Monsoon (July, Aug, Sep, Oct)
-                season = "Monsoon";
-                weatherIcon = '<i class="fas fa-cloud-showers-heavy text-gray-500"></i>';
-                temp = "25°C - 30°C";
-                forecastText = "26°C - 31°C<br>Cloudy/Rain";
-            }
-
-            // Update DOM
-            const liveWeatherEl = document.getElementById('live-weather-text');
-            const liveWeatherIcon = document.querySelector('#weather-crowd-section div:first-child .text-xl'); // Updated selector for text-xl
+            detailsHtml += createExpenseCard(foundExpenseLink);
+            datesContainer.innerHTML = detailsHtml;
             
-            if(liveWeatherEl && liveWeatherIcon) {
-                liveWeatherEl.innerHTML = `${temp}<br><span class="text-[10px] opacity-80">${season}</span>`;
-                liveWeatherIcon.innerHTML = weatherIcon;
-            }
-
-            // Forecast Logic (Linked to dropdown or next date)
-            const forecastEl = document.getElementById('forecast-weather-text');
-            if(forecastEl) {
-                // If a specific date is selected, we could refine this, but for now we show the general forecast for the current season
-                forecastEl.innerHTML = forecastText; 
-            }
-
-            // Live Crowd Logic (Mock)
-            const liveCrowdEl = document.getElementById('live-crowd-text');
-            if(liveCrowdEl) {
-                const hour = new Date().getHours();
-                let crowdLevel = "Moderate";
-                if(hour >= 6 && hour <= 10) crowdLevel = "High (Morning Aarti)";
-                else if(hour >= 17 && hour <= 20) crowdLevel = "Peak (Evening Aarti)";
-                else if(hour >= 13 && hour <= 16) crowdLevel = "Low (Anosar)";
-                
-                liveCrowdEl.textContent = crowdLevel;
-            }
-        }
-
-        // --- SMART CHECKLIST LOGIC ---
-        function generateChecklist() {
-            const month = new Date().getMonth();
-            const baseItems = [
-                "Government ID Proof (Aadhar/Voter ID)",
-                "Tickets (Train/Bus) & Booking Prints",
-                "Mobile Charger & Power Bank",
-                "Personal Medicines & First Aid",
-                "Cash (Small denominations)",
-                "Water Bottle"
-            ];
-
-            let seasonalItems = [];
-            let seasonName = "";
-
-            if (month >= 10 || month <= 1) { // Winter
-                seasonName = "Winter";
-                seasonalItems = ["Sweater / Light Jacket", "Shawl / Scarf", "Moisturizer / Lip Balm"];
-            } else if (month >= 2 && month <= 5) { // Summer
-                seasonName = "Summer";
-                seasonalItems = ["Sunglasses", "Cap / Hat", "Sunscreen", "Light Cotton Clothes"];
-            } else { // Monsoon
-                seasonName = "Monsoon";
-                seasonalItems = ["Umbrella / Raincoat", "Waterproof Bag cover", "Extra pair of clothes", "Non-slip footwear"];
-            }
-
-            const subtitle = document.getElementById('checklist-subtitle');
-            if(subtitle) subtitle.textContent = `Recommended for ${seasonName} Season`;
-
-            const container = document.getElementById('checklist-container');
-            if(container) {
-                let html = '';
-                
-                // Base Items
-                html += `<h4 class="font-bold theme-accent-color mt-2 mb-1 text-sm uppercase">Essentials</h4>`;
-                baseItems.forEach(item => {
-                    html += `
-                        <label class="checklist-item flex items-center p-3 rounded-lg cursor-pointer border border-gray-100 dark:border-gray-700 bg-white/50 dark:bg-white/5">
-                            <input type="checkbox" class="form-checkbox h-5 w-5 text-orange-500 rounded border-gray-300 focus:ring-orange-500 mr-3">
-                            <span class="theme-text-primary">${item}</span>
-                        </label>
-                    `;
-                });
-
-                // Seasonal Items
-                html += `<h4 class="font-bold theme-accent-color mt-4 mb-1 text-sm uppercase">${seasonName} Specials</h4>`;
-                seasonalItems.forEach(item => {
-                    html += `
-                        <label class="checklist-item flex items-center p-3 rounded-lg cursor-pointer border border-gray-100 dark:border-gray-700 bg-white/50 dark:bg-white/5">
-                            <input type="checkbox" class="form-checkbox h-5 w-5 text-orange-500 rounded border-gray-300 focus:ring-orange-500 mr-3">
-                            <span class="theme-text-primary">${item}</span>
-                        </label>
-                    `;
-                });
-
-                container.innerHTML = html;
-            }
+            const cards = datesContainer.querySelectorAll('.card-item');
+            cards.forEach((card, index) => {
+                setTimeout(() => { card.classList.add('visible'); }, 100 * index);
+            });
+            attachModalListeners();
+            attachCollapsibleListeners();
         }
 
         document.addEventListener('DOMContentLoaded', async function() {
             // ... existing theme toggle logic ...
-            const themeToggleBtn = document.getElementById('theme-toggle-fab'); // CHANGED ID
-            const sunIcon = document.getElementById('sun-icon-fab'); // CHANGED ID
-            const moonIcon = document.getElementById('moon-icon-fab'); // CHANGED ID
+            const themeToggleBtn = document.getElementById('theme-toggle-fab'); 
+            const sunIcon = document.getElementById('sun-icon-fab'); 
+            const moonIcon = document.getElementById('moon-icon-fab'); 
             const htmlTag = document.documentElement;
 
             function updateThemeIcons(isDarkMode) {
